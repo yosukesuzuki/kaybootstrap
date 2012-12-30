@@ -23,7 +23,7 @@ ADMINS = (
 TEMPLATE_DIRS = (
 )
 
-USE_I18N = False
+USE_I18N = True
 DEFAULT_LANG = 'en'
 
 INSTALLED_APPS = (

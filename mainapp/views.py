@@ -24,9 +24,10 @@ from kay.i18n import gettext as _
 from kay.auth.decorators import login_required
 
 """
+from google.appengine.api import files
 
 from kay.utils import render_to_response
-from google.appengine.api import files
+from kay.i18n import gettext as _
 
 def index(request):
     return render_to_response('mainapp/index.html', {'message': 'Hello'})
