@@ -1,0 +1,30 @@
+{% extends "mainapp/base.html"%}
+{% block title %}{{ _('List of model: %s' % model) }}{% endblock %}
+{% block description %}{% endblock %}
+{% block content %}
+<h1>{{ _('List of model: %s' % model) }}</h1>
+<a href="{{ create_url() }}">{{ _('Create new entity') }}</a>
+<div id="main">
+    <div id="message" style="font-weight: bold; color: #DDAAAA;">
+        {{ message }}
+    </div>
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th>{{_('Title')}}</th>
+            <th>{{_('Update')}}</th>
+            <th>{{_('Delete')}}</th>
+        </tr>
+    {% for entity in entities %}
+        <tr>
+            <td><a href="{{ detail_url(entity) }}">{{ entity.title }}</a></td>
+            <td><a href="{{ update_url(entity) }}">{{ _('Update') }}</a></td>
+            <td><a href="{{ delete_url(entity) }}">{{ _('Delete') }}</a></td>
+        </tr>
+    {% endfor %}
+    </table>
+</div>
+<a href="{{ create_url() }}">{{ _('Create new entity') }}</a><br/>
+{% if cursor %}
+<a href="{{ list_url(cursor) }}">{{ _('Next Page') }}</a>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "mainapp/base.html"%}
+{% block title %}{{ title }}{% endblock %}
+{% block description %}{% endblock %}
+{% block content %}
+<h1>{{ title }}</h1>
+<div id="main">
+  {{ form()|safe }}
+</div>
+{% endblock %}
