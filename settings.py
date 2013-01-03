@@ -26,6 +26,13 @@ TEMPLATE_DIRS = (
 USE_I18N = True
 DEFAULT_LANG = 'en'
 
+MIDDLEWARE_CLASSES = (
+        'kay.auth.middleware.AuthenticationMiddleware',
+        'kay.sessions.middleware.SessionMiddleware',
+        'kay.utils.flash.FlashMiddleware',
+        'kay.ext.appstats.middleware.AppStatsMiddleware',
+)
+
 INSTALLED_APPS = (
         'mainapp',
 )

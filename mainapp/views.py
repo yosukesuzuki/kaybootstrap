@@ -29,5 +29,8 @@ from google.appengine.api import files
 from kay.utils import render_to_response
 from kay.i18n import gettext as _
 
+from mainapp.models import AdminTopPage
+from mainapp.forms import AdminTopPageForm
+
 def index(request):
     return render_to_response('mainapp/index.html', {'message': 'Hello'})
