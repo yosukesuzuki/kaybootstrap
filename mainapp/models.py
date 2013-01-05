@@ -26,3 +26,9 @@ class AdminTopPage(db.Model):
     show_image_on_top_flg = db.BooleanProperty(verbose_name=_('Show the first image on top page'),default=True)
     update = db.DateTimeProperty(verbose_name=_('Update'),auto_now=True)
     created = db.DateTimeProperty(verbose_name=_('Created'),auto_now_add=True)
+
+class BlobStoreImages(db.Model):
+    title = db.StringProperty(verbose_name=_('Title'),required=True)
+    blob_key = blobstore.BlobReferenceProperty()
+    update = db.DateTimeProperty(verbose_name=_('Update'),auto_now=True)
+    created = db.DateTimeProperty(verbose_name=_('Created'),auto_now_add=True)

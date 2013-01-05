@@ -4,13 +4,17 @@
 
 import urllib
 
+from google.appengine.api import memcache
+
 from kay.routing import (
   ViewGroup, Rule
 )
 from kay.generics import crud
 from kay.generics import admin_required
+
 from mainapp.forms import AdminTopPageForm
-from mainapp.models import AdminTopPage 
+from mainapp.models import AdminTopPage
+from mainapp.views import CACHE_NAME_FOR_TOP_PAGE_RESULTS
 
 class AdminTopPageCRUDViewGroup(crud.CRUDViewGroup):
      model = AdminTopPage
@@ -23,6 +27,7 @@ class AdminTopPageCRUDViewGroup(crud.CRUDViewGroup):
      def get_query(self, request):
          return self.model.all().order('-update')
      def get_additional_context_on_update(self, request, form):
+         memcache.delete(CACHE_NAME_FOR_TOP_PAGE_RESULTS)
          return {}
      def get_additional_context_on_create(self, request, form):
          key_name = None
@@ -35,9 +40,9 @@ class AdminTopPageCRUDViewGroup(crud.CRUDViewGroup):
              key_name = url
          else:
              key_name = urllib.quote(request.form['title'])
+         memcache.delete(CACHE_NAME_FOR_TOP_PAGE_RESULTS)
          return {'key_name':key_name}
      authorize = admin_required
-
 
 view_groups = [
   ViewGroup(
