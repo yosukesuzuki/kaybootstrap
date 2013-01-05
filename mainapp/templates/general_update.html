@@ -4,6 +4,18 @@
 {% block content %}
 <h1>{{ title }}</h1>
 <div id="main">
-  {{ form()|safe }}
+    {% call form(class_='form-horizontal') %}
+    {% for f in form %}
+    <div class="control-group">
+        {{ form[f.name].label(class_='control-label')|safe }}
+        <div class="controls">
+        {{ form[f.name].render(class_='input-block-level')|safe }}
+        </div>
+    </div>
+    {% endfor %}
+    <div class="form-actions">
+    {{ form.default_actions()|safe }}
+    </div>
+    {% endcall %}
 </div>
 {% endblock %}
