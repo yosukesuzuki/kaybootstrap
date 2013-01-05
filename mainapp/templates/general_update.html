@@ -14,7 +14,8 @@
     </div>
     {% endfor %}
     <div class="form-actions">
-    {{ form.default_actions()|safe }}
+        <button class="btn btn-large btn-block btn-primary" type="submit">{{_('Save')}}</button>
+        {#{{ form.default_actions()|safe }}#}
     </div>
     {% endcall %}
 </div>
