@@ -7,14 +7,17 @@
     <div id="message" style="font-weight: bold; color: #DDAAAA;">
         {{ message }}
     </div>
-    <table class="table table-bordered table-hover">
-        <tr>
-            <th>{{_('Title')}}</th>
-            <th>{{_('Update')}}</th>
-            <th>{{_('Delete')}}</th>
-        </tr>
+    <table id="content-list-table" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>{{_('Title')}}</th>
+                <th>{{_('Update')}}</th>
+                <th>{{_('Delete')}}</th>
+            </tr>
+        </thead>
+        <tbody>
     {% for entity in entities %}
-        <tr>
+        <tr id="list-{{entity.key().name()}}">
             <td class="span6" onClick="window.location.href='{{ update_url(entity) }}'">
                 <a href="{{ update_url(entity) }}">{{ entity.title }}</a>
             </td>
@@ -26,10 +29,45 @@
             </td>
         </tr>
     {% endfor %}
+        </tbody>
     </table>
 </div>
+<p id="sort-change-message">
+</p>
 <a href="{{ create_url() }}" class="btn btn-primary">{{ _('Create new entity') }}</a><br/>
 {% if cursor %}
 <a href="{{ list_url(cursor) }}">{{ _('Next Page') }}</a>
 {% endif %}
+{% endblock %}
+{% block scripts %}
+<script src="/media/js/jquery.tablednd.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#content-list-table").tableDnD({
+            onDragClass: "myDragClass",
+            onDrop: function(table, row) {
+                var rows = table.tBodies[0].rows;
+                var new_orders = '';
+                for (var i=0; i<rows.length; i++) {
+                    new_orders += rows[i].id+";";
+                }
+                console.log(new_orders);
+                var update_order_html = "";
+                update_order_html += '<button class="btn btn-info" onClick="sendNewOrders(\''+new_orders+'\');">{{_('Update Order')}}</button>';
+                update_order_html += '&nbsp;{{_('new order is not saved yet.')}}';
+                $('#sort-change-message').html(update_order_html);
+            },
+            onDragStart: function(table, row) {
+                console.log("Started dragging row "+row.id);
+            }
+        });
+    });
+    function sendNewOrders(new_orders){
+        $('#sort-change-message').html('<img src="/media/img/ajax-loader.gif">');
+        $.get('/update/page/order/',{orders:new_orders},
+        function(data){
+            $('#sort-change-message').html(data);
+        });
+    }
+</script>
 {% endblock %}

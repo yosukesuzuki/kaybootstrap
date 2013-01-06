@@ -47,6 +47,7 @@ class AdminPageCRUDViewGroup(crud.CRUDViewGroup):
 view_groups = [
   ViewGroup(
     Rule('/', endpoint='index', view='mainapp.views.index'),
+    Rule('/update/page/order/', endpoint='update_page_order', view='mainapp.views.update_page_order'),
     Rule('/<string:key_name>/', endpoint='show_each_page', view='mainapp.views.show_each_page'),
   ),
   AdminPageCRUDViewGroup(),

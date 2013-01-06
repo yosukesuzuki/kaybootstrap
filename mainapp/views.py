@@ -25,6 +25,7 @@ from kay.auth.decorators import login_required
 
 """
 import logging
+from werkzeug import Response
 
 from google.appengine.api import files
 from google.appengine.api import memcache
@@ -64,3 +65,7 @@ def show_each_page(request,key_name):
     if page is None:
         return render_to_response('mainapp/404.html', {})
     return render_to_response('mainapp/show_each_page.html', {'page': page})
+
+def update_page_order(request):
+    #TODO:order change function here
+    return Response('Success:new order was saved')
