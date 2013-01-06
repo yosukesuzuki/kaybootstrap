@@ -30,10 +30,11 @@ from google.appengine.api import files
 from google.appengine.api import memcache
 
 from kay.utils import render_to_response
+from kay.utils import get_by_key_name_or_404
 from kay.i18n import gettext as _
 
-from mainapp.models import AdminTopPage
-from mainapp.forms import AdminTopPageForm
+from mainapp.models import AdminPage
+from mainapp.forms import AdminPageForm
 
 '''
 global vars
@@ -48,11 +49,18 @@ DUMMY_DATA_FOR_TOP_PAGE = [{'title':'Dummy,first title','snippet':'this is dummy
 def index(request):
     results = memcache.get(CACHE_NAME_FOR_TOP_PAGE_RESULTS)
     if results is None:
-        query_results = AdminTopPage.all().filter(u'display_page_flg =',True).order('-page_order').fetch(limit=TOP_PAGE_CONTENT_NUM)
+        query_results = AdminPage.all().filter(u'display_page_flg =',True).order('page_order').fetch(limit=TOP_PAGE_CONTENT_NUM)
         results = []
         for r in query_results:
             url = r.external_url if r.external_url else '/'+r.key().name()+'/'
-            results.append({'title':r.title,'snippet':r.snippet,'url':url})
+            snippet = r.content[:50]
+            results.append({'title':r.title,'snippet':snippet,'url':url})
         if len(results) == 0:results = DUMMY_DATA_FOR_TOP_PAGE
         memcache.set(CACHE_NAME_FOR_TOP_PAGE_RESULTS,results)
     return render_to_response('mainapp/index.html', {'results': results})
+
+def show_each_page(request,key_name):
+    page = AdminPage.get_by_key_name(key_name)
+    if page is None:
+        return render_to_response('mainapp/404.html', {})
+    return render_to_response('mainapp/show_each_page.html', {'page': page})

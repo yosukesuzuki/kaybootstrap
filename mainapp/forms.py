@@ -1,9 +1,9 @@
 from kay.utils import forms
 from kay.utils.forms.modelform import ModelForm
-from mainapp.models import AdminTopPage 
+from mainapp.models import AdminPage 
 
-class AdminTopPageForm(ModelForm):
+class AdminPageForm(ModelForm):
     class Meta:
-         model = AdminTopPage 
+         model = AdminPage 
          exclude = ('images','page_order','update','created')
 

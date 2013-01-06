@@ -12,13 +12,13 @@ from kay.routing import (
 from kay.generics import crud
 from kay.generics import admin_required
 
-from mainapp.forms import AdminTopPageForm
-from mainapp.models import AdminTopPage
+from mainapp.forms import AdminPageForm
+from mainapp.models import AdminPage
 from mainapp.views import CACHE_NAME_FOR_TOP_PAGE_RESULTS
 
-class AdminTopPageCRUDViewGroup(crud.CRUDViewGroup):
-     model = AdminTopPage
-     form = AdminTopPageForm
+class AdminPageCRUDViewGroup(crud.CRUDViewGroup):
+     model = AdminPage
+     form = AdminPageForm
      templates = {
              'show':'mainapp/general_show.html',
              'list':'mainapp/general_list.html',
@@ -47,7 +47,8 @@ class AdminTopPageCRUDViewGroup(crud.CRUDViewGroup):
 view_groups = [
   ViewGroup(
     Rule('/', endpoint='index', view='mainapp.views.index'),
+    Rule('/<string:key_name>/', endpoint='show_each_page', view='mainapp.views.show_each_page'),
   ),
-  AdminTopPageCRUDViewGroup(),
+  AdminPageCRUDViewGroup(),
 ]
 

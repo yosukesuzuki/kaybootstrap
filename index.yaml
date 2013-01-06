@@ -10,8 +10,7 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
-- kind: AdminTopPage
+- kind: AdminPage
   properties:
   - name: display_page_flg
   - name: page_order
-    direction: desc
