@@ -48,6 +48,9 @@ DUMMY_DATA_FOR_TOP_PAGE = [{'title':'Dummy,first title','snippet':'this is dummy
         {'title':'Dummy,fourth title','snippet':'this is dummy snippet','url':'/fourth/'}]
 
 def index(request):
+    '''
+    top page
+    '''
     results = memcache.get(CACHE_NAME_FOR_TOP_PAGE_RESULTS)
     if results is None:
         query_results = AdminPage.all().filter(u'display_page_flg =',True).order('page_order').fetch(limit=TOP_PAGE_CONTENT_NUM)
@@ -61,11 +64,29 @@ def index(request):
     return render_to_response('mainapp/index.html', {'results': results})
 
 def show_each_page(request,key_name):
+    '''
+    each page
+    '''
     page = AdminPage.get_by_key_name(key_name)
     if page is None:
         return render_to_response('mainapp/404.html', {})
     return render_to_response('mainapp/show_each_page.html', {'page': page})
 
 def update_page_order(request):
-    #TODO:order change function here
-    return Response('Success:new order was saved')
+    try:
+        new_orders = request.args['orders']
+    except:
+        return Response('Error:no data')
+    new_orders_list = new_orders.split(';')
+    new_order_incre = 0
+    for new_order in new_orders_list:
+        if new_order is None or new_order == '':
+            continue
+        new_order_key_name = new_order[5:]
+        new_order_entity = AdminPage.get_by_key_name(new_order_key_name)
+        if new_order_entity:
+            new_order_entity.page_order = new_order_incre 
+            new_order_incre += 1
+            new_order_entity.put()
+    memcache.delete(CACHE_NAME_FOR_TOP_PAGE_RESULTS)
+    return Response('Success:new order was saved,'+str(new_order_incre)+' times')

@@ -25,7 +25,7 @@ class AdminPageCRUDViewGroup(crud.CRUDViewGroup):
              'update':'mainapp/general_update.html',
              }
      def get_query(self, request):
-         return self.model.all().order('-update')
+         return self.model.all().order('page_order')
      def get_additional_context_on_update(self, request, form):
          memcache.delete(CACHE_NAME_FOR_TOP_PAGE_RESULTS)
          return {}
