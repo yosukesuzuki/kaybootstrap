@@ -90,3 +90,7 @@ def update_page_order(request):
             new_order_entity.put()
     memcache.delete(CACHE_NAME_FOR_TOP_PAGE_RESULTS)
     return Response('Success:new order was saved,'+str(new_order_incre)+' times')
+
+def site_map(request):
+    #TODO return sitemap xml for search engine crawler
+    return Response('Under construction')
