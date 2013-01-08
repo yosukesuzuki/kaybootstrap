@@ -20,3 +20,10 @@
     {% endcall %}
 </div>
 {% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+    $('textarea').each(function(i,elem){
+        elem.insertAdjacentHTML('beforeBegin','<button class="btn btn-small"><i class="icon-picture"></i>{{_('Insert Image')}}</button>');
+    }); 
+</script>
+{% endblock %}
