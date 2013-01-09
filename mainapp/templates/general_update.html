@@ -19,11 +19,25 @@
     </div>
     {% endcall %}
 </div>
+<!-- Modal -->
+<div id="imageInsertModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="imageInsertModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+    <h3 id="imageInsertModalLabel">{{_('Image Insert')}}</h3>
+  </div>
+  <div class="modal-body">
+      <p>{{_('Select Images')}}</p>
+  </div>
+  <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">{{_('Close')}}</button>
+    <button class="btn btn-primary">{{_('Save changes')}}</button>
+  </div>
+</div>
 {% endblock %}
 {% block scripts %}
 <script type="text/javascript">
     $('textarea').each(function(i,elem){
-        elem.insertAdjacentHTML('beforeBegin','<button class="btn btn-small"><i class="icon-picture"></i>{{_('Insert Image')}}</button>');
+        elem.insertAdjacentHTML('beforeBegin','<a href="#imageInsertModal" class="btn btn-small" role="button" data-toggle="modal"><i class="icon-picture"></i>{{_('Insert Image')}}</a>');
     }); 
 </script>
 {% endblock %}
