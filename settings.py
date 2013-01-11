@@ -34,11 +34,14 @@ MIDDLEWARE_CLASSES = (
 )
 
 INSTALLED_APPS = (
+        'kay.auth',
         'mainapp',
+        'adminapp',
 )
 
 APP_MOUNT_POINTS = {
         'mainapp':'/',
+        'adminapp':'/admin',
 }
 
 # You can remove following settings if unnecessary.

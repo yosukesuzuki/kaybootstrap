@@ -1,0 +1,21 @@
+{% extends "mainapp/base.html"%}
+{% block title %}{{_('Admin Page')}}{% endblock %}
+{% block description %}{% endblock %}
+{% block content %}
+<!-- Main hero unit for a primary marketing message or call to action -->
+<div class="hero-unit">
+    <h1>{{_('Admin Page')}}</h1>
+    <p>{{_('index of admin pages')}}</p>
+</div>
+
+<!-- row of columns -->
+<div class="row">
+    {% for a in admin_page_list %}
+    <div class="span4">
+        <h2>{{a['title']}}</h2>
+        <p>{{a['info']}}</p>
+        <p><a class="btn" href="/admin/{{a['url']}}/list">{{_('Go')}}&raquo;</a></p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

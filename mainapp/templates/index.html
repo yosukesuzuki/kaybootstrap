@@ -6,7 +6,7 @@
 <div class="hero-unit">
     <h1>{{results[0]['title']}}</h1>
     <p>{{results[0]['snippet']}}</p>
-    <p><a class="btn btn-primary btn-large" href="{{results[0]['url']}}">Learn more &raquo;</a></p>
+    <p><a class="btn btn-primary btn-large" href="{{results[0]['url']}}">{{_('Learn more')}} &raquo;</a></p>
 </div>
 
 <!-- row of columns -->
@@ -15,7 +15,7 @@
     <div class="span4">
         <h2>{{r['title']}}</h2>
         <p>{{r['snippet']}}</p>
-        <p><a class="btn" href="{{r['url']}}">View details &raquo;</a></p>
+        <p><a class="btn" href="{{r['url']}}">{{_('View details')}} &raquo;</a></p>
     </div>
     {% endfor %}
 </div>

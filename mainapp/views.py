@@ -33,9 +33,9 @@ from google.appengine.api import memcache
 from kay.utils import render_to_response
 from kay.utils import get_by_key_name_or_404
 from kay.i18n import gettext as _
+from kay.auth.decorators import admin_required
 
-from mainapp.models import AdminPage
-from mainapp.forms import AdminPageForm
+from mainapp.models import AdminPage,BlobStoreImages
 
 '''
 global vars
@@ -71,25 +71,6 @@ def show_each_page(request,key_name):
     if page is None:
         return render_to_response('mainapp/404.html', {})
     return render_to_response('mainapp/show_each_page.html', {'page': page})
-
-def update_page_order(request):
-    try:
-        new_orders = request.args['orders']
-    except:
-        return Response('Error:no data')
-    new_orders_list = new_orders.split(';')
-    new_order_incre = 0
-    for new_order in new_orders_list:
-        if new_order is None or new_order == '':
-            continue
-        new_order_key_name = new_order[5:]
-        new_order_entity = AdminPage.get_by_key_name(new_order_key_name)
-        if new_order_entity:
-            new_order_entity.page_order = new_order_incre 
-            new_order_incre += 1
-            new_order_entity.put()
-    memcache.delete(CACHE_NAME_FOR_TOP_PAGE_RESULTS)
-    return Response('Success:new order was saved,'+str(new_order_incre)+' times')
 
 def site_map(request):
     #TODO return sitemap xml for search engine crawler

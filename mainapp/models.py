@@ -11,7 +11,7 @@ from kay.i18n import gettext as _
 
 class AdminPage(db.Model):
     '''
-    Model for top page setting.
+    top page setting and general pages administration,
     If admin set Url field, url is set as key name or escaped Title String is set as key name
     '''
     title = db.StringProperty(verbose_name=_('Title'),required=True,indexed=False)
@@ -27,6 +27,9 @@ class AdminPage(db.Model):
     created = db.DateTimeProperty(verbose_name=_('Created'),auto_now_add=True)
 
 class BlobStoreImages(db.Model):
+    '''
+    Blobstore Image Management
+    '''
     title = db.StringProperty(verbose_name=_('Title'),required=True,indexed=False)
     blob_key = blobstore.BlobReferenceProperty()
     update = db.DateTimeProperty(verbose_name=_('Update'),auto_now=True)

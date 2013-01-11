@@ -64,7 +64,7 @@
     });
     function sendNewOrders(new_orders){
         $('#sort-change-message').html('<img src="/media/img/ajax-loader.gif">');
-        $.get('/update/page/order/',{orders:new_orders},
+        $.get('/admin/update/page/order/',{orders:new_orders},
         function(data){
             $('#sort-change-message').html(data);
         });

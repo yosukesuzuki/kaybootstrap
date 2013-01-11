@@ -27,6 +27,7 @@
   </div>
   <div class="modal-body">
       <p>{{_('Select Images')}}</p>
+      <form action="" method="POST"  enctype="multipart/form-data"><input type="file" name="file"><input type="submit"></form>
   </div>
   <div class="modal-footer">
       <button class="btn" data-dismiss="modal" aria-hidden="true">{{_('Close')}}</button>
@@ -38,6 +39,6 @@
 <script type="text/javascript">
     $('textarea').each(function(i,elem){
         elem.insertAdjacentHTML('beforeBegin','<a href="#imageInsertModal" class="btn btn-small" role="button" data-toggle="modal"><i class="icon-picture"></i>{{_('Insert Image')}}</a>');
-    }); 
+    });
 </script>
 {% endblock %}
