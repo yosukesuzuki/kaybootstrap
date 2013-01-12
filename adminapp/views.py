@@ -25,15 +25,19 @@ from kay.auth.decorators import login_required
 
 """
 import logging
+import werkzeug
 from werkzeug import Response
 
 from google.appengine.api import files
 from google.appengine.api import memcache
+from google.appengine.ext import blobstore
 
+from kay import utils
 from kay.utils import render_to_response
 from kay.utils import get_by_key_name_or_404
 from kay.i18n import gettext as _
 from kay.auth.decorators import admin_required
+from kay.handlers import blobstore_handlers
 
 from mainapp.views import CACHE_NAME_FOR_TOP_PAGE_RESULTS
 from mainapp.models import AdminPage,BlobStoreImages
@@ -45,6 +49,9 @@ def index(request):
     admin_page_list = [{'title':_('Page Manager'),'info':AdminPage.__doc__,'url':'adminpage'},
             {'title':_('Image Manager'),'info':BlobStoreImages.__doc__,'url':'blobstoreimages'}]
     return render_to_response('adminapp/index.html', {'admin_page_list': admin_page_list})
+
+def image_manager(request):
+    return render_to_response('adminapp/image_manager.html', {'title':_('Image manager')})
 
 def update_page_order(request):
     try:
@@ -65,14 +72,15 @@ def update_page_order(request):
     memcache.delete(CACHE_NAME_FOR_TOP_PAGE_RESULTS)
     return Response('Success:new order was saved,'+str(new_order_incre)+' times')
 
-def upload_image_file(request):
-    try:
-        title = request.form['title']
-    except:
-        return Response({{_('Image title required')}})
-    try:
-        image_data = request.form['image']
-    except:
-        return Response({{_('Image data broken')}})
-    return Response({{_('Image upload success')}})
+def image_upload_url(request):
+    upload_url = blobstore.create_upload_url('/admin/image/upload/handler/')
+    return Response('"'+upload_url+'"',mimetype='application/json')
+
+class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
+  def post(self):
+    upload_files = self.get_uploads('files')  # 'file' is file upload field in the form
+    blob_info = upload_files[0]
+    logging.info('blob info:'+str(blob_info))
+    headers = {} 
+    return werkzeug.Response(None, headers=headers, status=200)
 

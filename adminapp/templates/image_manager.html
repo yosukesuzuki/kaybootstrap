@@ -1,0 +1,61 @@
+{% extends "mainapp/base.html"%}
+{% block title %}{{ title }}{% endblock %}
+{% block description %}{% endblock %}
+{% block content %}
+<h1>{{title}}</h1>
+<div id="main">
+    <div>
+        <h3>{{_('Select image files from local computer')}}</h3>
+        <input id="imageuploadform" type="file" multiple="multiple" />
+    </div>
+    <div>
+        <h3>{{_('Or drop image files')}}</h3>
+        <div id="imagetarget" draggable="true" style="width:320px;border:3px dotted;text-align:center;padding:60px 0;">
+            <span>{{_('Drop here')}}</span>
+        </div>
+    </div>
+    <div id="images">
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+//thanks to http://shiba-yan.hatenablog.jp/entry/20110702/1309532938
+    var uploadFiles = function (files) {
+        var fd = new FormData();
+        for (var i = 0; i < files.length; i++) {
+            fd.append("files", files[i]);
+        }
+        $.getJSON('/admin/image/upload/url/', function (result) {
+            var upload_url = result;
+            $.ajax({
+                url: upload_url,
+                type: "POST",
+                data: fd,
+                processData: false,
+                contentType: false
+            });
+        });
+    };
+
+    $("#imageuploadform").on("change", function () {
+        var files = this.files;
+        uploadFiles(files);
+    });
+
+    $("#imagetarget").on("dragover", function () {
+        return false;
+    })
+    .on("dragenter", function () {
+        return false;
+    })
+    .on("drop", function (e) {
+        var files = e.originalEvent.dataTransfer.files;
+        uploadFiles(files);
+        e.preventDefault();
+        return false;
+    })
+
+    ;
+</script>
+{% endblock %}
