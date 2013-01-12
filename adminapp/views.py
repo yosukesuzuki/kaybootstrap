@@ -83,17 +83,19 @@ def image_list_json(request):
     results = query.fetch(20)
     return_list = []
     for r in results:
-        return_list.append({'title':r.title,'image_path':get_serving_url(r.blob_key.key())})
+        return_list.append({'title':r.title,'file_name':r.file_name,'note':r.note,'image_path':get_serving_url(r.blob_key.key())})
     return Response(json.dumps({'images':return_list}, ensure_ascii=False))
     
 
 class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
-  def post(self):
-    upload_files = self.get_uploads('files')  # 'file' is file upload field in the form
-    logging.info('files:'+str(len(upload_files)))
-    for uf in upload_files:
-        bsi_entity = BlobStoreImages(blob_key=uf.key())
-        bsi_entity.put()
-    headers = {} 
-    return werkzeug.Response('success', headers=headers, status=200)
+    def post(self):
+        query = blobstore.BlobInfo.all().order('-creation')
+        results = query.fetch(1000)
+        for r in results:
+            bsi_entity = BlobStoreImages.get_by_key_name(r.md5_hash)
+            if bsi_entity is None:
+                bsi_entity = BlobStoreImages(key_name=r.md5_hash,file_name=r.filename,blob_key=r.key())
+                bsi_entity.put()
+        headers = {} 
+        return werkzeug.Response('success', headers=headers, status=200)
 

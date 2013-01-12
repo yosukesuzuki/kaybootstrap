@@ -30,12 +30,16 @@
         }
         $.getJSON('/admin/image/upload/url/', function (result) {
             var upload_url = result;
+            $('#imagetarget').html('<p>{{_('uploading...')}}</p><img src="/media/img/ajax-loader.gif">');
             $.ajax({
                 url: upload_url,
                 type: "POST",
                 data: fd,
                 processData: false,
-                contentType: false
+                contentType: false,
+                success:function(uploadresult){
+                    $('#imagetarget').html('<span>{{_('Drop here')}}</span>');
+                }
             });
         });
     };
@@ -65,6 +69,8 @@
                 temp_html = '<div class="media"><a class="pull-left" href="#">';
                 temp_html += '<img src="'+uploaded_images[i].image_path+'=s100"></a>';
                 temp_html += '<div class="media-body"><h4 class="media-heading">'+uploaded_images[i].title+'</h4>';
+                temp_html += '<h5>{{_('File Name')}}:'+uploaded_images[i].file_name+'</h5>';
+                temp_html += uploaded_images[i].note;
                 temp_html += '</div>';
                 temp_html += '</div>';
                 $('#images').append(temp_html);
