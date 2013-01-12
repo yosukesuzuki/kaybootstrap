@@ -30,7 +30,7 @@ class BlobStoreImages(db.Model):
     '''
     Blobstore Image Management
     '''
-    title = db.StringProperty(verbose_name=_('Title'),required=True,indexed=False)
+    title = db.StringProperty(verbose_name=_('Title'),default='',indexed=False)
     blob_key = blobstore.BlobReferenceProperty()
     update = db.DateTimeProperty(verbose_name=_('Update'),auto_now=True)
     created = db.DateTimeProperty(verbose_name=_('Created'),auto_now_add=True)

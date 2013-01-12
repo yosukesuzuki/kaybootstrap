@@ -79,8 +79,10 @@ def image_upload_url(request):
 class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
   def post(self):
     upload_files = self.get_uploads('files')  # 'file' is file upload field in the form
-    blob_info = upload_files[0]
-    logging.info('blob info:'+str(blob_info))
+    logging.info('files:'+str(len(upload_files)))
+    for uf in upload_files:
+        bsi_entity = BlobStoreImages(blob_key=uf.key())
+        bsi_entity.put()
     headers = {} 
-    return werkzeug.Response(None, headers=headers, status=200)
+    return werkzeug.Response('success', headers=headers, status=200)
 
