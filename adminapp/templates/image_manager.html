@@ -14,7 +14,9 @@
             <span>{{_('Drop here')}}</span>
         </div>
     </div>
-    <div id="images">
+
+    <div class="row" id="images">
+        <h3>{{_('Image List')}}</h3>
     </div>
 </div>
 {% endblock %}
@@ -54,8 +56,20 @@
         uploadFiles(files);
         e.preventDefault();
         return false;
-    })
-
-    ;
+    });
+    $(document).ready(function(){
+        $.getJSON('/admin/image/list/json/', function (result) {
+            var uploaded_images = result.images;
+            for(var i =0; i < uploaded_images.length; i++){
+                var temp_html = '';
+                temp_html = '<div class="media"><a class="pull-left" href="#">';
+                temp_html += '<img src="'+uploaded_images[i].image_path+'=s100"></a>';
+                temp_html += '<div class="media-body"><h4 class="media-heading">'+uploaded_images[i].title+'</h4>';
+                temp_html += '</div>';
+                temp_html += '</div>';
+                $('#images').append(temp_html);
+            }
+        });
+    });
 </script>
 {% endblock %}

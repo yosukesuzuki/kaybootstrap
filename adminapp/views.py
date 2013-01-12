@@ -25,16 +25,18 @@ from kay.auth.decorators import login_required
 
 """
 import logging
+import json
 import werkzeug
 from werkzeug import Response
 
 from google.appengine.api import files
 from google.appengine.api import memcache
 from google.appengine.ext import blobstore
+from google.appengine.api.images import get_serving_url
 
 from kay import utils
 from kay.utils import render_to_response
-from kay.utils import get_by_key_name_or_404
+from kay.utils import url_for
 from kay.i18n import gettext as _
 from kay.auth.decorators import admin_required
 from kay.handlers import blobstore_handlers
@@ -46,8 +48,8 @@ from adminapp.forms import AdminPageForm
 # Create your views here.
 
 def index(request):
-    admin_page_list = [{'title':_('Page Manager'),'info':AdminPage.__doc__,'url':'adminpage'},
-            {'title':_('Image Manager'),'info':BlobStoreImages.__doc__,'url':'blobstoreimages'}]
+    admin_page_list = [{'title':_('Page Manager'),'info':AdminPage.__doc__,'url':'/admin/adminpage/list'},
+            {'title':_('Image Manager'),'info':BlobStoreImages.__doc__,'url':'/admin/image/manager/'}]
     return render_to_response('adminapp/index.html', {'admin_page_list': admin_page_list})
 
 def image_manager(request):
@@ -75,6 +77,15 @@ def update_page_order(request):
 def image_upload_url(request):
     upload_url = blobstore.create_upload_url('/admin/image/upload/handler/')
     return Response('"'+upload_url+'"',mimetype='application/json')
+
+def image_list_json(request):
+    query = BlobStoreImages.all().order('-update')
+    results = query.fetch(20)
+    return_list = []
+    for r in results:
+        return_list.append({'title':r.title,'image_path':get_serving_url(r.blob_key.key())})
+    return Response(json.dumps({'images':return_list}, ensure_ascii=False))
+    
 
 class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
   def post(self):
