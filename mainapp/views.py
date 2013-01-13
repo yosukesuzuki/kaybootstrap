@@ -35,7 +35,7 @@ from kay.utils import get_by_key_name_or_404
 from kay.i18n import gettext as _
 from kay.auth.decorators import admin_required
 
-from mainapp.models import AdminPage,BlobStoreImages
+from mainapp.models import AdminPage,BlobStoreImage
 
 '''
 global vars

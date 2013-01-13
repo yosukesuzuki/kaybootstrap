@@ -42,14 +42,14 @@ from kay.auth.decorators import admin_required
 from kay.handlers import blobstore_handlers
 
 from mainapp.views import CACHE_NAME_FOR_TOP_PAGE_RESULTS
-from mainapp.models import AdminPage,BlobStoreImages
+from mainapp.models import AdminPage,BlobStoreImage
 from adminapp.forms import AdminPageForm
 
 # Create your views here.
 
 def index(request):
     admin_page_list = [{'title':_('Page Manager'),'info':AdminPage.__doc__,'url':'/admin/adminpage/list'},
-            {'title':_('Image Manager'),'info':BlobStoreImages.__doc__,'url':'/admin/image/manager/'}]
+            {'title':_('Image Manager'),'info':BlobStoreImage.__doc__,'url':'/admin/image/manager/'}]
     return render_to_response('adminapp/index.html', {'admin_page_list': admin_page_list})
 
 def image_manager(request):
@@ -79,11 +79,11 @@ def image_upload_url(request):
     return Response('"'+upload_url+'"',mimetype='application/json')
 
 def image_list_json(request):
-    query = BlobStoreImages.all().order('-update')
+    query = BlobStoreImage.all().order('-update')
     results = query.fetch(20)
     return_list = []
     for r in results:
-        return_list.append({'title':r.title,'file_name':r.file_name,'note':r.note,'image_path':get_serving_url(r.blob_key.key())})
+        return_list.append({'key':str(r.key()),'title':r.title,'file_name':r.file_name,'note':r.note,'image_path':get_serving_url(r.blob_key.key())})
     return Response(json.dumps({'images':return_list}, ensure_ascii=False))
     
 
@@ -92,9 +92,9 @@ class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
         query = blobstore.BlobInfo.all().order('-creation')
         results = query.fetch(1000)
         for r in results:
-            bsi_entity = BlobStoreImages.get_by_key_name(r.md5_hash)
+            bsi_entity = BlobStoreImage.get_by_key_name(r.md5_hash)
             if bsi_entity is None:
-                bsi_entity = BlobStoreImages(key_name=r.md5_hash,file_name=r.filename,blob_key=r.key())
+                bsi_entity = BlobStoreImage(key_name=r.md5_hash,file_name=r.filename,blob_key=r.key())
                 bsi_entity.put()
         headers = {} 
         return werkzeug.Response('success', headers=headers, status=200)

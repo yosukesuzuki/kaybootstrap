@@ -26,7 +26,7 @@ class AdminPage(db.Model):
     update = db.DateTimeProperty(verbose_name=_('Update'),auto_now=True)
     created = db.DateTimeProperty(verbose_name=_('Created'),auto_now_add=True)
 
-class BlobStoreImages(db.Model):
+class BlobStoreImage(db.Model):
     '''
     Blobstore Image Management
     '''

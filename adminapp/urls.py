@@ -9,9 +9,10 @@ from kay.routing import (
 )
 from kay.generics import crud
 from kay.generics import admin_required
+from kay.generics.rest import RESTViewGroup
 
 from adminapp.forms import AdminPageForm
-from mainapp.models import AdminPage
+from mainapp.models import AdminPage,BlobStoreImage
 from mainapp.views import CACHE_NAME_FOR_TOP_PAGE_RESULTS
 
 class AdminPageCRUDViewGroup(crud.CRUDViewGroup):
@@ -42,7 +43,11 @@ class AdminPageCRUDViewGroup(crud.CRUDViewGroup):
          return {'key_name':key_name}
      authorize = admin_required
 
+class BlobStoreImageRESTViewGroup(RESTViewGroup):
+      models = ['mainapp.models.BlobStoreImage']
+
 view_groups = [
+  BlobStoreImageRESTViewGroup(),
   ViewGroup(
     Rule('/', endpoint='index', view='adminapp.views.index'),
     Rule('/update/page/order/', endpoint='update_page_order', view='adminapp.views.update_page_order'),
