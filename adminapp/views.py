@@ -98,7 +98,9 @@ def image_list_json(request):
             'note':r.note,
             'image_path':get_serving_url(r.blob_key.key()),
             'update':str(r.update)[:16]})
-    return Response(json.dumps({'images':return_list}, ensure_ascii=False))
+    return Response(json.dumps({'images':return_list,
+        'current_page':results.number,
+        'total_pages':results.paginator.num_pages}, ensure_ascii=False))
     
 class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
     def post(self):

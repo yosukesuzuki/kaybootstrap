@@ -41,7 +41,7 @@
                 contentType: false,
                 success:function(uploadresult){
                     $('#imagetarget').html('<span>{{_('Drop here')}}</span>');
-                    setTimeout( function() {showImageList();}, 1000);
+                    setTimeout( function() {showImageList(1);}, 1000);
                 }
             });
         });
@@ -64,9 +64,14 @@
         e.preventDefault();
         return false;
     });
-    function showImageList(){
+    function showImageList(page){
         $('#images').html('');
-        $.getJSON('/admin/image/list/json/', function (result) {
+        $.getJSON('/admin/image/list/json/?page='+page, function (result) {
+            var pages = result.total_pages;
+            var current_page = result.current_page;
+            for(var p=0;p<pages;p++){
+                //write pagination logic here
+            }
             var uploaded_images = result.images;
             for(var i =0; i < uploaded_images.length; i++){
                 var temp_html = '<tr id="'+uploaded_images[i].key+'">';
@@ -121,7 +126,7 @@
         });
     });
     $(document).ready(function(){
-        showImageList();
+        showImageList(1);
     });
 </script>
 {% endblock %}
