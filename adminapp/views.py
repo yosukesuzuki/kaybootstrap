@@ -37,6 +37,7 @@ from google.appengine.api.images import get_serving_url
 from kay import utils
 from kay.utils import render_to_response
 from kay.utils import url_for
+from kay.utils.paginator import Paginator, InvalidPage, EmptyPage
 from kay.i18n import gettext as _
 from kay.auth.decorators import admin_required
 from kay.handlers import blobstore_handlers
@@ -80,10 +81,23 @@ def image_upload_url(request):
 
 def image_list_json(request):
     query = BlobStoreImage.all().order('-update')
-    results = query.fetch(20)
+    pagenator = Paginator(query,10)
+    try:
+        page = int(request.args.get('page','1'))
+    except ValueError:
+        page = 1
+    try:
+        results = pagenator.page(page)
+    except (EmptyPage,InvalidPage):
+        results = pagenator.page(pagenator.num_pages)
     return_list = []
-    for r in results:
-        return_list.append({'key':str(r.key()),'title':r.title,'file_name':r.file_name,'note':r.note,'image_path':get_serving_url(r.blob_key.key())})
+    for r in results.object_list:
+        return_list.append({'key':str(r.key()),
+            'title':r.title,
+            'file_name':r.file_name,
+            'note':r.note,
+            'image_path':get_serving_url(r.blob_key.key()),
+            'update':str(r.update)[:16]})
     return Response(json.dumps({'images':return_list}, ensure_ascii=False))
     
 class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
