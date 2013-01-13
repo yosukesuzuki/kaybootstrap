@@ -69,21 +69,56 @@
         $.getJSON('/admin/image/list/json/', function (result) {
             var uploaded_images = result.images;
             for(var i =0; i < uploaded_images.length; i++){
-                var temp_html = '<tr>';
+                var temp_html = '<tr id="'+uploaded_images[i].key+'">';
                 var temp_title,temp_note;
                 temp_html += '<td class="span2"><img src="'+uploaded_images[i].image_path+'=s100"></td>';
                 if(uploaded_images[i].title == ''){temp_title = '[{{_('Edit Title')}}]';}else{temp_title = uploaded_images[i].title;}
-                temp_html += '<td class="span8"><h4 contenteditable=true>'+temp_title+'</h4>';
+                temp_html += '<td class="span8">';
+                temp_html += '<h4 class="image_title" contenteditable=true>'+temp_title+'</h4>';
                 if(uploaded_images[i].note == ''){temp_note = '[{{_('Edit Note')}}]';}else{temp_note = uploaded_images[i].note;}
-                temp_html += '<p contenteditable=true>'+temp_note+'</p>';
+                temp_html += '<p  class="image_note" contenteditable=true>'+temp_note+'</p>';
                 temp_html += '<h5>{{_('File Name')}}:'+uploaded_images[i].file_name+'</h5>';
                 temp_html += '</td>';
-                temp_html += '<td class="span2"><button class="btn btn-danger">{{_('Delete')}}</button></td>';
+                temp_html += '<td class="span2"><button class="btn btn-danger delete_image">{{_('Delete')}}</button></td>';
                 temp_html += '</tr>';
                 $('#images').append(temp_html);
             }
         });
     }
+    $('[contenteditable]').live('focus', function() {
+        console.log('focused');
+        $(this).empty();
+    }).live('blur', function() {
+        console.log('unfocused');
+        var content_name = $(this).attr('class');
+        //console.log($(this).closest('tr').attr('id'));
+        var content_key = $(this).closest('tr').attr('id');
+        var content_text = $(this).text();
+        if(content_name == 'image_title'){var json_data = {'title':content_text};}else{var  json_data = {'note':content_text};}
+        $.ajax({
+            type: "POST",
+            url: "/admin/rest/BlobStoreImage/"+content_key,
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify({"BlobStoreImage": json_data}),
+            success: function(data) {
+                console.log('update finished');
+            }
+        });
+    });
+    $('button').live('click',function () {
+        if(!(window.confirm('{{_('Delete this image?')}}'))){return false;}
+        console.log('delete clicked');
+        var content_key = $(this).closest('tr').attr('id');
+        $.ajax({
+            type: "GET",
+            url: "/admin/image/delete/"+content_key,
+            success: function(data) {
+                console.log('update finished');
+                $('#'+content_key).remove();
+            }
+        });
+    });
     $(document).ready(function(){
         showImageList();
     });

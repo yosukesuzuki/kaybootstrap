@@ -55,6 +55,7 @@ view_groups = [
     Rule('/image/list/json/', endpoint='image_list_json', view='adminapp.views.image_list_json'),
     Rule('/image/upload/url/', endpoint='image_upload_url', view='adminapp.views.image_upload_url'),
     Rule('/image/upload/handler/', endpoint='upload_handler', view=('adminapp.views.UploadHandler', (), {})),
+    Rule('/image/delete/<string:key>', endpoint='image_delete', view='adminapp.views.image_delete'),
   ),
   AdminPageCRUDViewGroup(),
 ]

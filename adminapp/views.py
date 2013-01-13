@@ -52,9 +52,6 @@ def index(request):
             {'title':_('Image Manager'),'info':BlobStoreImage.__doc__,'url':'/admin/image/manager/'}]
     return render_to_response('adminapp/index.html', {'admin_page_list': admin_page_list})
 
-def image_manager(request):
-    return render_to_response('adminapp/image_manager.html', {'title':_('Image manager')})
-
 def update_page_order(request):
     try:
         new_orders = request.args['orders']
@@ -74,6 +71,9 @@ def update_page_order(request):
     memcache.delete(CACHE_NAME_FOR_TOP_PAGE_RESULTS)
     return Response('Success:new order was saved,'+str(new_order_incre)+' times')
 
+def image_manager(request):
+    return render_to_response('adminapp/image_manager.html', {'title':_('Image manager')})
+
 def image_upload_url(request):
     upload_url = blobstore.create_upload_url('/admin/image/upload/handler/')
     return Response('"'+upload_url+'"',mimetype='application/json')
@@ -86,7 +86,6 @@ def image_list_json(request):
         return_list.append({'key':str(r.key()),'title':r.title,'file_name':r.file_name,'note':r.note,'image_path':get_serving_url(r.blob_key.key())})
     return Response(json.dumps({'images':return_list}, ensure_ascii=False))
     
-
 class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
     def post(self):
         query = blobstore.BlobInfo.all().order('-creation')
@@ -99,3 +98,8 @@ class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
         headers = {} 
         return werkzeug.Response('success', headers=headers, status=200)
 
+def image_delete(request,key):
+    bsi_entity = BlobStoreImage.get(key)
+    bsi_entity.blob_key.delete()
+    bsi_entity.delete()
+    return Response('success')
