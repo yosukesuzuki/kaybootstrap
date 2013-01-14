@@ -27,30 +27,50 @@
   </div>
   <div class="modal-body">
       <p>{{_('Select Images')}}</p>
+      <div id="pagination"></div> 
+      <ul class="thumbnails" id="images">
+      </ul>
   </div>
   <div class="modal-footer">
       <button class="btn" data-dismiss="modal" aria-hidden="true">{{_('Close')}}</button>
-    <button class="btn btn-primary">{{_('Save changes')}}</button>
   </div>
 </div>
 {% endblock %}
 {% block scripts %}
-<script src="/media/js/jquery.ui.widget.js"></script>
-<script src="/media/js/jquery.iframe-transport.js"></script>
-<script src="/media/js/jquery.fileupload.js"></script>
 <script type="text/javascript">
     $('textarea').each(function(i,elem){
-        elem.insertAdjacentHTML('beforeBegin','<a href="#imageInsertModal" class="btn btn-small" role="button" data-toggle="modal"><i class="icon-picture"></i>{{_('Insert Image')}}</a>');
+        elem.insertAdjacentHTML('beforeBegin','<a class="insertimage btn btn-small"><i class="icon-picture"></i>{{_('Insert Image')}}</a>');
     });
-    $('#fileupload').fileupload({
-        submit: function (e, data) {
-            var $this = $(this);
-            $.getJSON('/admin/image/upload/url/', function (result) {
-                data.url = result;
-                $this.fileupload('send', data);
-            });
-            return false;
-        } 
+    $('a.insertimage').live('click',function() {
+        $('#imageInsertModal').modal();
+        showImageList(1);
     });
+    $('a.imagepagination').live('click',function(){
+        var page = $(this).text();
+        showImageList(page);
+    });
+    function showImageList(page){
+        $('#images').html('');
+        $.getJSON('/admin/image/list/json/?page='+page, function (result) {
+            var pages = result.total_pages;
+            var current_page = result.current_page;
+            var pagination_html ='<div class="pagination"><ul>';
+            for(var p=1;p<=pages;p++){
+                //write pagination logic here
+                if(p == page){var li_class='active';}else{var li_class=''}
+                pagination_html += '<li class="'+li_class+'"><a href="javascript:void(0);" class="imagepagination">'+p+'</a></li>';
+            }
+            pagination_html +='</ul>';
+            $('#pagination').html(pagination_html);
+            var uploaded_images = result.images;
+            for(var i =0; i < uploaded_images.length; i++){
+                var temp_html = '<li class="span2">';
+                temp_html += '<div class="thumbnail"><a href="#"><img src="'+uploaded_images[i].image_path+'=s160">';
+                temp_html += '<h5>'+uploaded_images[i].title+'</h5></a></div>';
+                temp_html += '</li>';
+                $('#images').append(temp_html);
+            }
+        });
+    }
 </script>
 {% endblock %}
