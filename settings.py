@@ -50,3 +50,7 @@ CONTEXT_PROCESSORS = (
   'kay.context_processors.url_functions',
   'kay.context_processors.media_url',
 )
+
+JINJA2_FILTERS = {
+    'toMarkdown':'mainapp.template_filters.toMarkdown',
+}
