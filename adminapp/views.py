@@ -73,6 +73,7 @@ def update_page_order(request):
     return Response('Success:new order was saved,'+str(new_order_incre)+' times')
 
 def image_manager(request):
+    #TODO add image search function by full text search
     return render_to_response('adminapp/image_manager.html', {'title':_('Image manager')})
 
 def image_upload_url(request):

@@ -23,6 +23,18 @@
         </table>
     </div>
 </div>
+<!-- Modal -->
+<div id="largeImageModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="largeImageModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3 id="myModalLabel">{{_('Large Image')}}</h3>
+    </div>
+    <div class="modal-body" id="largeImageModalBody">
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
+</div>
 {% endblock %}
 {% block scripts %}
 <script>
@@ -83,16 +95,16 @@
             for(var i =0; i < uploaded_images.length; i++){
                 var temp_html = '<tr id="'+uploaded_images[i].key+'">';
                 var temp_title,temp_note;
-                temp_html += '<td class="span2" style="padding-top:1.5em;"><img src="'+uploaded_images[i].image_path+'=s100"></td>';
+                temp_html += '<td class="span4" style="padding-top:1.5em;"><img src="'+uploaded_images[i].image_path+'=s320" class="middlethumbnail"></td>';
                 if(uploaded_images[i].title == ''){temp_title = '[{{_('Edit Title')}}]';}else{temp_title = uploaded_images[i].title;}
-                temp_html += '<td class="span8">';
+                temp_html += '<td class="span7">';
                 temp_html += '<h4 class="image_title" contenteditable=true>'+temp_title+'</h4>';
                 if(uploaded_images[i].note == ''){temp_note = '[{{_('Edit Note')}}]';}else{temp_note = uploaded_images[i].note;}
                 temp_html += '<p  class="image_note" contenteditable=true>'+temp_note+'</p>';
                 temp_html += '<span><small>{{_('File Name')}}:'+uploaded_images[i].file_name+'</small></span><br/>';
                 temp_html += '<span><small>{{_('Update')}}:'+uploaded_images[i].update+'</small></span>';
                 temp_html += '</td>';
-                temp_html += '<td class="span2"><button class="deleteimage btn btn-danger">{{_('Delete')}}</button></td>';
+                temp_html += '<td class="span1"><button class="deleteimage btn btn-danger">{{_('Delete')}}</button></td>';
                 temp_html += '</tr>';
                 $('#images').append(temp_html);
             }
@@ -135,7 +147,13 @@
     $('a.imagepagination').live('click',function(){
         var page = $(this).text();
         showImageList(page);
-    })
+    });
+    $('img.middlethumbnail').live('click',function(){
+        var image_source = $(this).attr('src');
+        image_source = image_source.replace(/=s320/,'');
+        $('#largeImageModalBody').html('<img src='+image_source+'>');
+        $('#largeImageModal').modal();
+    });
     $(document).ready(function(){
         showImageList(1);
     });
