@@ -81,6 +81,14 @@ def image_upload_url(request):
     return Response('"'+upload_url+'"',mimetype='application/json')
 
 def image_list_json(request):
+    #TODO duplication,I have to DRY below code
+    blob_info_query = blobstore.BlobInfo.all().order('-creation')
+    blob_info_results = blob_info_query.fetch(1000)
+    for r in blob_info_results:
+        bsi_entity = BlobStoreImage.get_by_key_name(r.md5_hash)
+        if bsi_entity is None:
+            bsi_entity = BlobStoreImage(key_name=r.md5_hash,file_name=r.filename,blob_key=r.key())
+            bsi_entity.put()
     query = BlobStoreImage.all().order('-update')
     pagenator = Paginator(query,10)
     try:
