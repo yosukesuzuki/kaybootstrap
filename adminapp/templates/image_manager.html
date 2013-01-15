@@ -112,7 +112,10 @@
     }
     $('[contenteditable]').live('focus', function() {
         console.log('focused');
-        $(this).empty();
+        var this_text = $(this).text();
+        if((this_text == '[{{_('Edit Title')}}]')||(this_text == '[{{_('Edit Note')}}]')){
+            $(this).empty();
+        }
     }).live('blur', function() {
         console.log('unfocused');
         var content_name = $(this).attr('class');
