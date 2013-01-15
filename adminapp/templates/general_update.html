@@ -30,6 +30,7 @@
       <div id="pagination"></div> 
       <ul class="thumbnails" id="images">
       </ul>
+      <div style="display:none;" id="imageinserttarget"></div>
   </div>
   <div class="modal-footer">
       <button class="btn" data-dismiss="modal" aria-hidden="true">{{_('Close')}}</button>
@@ -39,15 +40,28 @@
 {% block scripts %}
 <script type="text/javascript">
     $('textarea').each(function(i,elem){
-        elem.insertAdjacentHTML('beforeBegin','<a class="insertimage btn btn-small"><i class="icon-picture"></i>{{_('Insert Image')}}</a>');
+        elem.insertAdjacentHTML('beforeBegin','<a class="insertimage btn btn-small" targetid="'+elem.id+'"><i class="icon-picture"></i>{{_('Insert Image')}}</a>');
     });
     $('a.insertimage').live('click',function() {
+        var imageinserttarget = $(this).attr('targetid');
+        $('#imageinserttarget').html(imageinserttarget);
         $('#imageInsertModal').modal();
         showImageList(1);
     });
     $('a.imagepagination').live('click',function(){
         var page = $(this).text();
         showImageList(page);
+    });
+    $('div.thumbnail').live('click',function(){
+        var imageinserttarget = $('#imageinserttarget').text();
+        var image_source = $(this).find('img').attr('src');
+        image_source = image_source.replace(/=s160/,'=s320')
+        var image_title = $(this).find('h5').text();
+        console.log(image_source);
+        console.log(image_title);
+        var insert_text = '!['+image_title+']('+image_source+')';
+        $('#'+imageinserttarget).append(insert_text);
+
     });
     function showImageList(page){
         $('#images').html('');
