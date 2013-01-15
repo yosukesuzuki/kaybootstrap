@@ -4,6 +4,6 @@
 original template filters by kaybootstrap
 '''
 def toMarkdown(text):
-    import markdown
-    return_html = markdown.markdown(text) 
+    from mainapp.markdown2 import markdown
+    return_html = markdown(text) 
     return return_html
