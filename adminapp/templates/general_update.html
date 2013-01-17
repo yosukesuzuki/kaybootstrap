@@ -41,6 +41,7 @@
 <script type="text/javascript">
     $('textarea').each(function(i,elem){
         elem.insertAdjacentHTML('beforeBegin','<a class="insertimage btn btn-small" targetid="'+elem.id+'"><i class="icon-picture"></i>{{_('Insert Image')}}</a>');
+        elem.insertAdjacentHTML('afterEnd','<div class="row" id="imagelist"></div>');
     });
     $('a.insertimage').live('click',function() {
         var imageinserttarget = $(this).attr('targetid');
@@ -55,11 +56,12 @@
     $('div.thumbnail').live('click',function(){
         var imageinserttarget = $('#imageinserttarget').text();
         var image_source = $(this).find('img').attr('src');
+        var image_id = $(this).find('img').attr('id');
         image_source = image_source.replace(/=s160/,'=s320')
         var image_title = $(this).find('h5').text();
         console.log(image_source);
         console.log(image_title);
-        var insert_text = '!['+image_title+']('+image_source+')';
+        var insert_text = '\n\n!['+image_title+']('+image_source+',"image_id:'+image_id+'"'+')';
         $('#'+imageinserttarget).append(insert_text);
 
     });
@@ -79,7 +81,7 @@
             var uploaded_images = result.images;
             for(var i =0; i < uploaded_images.length; i++){
                 var temp_html = '<li class="span2">';
-                temp_html += '<div class="thumbnail"><a href="#"><img src="'+uploaded_images[i].image_path+'=s160">';
+                temp_html += '<div class="thumbnail"><a href="#"><img src="'+uploaded_images[i].image_path+'=s160" id="'+uploaded_images[i].id+'">';
                 temp_html += '<h5>'+uploaded_images[i].title+'</h5></a></div>';
                 temp_html += '</li>';
                 $('#images').append(temp_html);

@@ -27,6 +27,8 @@ from kay.auth.decorators import login_required
 import logging
 import json
 import werkzeug
+import re
+RE_REMOVE_HTTP = re.compile(ur'^http:')
 from werkzeug import Response
 
 from google.appengine.api import files
@@ -102,10 +104,11 @@ def image_list_json(request):
     return_list = []
     for r in results.object_list:
         return_list.append({'key':str(r.key()),
+            'id':r.key().name(),
             'title':r.title,
             'file_name':r.file_name,
             'note':r.note,
-            'image_path':get_serving_url(r.blob_key.key()),
+            'image_path':RE_REMOVE_HTTP.sub('',get_serving_url(r.blob_key.key())),
             'update':str(r.update)[:16]})
     return Response(json.dumps({'images':return_list,
         'current_page':results.number,
