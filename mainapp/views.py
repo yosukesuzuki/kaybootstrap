@@ -25,16 +25,20 @@ from kay.auth.decorators import login_required
 
 """
 import logging
+import json
 from werkzeug import Response
 
 from google.appengine.api import files
 from google.appengine.api import memcache
+
+from django.utils import html
 
 from kay.utils import render_to_response
 from kay.utils import get_by_key_name_or_404
 from kay.i18n import gettext as _
 from kay.auth.decorators import admin_required
 
+from mainapp.markdown2 import markdown
 from mainapp.models import AdminPage,BlobStoreImage
 
 '''
@@ -57,9 +61,14 @@ def index(request):
         results = []
         for r in query_results:
             url = r.external_url if r.external_url else '/'+r.key().name()+'/'
-            snippet = r.content[:50]
-            results.append({'title':r.title,'snippet':snippet,'url':url})
+            snippet = html.strip_tags(markdown(r.content))[:100]
+            try:
+                first_image = json.loads(r.images)['images'][0]['image_path']
+            except:
+                first_image = None
+            results.append({'title':r.title,'snippet':snippet,'url':url,'first_image':first_image})
         if len(results) == 0:results = DUMMY_DATA_FOR_TOP_PAGE
+        logging.info(results)
         memcache.set(CACHE_NAME_FOR_TOP_PAGE_RESULTS,results)
     return render_to_response('mainapp/index.html', {'results': results})
 

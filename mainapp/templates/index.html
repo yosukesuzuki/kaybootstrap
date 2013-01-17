@@ -3,19 +3,33 @@
 {% block description %}{% endblock %}
 {% block content %}
 <!-- Main hero unit for a primary marketing message or call to action -->
-<div class="hero-unit">
+<div class="hero-unit media">
+    {% if results[0]['first_image'] %}
+    <a class="pull-right" href="{{results[0]['url']}}">
+    <img src="{{results[0]['first_image']}}=s240-c" width="240" height="240" class="img-rounded pull-right">
+    </a>
+    {% endif %}
+    <div class="media-body">
     <h1>{{results[0]['title']}}</h1>
     <p>{{results[0]['snippet']}}</p>
     <p><a class="btn btn-primary btn-large" href="{{results[0]['url']}}">{{_('Learn more')}} &raquo;</a></p>
+    </div>
 </div>
 
 <!-- row of columns -->
 <div class="row">
     {% for r in results[1:] %}
-    <div class="span4">
-        <h2>{{r['title']}}</h2>
-        <p>{{r['snippet']}}</p>
-        <p><a class="btn" href="{{r['url']}}">{{_('View details')}} &raquo;</a></p>
+    <div class="span4 media">
+        {% if r['first_image'] %}
+        <a class="pull-right" href="{{r['url']}}">
+        <img src="{{r['first_image']}}=s60-c" width="60" height="60" class="img-rounded pull-right">
+        </a>
+        {% endif %}
+        <div class="media-body">
+            <h2>{{r['title']}}</h2>
+            <p>{{r['snippet']}}</p>
+            <p><a class="btn" href="{{r['url']}}">{{_('View details')}} &raquo;</a></p>
+        </div>
     </div>
     {% endfor %}
 </div>
