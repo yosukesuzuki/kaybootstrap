@@ -14,6 +14,7 @@ from kay.routing import (
 from kay.generics import crud
 from kay.generics import admin_required
 from kay.generics.rest import RESTViewGroup
+from settings import DEFAULT_LANG
 
 from adminapp.forms import AdminPageForm
 from mainapp.models import AdminPage,BlobStoreImage
@@ -46,7 +47,7 @@ class AdminPageCRUDViewGroup(crud.CRUDViewGroup):
          memcache.delete(CACHE_NAME_FOR_TOP_PAGE_RESULTS)
          logging.info(request.form['content'])
          image_list = construct_image_json_from_content(request.form['content'])
-         return {'images':image_list}
+         return {'images':image_list,'lang':DEFAULT_LANG}
      def get_additional_context_on_create(self, request, form):
          key_name = None
          url = None
@@ -58,8 +59,9 @@ class AdminPageCRUDViewGroup(crud.CRUDViewGroup):
              key_name = url
          else:
              key_name = urllib.quote(request.form['title'])
+         image_list = construct_image_json_from_content(request.form['content'])
          memcache.delete(CACHE_NAME_FOR_TOP_PAGE_RESULTS)
-         return {'key_name':key_name}
+         return {'key_name':key_name,'images':image_list,'lang':DEFAULT_LANG}
      authorize = admin_required
 
 class AdminPageRESTViewGroup(RESTViewGroup):

@@ -5,5 +5,5 @@ from mainapp.models import AdminPage
 class AdminPageForm(ModelForm):
     class Meta:
          model = AdminPage 
-         exclude = ('images','page_order','update','created')
+         exclude = ('images','lang','page_order','update','created')
 

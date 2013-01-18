@@ -4,20 +4,27 @@
 {% block content %}
 <h1>{{ title }}</h1>
 <div id="main">
-    {% call form(class_='form-horizontal') %}
-    {% for f in form %}
-    <div class="control-group">
-        {{ form[f.name].label(class_='control-label')|safe }}
-        <div class="controls">
-        {{ form[f.name].render(class_='input-block-level')|safe }}
+    <ul class="nav nav-tabs" id="langTab">
+        <li class="active"><a href="#{{request.lang}}Tab" data-toggle="tab">{{request.lang}}</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane" id="{{request.content_language}}Tab">
+            {% call form(class_='form-horizontal') %}
+            {% for f in form %}
+            <div class="control-group">
+                {{ form[f.name].label(class_='control-label')|safe }}
+                <div class="controls">
+                {{ form[f.name].render(class_='input-block-level')|safe }}
+                </div>
+            </div>
+            {% endfor %}
+            <div class="form-actions">
+                <button class="btn btn-large btn-block btn-primary" type="submit">{{_('Save')}}</button>
+                {#{{ form.default_actions()|safe }}#}
+            </div>
+            {% endcall %}
         </div>
     </div>
-    {% endfor %}
-    <div class="form-actions">
-        <button class="btn btn-large btn-block btn-primary" type="submit">{{_('Save')}}</button>
-        {#{{ form.default_actions()|safe }}#}
-    </div>
-    {% endcall %}
 </div>
 <!-- Modal -->
 <div id="imageInsertModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="imageInsertModalLabel" aria-hidden="true">
@@ -43,6 +50,7 @@
         elem.insertAdjacentHTML('beforeBegin','<a class="insertimage btn btn-small" targetid="'+elem.id+'"><i class="icon-picture"></i>{{_('Insert Image')}}</a>');
         elem.insertAdjacentHTML('afterEnd','<div class="row" id="imagelist"></div>');
     });
+    $('div.tab-content div:first').show();
     $('a.insertimage').live('click',function() {
         var imageinserttarget = $(this).attr('targetid');
         $('#imageinserttarget').html(imageinserttarget);

@@ -20,6 +20,7 @@ class AdminPage(db.Model):
     page_order = db.IntegerProperty(verbose_name=_('Page order on the top page'),default=99999)
     content = db.TextProperty(verbose_name=_('Content'),required=True)
     images = db.TextProperty(verbose_name=_('Images,JSON Format'))
+    lang = db.StringProperty(verbose_name=_('Content Language'))
     external_url = db.StringProperty(verbose_name=_('External Url,If link to an outside page,optional'),indexed=False)
     update = db.DateTimeProperty(verbose_name=_('Update'),auto_now=True)
     created = db.DateTimeProperty(verbose_name=_('Created'),auto_now_add=True)
