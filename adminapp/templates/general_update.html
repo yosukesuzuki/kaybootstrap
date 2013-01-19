@@ -5,10 +5,11 @@
 <h1>{{ title }}</h1>
 <div id="main">
     <ul class="nav nav-tabs" id="langTab">
-        <li class="active"><a href="#{{request.lang}}Tab" data-toggle="tab">{{request.lang}}</a></li>
+        <li class="active"><a href="#{{default_lang}}Tab" data-toggle="tab">{{default_lang}}</a></li>
+        <li><a id="addTranslation">+</a></li>
     </ul>
     <div class="tab-content">
-        <div class="tab-pane" id="{{request.content_language}}Tab">
+        <div class="tab-pane" id="{{default_lang}}Tab">
             {% call form(class_='form-horizontal') %}
             {% for f in form %}
             <div class="control-group">
@@ -43,6 +44,23 @@
       <button class="btn" data-dismiss="modal" aria-hidden="true">{{_('Close')}}</button>
   </div>
 </div>
+<div id="addTranslationModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="addTranslationModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+    <h3 id="addTranslationModalLabel">{{_('Add Translation')}}</h3>
+  </div>
+  <div class="modal-body">
+      <p>{{_('Select Language')}}</p>
+      <select>
+          {% for lang in lang_list %}
+          <option value="{{lang['code']}}">{{lang['name']}}</option>
+          {% endfor %}
+      </select>
+  </div>
+  <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">{{_('Close')}}</button>
+  </div>
+</div>
 {% endblock %}
 {% block scripts %}
 <script type="text/javascript">
@@ -56,6 +74,9 @@
         $('#imageinserttarget').html(imageinserttarget);
         $('#imageInsertModal').modal();
         showImageList(1);
+    });
+    $('#addTranslation').live('click',function(){
+        $('#addTranslationModal').modal();
     });
     $('a.imagepagination').live('click',function(){
         var page = $(this).text();
