@@ -6,10 +6,10 @@
 <div id="main">
     <ul class="nav nav-tabs" id="langTab">
         <li class="active"><a href="#{{default_lang}}Tab" data-toggle="tab">{{default_lang}}</a></li>
-        <li><a id="addTranslation">+</a></li>
+        <li id="addTranslationNode"><a id="addTranslation">+</a></li>
     </ul>
     <div class="tab-content">
-        <div class="tab-pane" id="{{default_lang}}Tab">
+        <div class="tab-pane active" id="{{default_lang}}Tab">
             {% call form(class_='form-horizontal') %}
             {% for f in form %}
             <div class="control-group">
@@ -51,11 +51,14 @@
   </div>
   <div class="modal-body">
       <p>{{_('Select Language')}}</p>
-      <select>
+      <select id="langList">
           {% for lang in lang_list %}
           <option value="{{lang['code']}}">{{lang['name']}}</option>
           {% endfor %}
       </select>
+      <p>
+          <a id="addTranslationTab" class="btn btn-primary">{{_('Add Translation')}}</a>
+      </p>
   </div>
   <div class="modal-footer">
       <button class="btn" data-dismiss="modal" aria-hidden="true">{{_('Close')}}</button>
@@ -68,7 +71,7 @@
         elem.insertAdjacentHTML('beforeBegin','<a class="insertimage btn btn-small" targetid="'+elem.id+'"><i class="icon-picture"></i>{{_('Insert Image')}}</a>');
         elem.insertAdjacentHTML('afterEnd','<div class="row" id="imagelist"></div>');
     });
-    $('div.tab-content div:first').show();
+    //$('div.tab-content div:first').show();
     $('a.insertimage').live('click',function() {
         var imageinserttarget = $(this).attr('targetid');
         $('#imageinserttarget').html(imageinserttarget);
@@ -117,5 +120,17 @@
             }
         });
     }
+    $('#addTranslationTab').live('click',function(){
+        var lang = $('#langList option:selected').val();
+        var copy_source = $('div.tab-content div:first').html();
+        copy_source = '<div class="tab-pane" id="'+lang+'Tab">'+copy_source+'</div>';
+        var tab_source ='<li><a href="#'+lang+'Tab" data-toggle="tab">'+lang+'</a></li>';
+        document.querySelector('div.tab-content').insertAdjacentHTML('beforeEnd',copy_source);
+        document.querySelector('#addTranslationNode').insertAdjacentHTML('beforeBegin',tab_source);
+    });
+    $('a[data-toggle="tab"]').live('shown', function (e) {
+        e.target // activated tab
+        e.relatedTarget // previous tab
+    })
 </script>
 {% endblock %}
