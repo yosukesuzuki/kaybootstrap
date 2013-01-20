@@ -4,6 +4,7 @@
 {% block content %}
 <h1>{{ title }}</h1>
 <div id="main">
+    <div id="entityKey" style="display:none;"></div>
     <ul class="nav nav-tabs" id="langTab">
         <li class="active"><a href="#{{default_lang}}Tab" data-toggle="tab">{{default_lang}}</a></li>
         <li id="addTranslationNode"><a id="addTranslation">+</a></li>
@@ -89,7 +90,7 @@
         var imageinserttarget = $('#imageinserttarget').text();
         var image_source = $(this).find('img').attr('src');
         var image_id = $(this).find('img').attr('id');
-        image_source = image_source.replace(/=s160/,'=s320')
+        image_source = image_source.replace(/=s160/,'=s320');
         var image_title = $(this).find('h5').text();
         console.log(image_source);
         console.log(image_title);
@@ -126,11 +127,22 @@
         copy_source = '<div class="tab-pane" id="'+lang+'Tab">'+copy_source+'</div>';
         var tab_source ='<li><a href="#'+lang+'Tab" data-toggle="tab">'+lang+'</a></li>';
         document.querySelector('div.tab-content').insertAdjacentHTML('beforeEnd',copy_source);
+        $('#'+lang+'Tab div.form-actions').html('<a class="btn btn-large btn-block btn-primary" type="submit">Save</a>');
         document.querySelector('#addTranslationNode').insertAdjacentHTML('beforeBegin',tab_source);
+        $('#addTranslationModal').modal('hide');
+        $('#'+lang+'Tab').tab('show');
     });
     $('a[data-toggle="tab"]').live('shown', function (e) {
         e.target // activated tab
         e.relatedTarget // previous tab
-    })
+    });
+    $(document).ready(function() {
+        var url = location.href;
+        var key = url.match(/update\/.+$/);
+        key = key.toString().replace(/update\//,'');
+        key = key.toString().replace(/#.+$/,'');
+        console.log(key);
+        $('#entityKey').html(key);
+    });
 </script>
 {% endblock %}
