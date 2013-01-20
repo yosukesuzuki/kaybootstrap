@@ -127,7 +127,9 @@
         copy_source = '<div class="tab-pane" id="'+lang+'Tab">'+copy_source+'</div>';
         var tab_source ='<li><a href="#'+lang+'Tab" data-toggle="tab">'+lang+'</a></li>';
         document.querySelector('div.tab-content').insertAdjacentHTML('beforeEnd',copy_source);
-        $('#'+lang+'Tab div.form-actions').html('<a class="btn btn-large btn-block btn-primary" type="submit">Save</a>');
+        var update_source = '<a class="createTranslation btn btn-large btn-block btn-primary" type="submit">Save</a>';
+        update_source += '<input type="hidden" name="lang" id="f_lang" value="'+lang+'">';
+        $('#'+lang+'Tab div.form-actions').html(update_source);
         document.querySelector('#addTranslationNode').insertAdjacentHTML('beforeBegin',tab_source);
         $('#addTranslationModal').modal('hide');
         $('#'+lang+'Tab').tab('show');
@@ -135,6 +137,11 @@
     $('a[data-toggle="tab"]').live('shown', function (e) {
         e.target // activated tab
         e.relatedTarget // previous tab
+    });
+    $('a.createTranslation').live('click',function(){
+        var $form = $(this).closest('form');
+        var param = $form.serializeArray();
+        console.log(param);
     });
     $(document).ready(function() {
         var url = location.href;
