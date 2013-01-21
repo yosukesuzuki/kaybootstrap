@@ -4,6 +4,7 @@
 {% block content %}
 <h1>{{ title }}</h1>
 <div id="main">
+    <div id="modelName" style="display:none;">{{model}}</div>
     <div id="entityKey" style="display:none;"></div>
     <ul class="nav nav-tabs" id="langTab">
         <li class="active"><a href="#{{default_lang}}Tab" data-toggle="tab">{{default_lang}}</a></li>
@@ -140,8 +141,29 @@
     });
     $('a.createTranslation').live('click',function(){
         var $form = $(this).closest('form');
-        var param = $form.serializeArray();
-        console.log(param);
+        var params = $form.serializeArray();
+        var postParams = {};
+        var parentKey = $('#entityKey').text();
+        //postParams['parent'] = parentKey;
+        for(i=0;i<params.length;i++){
+            if(params[i].name != '_csrf_token'){
+                postParams[params[i].name] = params[i].value;
+            }
+        }
+        var modelName = $('#modelName').text();
+        var postData = {};
+        postData[modelName] = postParams;
+        console.log(JSON.stringify(postData));
+        $.ajax({
+            type: "POST",
+            url: "/admin/rest/"+modelName,
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(postData),
+            success: function(data) {
+                console.log('create translation finished');
+            }
+        });
     });
     $(document).ready(function() {
         var url = location.href;

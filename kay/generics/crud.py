@@ -259,7 +259,9 @@ class CRUDViewGroup(ViewGroup):
         return redirect(self.get_list_url())
     return render_to_response(self.get_template(request, OP_UPDATE),
                               {'form': form.as_widget(),
-                               'title': title},
+                               'title': title,
+                               #add model_name by yosukesuzuki
+                               'model':self.model_name},
                               processors=(self.url_processor,))
 
   def create(self, *args, **kwargs):

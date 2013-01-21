@@ -37,6 +37,7 @@ from kay.utils import render_to_response
 from kay.utils import get_by_key_name_or_404
 from kay.i18n import gettext as _
 from kay.auth.decorators import admin_required
+from settings import DEFAULT_LANG
 
 from mainapp.markdown2 import markdown
 from mainapp.models import AdminPage,BlobStoreImage
@@ -55,9 +56,10 @@ def index(request):
     '''
     top page
     '''
+    logging.info('brower lang:'+request.lang)
     results = memcache.get(CACHE_NAME_FOR_TOP_PAGE_RESULTS)
     if results is None:
-        query_results = AdminPage.all().filter(u'display_page_flg =',True).order('page_order').fetch(limit=TOP_PAGE_CONTENT_NUM)
+        query_results = AdminPage.all().filter(u'lang =',DEFAULT_LANG).filter(u'display_page_flg =',True).order('page_order').fetch(limit=TOP_PAGE_CONTENT_NUM)
         results = []
         for r in query_results:
             url = r.external_url if r.external_url else '/'+r.key().name()+'/'

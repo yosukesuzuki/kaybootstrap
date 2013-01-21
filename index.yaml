@@ -13,4 +13,15 @@ indexes:
 - kind: AdminPage
   properties:
   - name: display_page_flg
+  - name: lang
+  - name: page_order
+
+- kind: AdminPage
+  properties:
+  - name: display_page_flg
+  - name: page_order
+
+- kind: AdminPage
+  properties:
+  - name: lang
   - name: page_order

@@ -42,7 +42,7 @@ class AdminPageCRUDViewGroup(crud.CRUDViewGroup):
              'update':'adminapp/general_update.html',
              }
      def get_query(self, request):
-         return self.model.all().order('page_order')
+         return self.model.all().filter(u'lang =',DEFAULT_LANG).order('page_order')
      def get_additional_context_on_update(self, request, form):
          memcache.delete(CACHE_NAME_FOR_TOP_PAGE_RESULTS)
          logging.info(request.form['content'])
@@ -64,16 +64,12 @@ class AdminPageCRUDViewGroup(crud.CRUDViewGroup):
          return {'key_name':key_name,'images':image_list,'lang':DEFAULT_LANG}
      authorize = admin_required
 
-class AdminPageRESTViewGroup(RESTViewGroup):
-      models = ['mainapp.models.AdminPage']
-
-class BlobStoreImageRESTViewGroup(RESTViewGroup):
-      models = ['mainapp.models.BlobStoreImage']
+class AdminModelsRESTViewGroup(RESTViewGroup):
+      models = ['mainapp.models.BlobStoreImage','mainapp.models.AdminPage']
 
 
 view_groups = [
-  AdminPageRESTViewGroup(),
-  BlobStoreImageRESTViewGroup(),
+  AdminModelsRESTViewGroup(),
   ViewGroup(
     Rule('/', endpoint='index', view='adminapp.views.index'),
     Rule('/update/page/order/', endpoint='update_page_order', view='adminapp.views.update_page_order'),

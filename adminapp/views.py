@@ -56,6 +56,7 @@ def index(request):
     return render_to_response('adminapp/index.html', {'admin_page_list': admin_page_list})
 
 def update_page_order(request):
+    #TODO can manage any models
     try:
         new_orders = request.args['orders']
     except:
