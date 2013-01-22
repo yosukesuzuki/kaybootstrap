@@ -145,7 +145,7 @@
         var postParams = {};
         var parentKey = $('#entityKey').text();
         //postParams['parent'] = parentKey;
-        for(i=0;i<params.length;i++){
+        for(var i=0;i<params.length;i++){
             if(params[i].name != '_csrf_token'){
                 postParams[params[i].name] = params[i].value;
             }

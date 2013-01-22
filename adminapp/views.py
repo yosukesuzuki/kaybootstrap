@@ -33,6 +33,7 @@ from werkzeug import Response
 
 from google.appengine.api import files
 from google.appengine.api import memcache
+from google.appengine.ext import db 
 from google.appengine.ext import blobstore
 from google.appengine.api.images import get_serving_url
 
@@ -56,9 +57,8 @@ def index(request):
     return render_to_response('adminapp/index.html', {'admin_page_list': admin_page_list})
 
 def update_page_order(request):
-    #TODO can manage any models
     try:
-        new_orders = request.args['orders']
+        new_orders = request.form['orders']
     except:
         return Response('Error:no data')
     new_orders_list = new_orders.split(';')
@@ -66,8 +66,7 @@ def update_page_order(request):
     for new_order in new_orders_list:
         if new_order is None or new_order == '':
             continue
-        new_order_key_name = new_order[5:]
-        new_order_entity = AdminPage.get_by_key_name(new_order_key_name)
+        new_order_entity = db.get(new_order) 
         if new_order_entity:
             new_order_entity.page_order = new_order_incre 
             new_order_incre += 1

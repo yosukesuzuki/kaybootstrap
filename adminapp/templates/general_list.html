@@ -17,7 +17,7 @@
         </thead>
         <tbody>
     {% for entity in entities %}
-        <tr id="list-{{entity.key().name()}}">
+        <tr id="{{entity.key()}}">
             <td class="span6" onClick="window.location.href='{{ update_url(entity) }}'">
                 <a href="{{ update_url(entity) }}">{{ entity.title }}</a>
             </td>
@@ -53,21 +53,23 @@
                 }
                 console.log(new_orders);
                 var update_order_html = "";
-                update_order_html += '<button class="btn btn-info" onClick="sendNewOrders(\''+new_orders+'\');">{{_('Update Order')}}</button>';
+                update_order_html += '<div id="newOrders" style="display:none;">'+new_orders+'</div><button id="updateOrder" class="btn btn-info">{{_('Update Order')}}</button>';
                 update_order_html += '&nbsp;{{_('new order is not saved yet.')}}';
                 $('#sort-change-message').html(update_order_html);
+                $('#updateOrder').live('click',function(){
+                    //$('#sort-change-message').html('<img src="/media/img/ajax-loader.gif">');
+                    var newOrdersText = $('#newOrders').text();
+                    console.log(newOrdersText);
+                    $.post('/admin/update/page/order/',{orders:newOrdersText},
+                    function(data){
+                        $('#sort-change-message').html(data);
+                    });
+                });
             },
             onDragStart: function(table, row) {
                 console.log("Started dragging row "+row.id);
             }
         });
     });
-    function sendNewOrders(new_orders){
-        $('#sort-change-message').html('<img src="/media/img/ajax-loader.gif">');
-        $.get('/admin/update/page/order/',{orders:new_orders},
-        function(data){
-            $('#sort-change-message').html(data);
-        });
-    }
 </script>
 {% endblock %}
