@@ -18,7 +18,7 @@ class AdminPage(db.Model):
     title = db.StringProperty(verbose_name=_('Title'),required=True,indexed=False)
     url = db.StringProperty(verbose_name=_('Url,page identifier of this content,only at first time'),indexed=False)
     page_order = db.IntegerProperty(verbose_name=_('Page order'),default=99999)
-    content = db.TextProperty(verbose_name=_('Content'),required=True)
+    content = db.TextProperty(verbose_name=_('Content'))
     images = db.TextProperty(verbose_name=_('Images,JSON Format'))
     lang = db.StringProperty(verbose_name=_('Content Language'))
     external_url = db.StringProperty(verbose_name=_('External Url,If link to an outside page,optional'),indexed=False)

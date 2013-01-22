@@ -49,6 +49,8 @@ from mainapp.views import CACHE_NAME_FOR_TOP_PAGE_RESULTS
 from mainapp.models import AdminPage,BlobStoreImage
 from adminapp.forms import AdminPageForm
 
+ADMIN_MODEL_DICT = {'AdminPage':AdminPage,'BlobStoreImage':BlobStoreImage}
+
 # Create your views here.
 
 def index(request):
@@ -73,6 +75,29 @@ def update_page_order(request):
             new_order_entity.put()
     memcache.delete(CACHE_NAME_FOR_TOP_PAGE_RESULTS)
     return Response('Success:new order was saved,'+str(new_order_incre)+' times')
+
+def add_translation(request,parent_key):
+    if request.method != 'POST':
+        return Response('POST method is required')
+    parent_entity = db.get(parent_key)
+    if parent_entity is None:
+        return Response('Default lang entity is not found')
+    model_name = parent_entity.kind()
+    try:
+        title = request.form['title']
+    except:
+        return Response('Title is required')
+    trans_key_name = parent_entity.url+'_'+request.form['lang']
+    trans_entity = ADMIN_MODEL_DICT[model_name](parent=parent_entity,key_name=trans_key_name,title=title)
+    for k in request.form:
+        if (k in ['title','url']) is False:
+            try:
+                setattr(trans_entity,k,request.form[k])
+            except:
+                if request.form[k] == 'on':
+                    setattr(trans_entity,k,True)
+    trans_entity.put()
+    return Response('Success:add transltion')
 
 def image_manager(request):
     #TODO add image search function by full text search

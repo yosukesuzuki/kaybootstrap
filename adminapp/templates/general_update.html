@@ -144,34 +144,31 @@
         var params = $form.serializeArray();
         var postParams = {};
         var parentKey = $('#entityKey').text();
-        //postParams['parent'] = parentKey;
         for(var i=0;i<params.length;i++){
             if(params[i].name != '_csrf_token'){
                 postParams[params[i].name] = params[i].value;
             }
         }
         var modelName = $('#modelName').text();
-        var postData = {};
-        postData[modelName] = postParams;
-        console.log(JSON.stringify(postData));
+        console.log(postParams);
         $.ajax({
             type: "POST",
-            url: "/admin/rest/"+modelName,
-            dataType: "json",
-            contentType: "application/json",
-            data: JSON.stringify(postData),
+            url: "/admin/add/translation/"+parentKey,
+            data: postParams,
             success: function(data) {
-                console.log('create translation finished');
+                console.log(data);
             }
         });
     });
     $(document).ready(function() {
         var url = location.href;
         var key = url.match(/update\/.+$/);
-        key = key.toString().replace(/update\//,'');
-        key = key.toString().replace(/#.+$/,'');
-        console.log(key);
-        $('#entityKey').html(key);
+        if(key){
+            key = key.toString().replace(/update\//,'');
+            key = key.toString().replace(/#.+$/,'');
+            console.log(key);
+            $('#entityKey').html(key);
+        }
     });
 </script>
 {% endblock %}
