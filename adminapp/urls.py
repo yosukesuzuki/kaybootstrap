@@ -74,6 +74,7 @@ view_groups = [
     Rule('/', endpoint='index', view='adminapp.views.index'),
     Rule('/update/page/order/', endpoint='update_page_order', view='adminapp.views.update_page_order'),
     Rule('/add/translation/<string:parent_key>', endpoint='add_translation', view='adminapp.views.add_translation'),
+    Rule('/get/children/<string:parent_key>', endpoint='get_children', view='adminapp.views.get_children'),
     Rule('/image/manager/', endpoint='image_manager', view='adminapp.views.image_manager'),
     Rule('/image/list/json/', endpoint='image_list_json', view='adminapp.views.image_list_json'),
     Rule('/image/upload/url/', endpoint='image_upload_url', view='adminapp.views.image_upload_url'),

@@ -124,6 +124,11 @@
     }
     $('#addTranslationTab').live('click',function(){
         var lang = $('#langList option:selected').val();
+        subAddTranslation(lang);
+        $('#addTranslationModal').modal('hide');
+        $('#'+lang+'Tab').tab('show');
+    });
+    function subAddTranslation(lang){
         var copy_source = $('div.tab-content div:first').html();
         copy_source = '<div class="tab-pane" id="'+lang+'Tab">'+copy_source+'</div>';
         var tab_source ='<li><a href="#'+lang+'Tab" data-toggle="tab">'+lang+'</a></li>';
@@ -132,9 +137,7 @@
         update_source += '<input type="hidden" name="lang" id="f_lang" value="'+lang+'">';
         $('#'+lang+'Tab div.form-actions').html(update_source);
         document.querySelector('#addTranslationNode').insertAdjacentHTML('beforeBegin',tab_source);
-        $('#addTranslationModal').modal('hide');
-        $('#'+lang+'Tab').tab('show');
-    });
+    }
     $('a[data-toggle="tab"]').live('shown', function (e) {
         e.target // activated tab
         e.relatedTarget // previous tab
@@ -161,14 +164,46 @@
         });
     });
     $(document).ready(function() {
-        var url = location.href;
-        var key = url.match(/update\/.+$/);
-        if(key){
-            key = key.toString().replace(/update\//,'');
-            key = key.toString().replace(/#.+$/,'');
-            console.log(key);
-            $('#entityKey').html(key);
-        }
+            var modelName = $('#modelName').text();
+            var url = location.href;
+            var key = url.match(/update\/.+$/);
+            if(key){
+                key = key.toString().replace(/update\//,'');
+                key = key.toString().replace(/#.+$/,'');
+                console.log(key);
+                $('#entityKey').html(key);
+            }
+            $.ajax({
+                type:"GET",
+                url:"/admin/get/children/"+key,
+                success: function(data){
+                    console.log(data);
+                    var children = data.split(';');
+                    for(var i=0;i<children.length;i++){
+                        $.ajax({
+                            type:"GET",
+                            url:"/admin/rest/"+modelName+"/"+children[i],
+                            dataType: "json",
+                            contentType: "application/json",
+                            success: function(json_data){
+                                console.log(json_data);
+                                var entity =json_data[modelName]; 
+                                var lang = entity['lang'];
+                                console.log(lang);
+                                subAddTranslation(lang);
+                                var langTabId = lang+'Tab';
+                                var $form = $('#'+langTabId + ' form');
+                                var params = $form.serializeArray();
+                                for(var j=0;j<params.length;j++){
+                                    var paramName = params[j].name;
+                                    console.log(paramName);
+                                    $form.find("[name="+paramName+"]").val(entity[paramName]);
+                                }
+                            }
+                        });
+                    }
+                }
+            });
     });
 </script>
 {% endblock %}

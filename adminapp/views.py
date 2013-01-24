@@ -99,6 +99,16 @@ def add_translation(request,parent_key):
     trans_entity.put()
     return Response('Success:add transltion')
 
+def get_children(request,parent_key):
+    parent_entity = db.get(parent_key)
+    children = ADMIN_MODEL_DICT[parent_entity.kind()].all().ancestor(parent_entity.key()).fetch(1000)
+    return_list = []
+    for child in children:
+        logging.info(u'title:'+child.title)
+        if parent_key != str(child.key()):
+            return_list.append(str(child.key()))
+    return Response(u';'.join(return_list))
+
 def image_manager(request):
     #TODO add image search function by full text search
     return render_to_response('adminapp/image_manager.html', {'title':_('Image manager')})
