@@ -133,7 +133,8 @@
         copy_source = '<div class="tab-pane" id="'+lang+'Tab">'+copy_source+'</div>';
         var tab_source ='<li><a href="#'+lang+'Tab" data-toggle="tab">'+lang+'</a></li>';
         document.querySelector('div.tab-content').insertAdjacentHTML('beforeEnd',copy_source);
-        var update_source = '<a class="createTranslation btn btn-large btn-block btn-primary" type="submit">Save</a>';
+        var update_source = '<a class="createTranslation btn btn-large btn-block btn-primary" type="submit">{{_('Save')}}</a>';
+        update_source += '<a class="deleteTranslation btn btn-large btn-block btn-danger" type="submit">{{_('Delete')}}</a>';
         update_source += '<input type="hidden" name="lang" id="f_lang" value="'+lang+'">';
         $('#'+lang+'Tab div.form-actions').html(update_source);
         document.querySelector('#addTranslationNode').insertAdjacentHTML('beforeBegin',tab_source);
@@ -154,12 +155,29 @@
         }
         var modelName = $('#modelName').text();
         console.log(postParams);
+        var that = this;
         $.ajax({
             type: "POST",
             url: "/admin/add/translation/"+parentKey,
             data: postParams,
             success: function(data) {
                 console.log(data);
+                $(that).closest('div').before('<div class="alert alert-success">{{_('Add translation success')}}</div>');
+            }
+        });
+    });
+    $('a.deleteTranslation').live('click',function(){
+        var modelName = $('#modelName').text();
+        var thisTab = $(this).closest('div.tab-pane');
+        var childKey = $(thisTab).find('span.childKey').text();
+        console.log(childKey);
+        $.ajax({
+            type:"DELETE",
+            url:"/admin/rest/"+modelName+"/"+childKey,
+            dataType: "json",
+            contentType: "application/json",
+            success: function(data){
+                $(thisTab).remove();
             }
         });
     });
@@ -179,6 +197,7 @@
                 success: function(data){
                     console.log(data);
                     var children = data.split(';');
+                    if(children[0] == ""){return true;}
                     for(var i=0;i<children.length;i++){
                         $.ajax({
                             type:"GET",
@@ -199,6 +218,7 @@
                                     console.log(paramName);
                                     $form.find("[name="+paramName+"]").val(entity[paramName]);
                                 }
+                                $form.append('<span class="childKey" style="display:none;">'+entity['key']+'</div>');
                             }
                         });
                     }
