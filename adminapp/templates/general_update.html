@@ -70,14 +70,15 @@
 {% block scripts %}
 <script type="text/javascript">
     $('textarea').each(function(i,elem){
-        elem.insertAdjacentHTML('beforeBegin','<a class="insertimage btn btn-small" targetid="'+elem.id+'"><i class="icon-picture"></i>{{_('Insert Image')}}</a>');
+        elem.insertAdjacentHTML('beforeBegin','<a class="insertimage btn btn-small"><i class="icon-picture"></i>{{_('Insert Image')}}</a>');
         elem.insertAdjacentHTML('afterEnd','<div class="row" id="imagelist"></div>');
     });
     //$('div.tab-content div:first').show();
     $('a.insertimage').live('click',function() {
-        var imageinserttarget = $(this).attr('targetid');
-        $('#imageinserttarget').html(imageinserttarget);
+        var imageinserttarget = $(this).next();
+        $('#imageinserttarget').html(imageinserttarget.attr('id'));
         $('#imageInsertModal').modal();
+        console.log($(this).next());
         showImageList(1);
     });
     $('#addTranslation').live('click',function(){
@@ -95,9 +96,8 @@
         var image_title = $(this).find('h5').text();
         console.log(image_source);
         console.log(image_title);
-        var insert_text = '\n\n!['+image_title+']('+image_source+',"image_id:'+image_id+'"'+')';
-        $('#'+imageinserttarget).append(insert_text);
-
+        var insert_text = '\n\n!['+image_title+']('+image_source+' "image_id:'+image_id+'")';
+        $('#'+imageinserttarget).val($('#'+imageinserttarget).val()+insert_text);
     });
     function showImageList(page){
         $('#images').html('');
@@ -131,6 +131,7 @@
     function subAddTranslation(lang){
         var copy_source = $('div.tab-content div:first').html();
         copy_source = '<div class="tab-pane" id="'+lang+'Tab">'+copy_source+'</div>';
+        copy_source = copy_source.replace(/("f_)/g,function (whole,s1) {return(s1 +lang+"_");});
         var tab_source ='<li><a href="#'+lang+'Tab" data-toggle="tab">'+lang+'</a></li>';
         document.querySelector('div.tab-content').insertAdjacentHTML('beforeEnd',copy_source);
         var update_source = '<a class="createTranslation btn btn-large btn-block btn-primary" type="submit">{{_('Save')}}</a>';
