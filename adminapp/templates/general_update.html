@@ -17,7 +17,11 @@
             <div class="control-group">
                 {{ form[f.name].label(class_='control-label')|safe }}
                 <div class="controls">
+                {% if f.name == 'display_time' %}
+                {{ form[f.name].render(class_='form_datetime')|safe }}
+                {% else %}
                 {{ form[f.name].render(class_='input-block-level')|safe }}
+                {% endif %}
                 </div>
             </div>
             {% endfor %}
@@ -70,6 +74,8 @@
 </div>
 {% endblock %}
 {% block scripts %}
+<link href="/media/css/datetimepicker.css" rel="stylesheet">
+<script src="/media/js/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript">
     $('textarea').each(function(i,elem){
         elem.insertAdjacentHTML('beforeBegin','<a class="insertimage btn btn-small"><i class="icon-picture"></i>{{_('Insert Image')}}</a>');
@@ -186,6 +192,9 @@
         });
     });
     $(document).ready(function() {
+            $(".form_datetime").datetimepicker({
+                        format: "yyyy-mm-dd hh:ii"
+            });
             var modelName = $('#modelName').text();
             var url = location.href;
             var key = url.match(/update\/.+$/);

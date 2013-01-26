@@ -20,6 +20,9 @@
         <tr id="{{entity.key()}}">
             <td class="span6" onClick="window.location.href='{{ update_url(entity) }}'">
                 <a href="{{ update_url(entity) }}">{{ entity.title }}</a>
+                {% if entity.display_time %}
+                    <span class="pull-right">({{entity.display_time}})</span>
+                {% endif %}
             </td>
             <td class="span3">
                 <a href="{{ update_url(entity) }}">{{ _('Update') }}</a>

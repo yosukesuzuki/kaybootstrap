@@ -18,10 +18,16 @@ indexes:
 
 - kind: AdminPage
   properties:
-  - name: display_page_flg
-  - name: page_order
-
-- kind: AdminPage
-  properties:
   - name: lang
   - name: page_order
+
+- kind: Article
+  properties:
+  - name: lang
+  - name: display_time
+
+- kind: Article
+  properties:
+  - name: lang
+  - name: display_time
+    direction: desc

@@ -90,14 +90,15 @@ def show_each_page(request,key_name):
     '''
     browser_lang = request.lang
     page = AdminPage.get_by_key_name(key_name)
+    if page is None:
+        return render_to_response('mainapp/404.html', {})
+
     if browser_lang != DEFAULT_LANG:
         logging.info('browser_lang:'+browser_lang)
         translations = AdminPage.all().ancestor(page.key()).fetch(1000)
         for trans in translations:
             if trans.lang == browser_lang:
                 page = trans 
-    if page is None:
-        return render_to_response('mainapp/404.html', {})
     return render_to_response('mainapp/show_each_page.html', {'page': page})
 
 def site_map(request):

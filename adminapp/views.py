@@ -46,10 +46,10 @@ from kay.auth.decorators import admin_required
 from kay.handlers import blobstore_handlers
 
 from mainapp.views import CACHE_NAME_FOR_TOP_PAGE_RESULTS
-from mainapp.models import AdminPage,BlobStoreImage
+from mainapp.models import AdminPage,BlobStoreImage,Article
 from adminapp.forms import AdminPageForm
 
-ADMIN_MODEL_DICT = {'AdminPage':AdminPage,'BlobStoreImage':BlobStoreImage}
+ADMIN_MODEL_DICT = {'AdminPage':AdminPage,'BlobStoreImage':BlobStoreImage,'Article':Article}
 
 # Create your views here.
 
