@@ -19,7 +19,7 @@
                 <div class="controls">
                 {% if f.name == 'display_time' %}
                 {{ form[f.name].render(class_='form_datetime')|safe }}
-                <span class="display_time_local">{{f.value}}</span>
+                <span class="display_time_local">{{f.value}}</span><span>({{_('local time')}})</span>
                 {% else %}
                 {{ form[f.name].render(class_='input-block-level')|safe }}
                 {% endif %}
@@ -79,6 +79,7 @@
 <script src="/media/js/bootstrap-datetimepicker.js"></script>
 <script src="/media/js/jquery.dateFormat-1.0.js"></script>
 <script>
+//from http://stackoverflow.com/questions/3830418/is-there-a-jquery-plugin-to-convert-utc-datetimes-to-local-user-timezone
 (function ($) {
 $.fn.localTimeFromUTC = function (format) {
     return this.each(function () {
@@ -220,51 +221,58 @@ $.fn.localTimeFromUTC = function (format) {
         });
     });
     $(document).ready(function() {
-            $(".form_datetime").datetimepicker({
-                        format: "yyyy-mm-dd hh:ii"
-            });
-            var modelName = $('#modelName').text();
-            var url = location.href;
-            var key = url.match(/update\/.+$/);
-            if(key){
-                key = key.toString().replace(/update\//,'');
-                key = key.toString().replace(/#.+$/,'');
-                console.log(key);
-                $('#entityKey').html(key);
-            }
-            $.ajax({
-                type:"GET",
-                url:"/admin/get/children/"+key,
-                success: function(data){
-                    console.log(data);
-                    var children = data.split(';');
-                    if(children[0] == ""){return true;}
-                    for(var i=0;i<children.length;i++){
-                        $.ajax({
-                            type:"GET",
-                            url:"/admin/rest/"+modelName+"/"+children[i],
-                            dataType: "json",
-                            contentType: "application/json",
-                            success: function(json_data){
-                                console.log(json_data);
-                                var entity =json_data[modelName]; 
-                                var lang = entity['lang'];
-                                console.log(lang);
-                                subAddTranslation(lang);
-                                var langTabId = lang+'Tab';
-                                var $form = $('#'+langTabId + ' form');
-                                var params = $form.serializeArray();
-                                for(var j=0;j<params.length;j++){
-                                    var paramName = params[j].name;
-                                    console.log(paramName);
-                                    $form.find("[name="+paramName+"]").val(entity[paramName]);
-                                }
-                                $form.append('<span class="childKey" style="display:none;">'+entity['key']+'</div>');
+        $('.display_time_local').localTimeFromUTC('yyyy-MM-dd HH:mm');
+        $('.form_datetime').datetimepicker({
+                    format: "yyyy-mm-dd hh:ii"
+        });
+        $('.form_datetime').on('change',function(){
+            var new_datetime = $(this).val();
+            var display_time_local = $(this).next();
+            $(display_time_local).html(new_datetime);
+            $(display_time_local).localTimeFromUTC('yyyy-MM-dd HH:mm');
+        });
+        var modelName = $('#modelName').text();
+        var url = location.href;
+        var key = url.match(/update\/.+$/);
+        if(key){
+            key = key.toString().replace(/update\//,'');
+            key = key.toString().replace(/#.+$/,'');
+            console.log(key);
+            $('#entityKey').html(key);
+        }
+        $.ajax({
+            type:"GET",
+            url:"/admin/get/children/"+key,
+            success: function(data){
+                console.log(data);
+                var children = data.split(';');
+                if(children[0] == ""){return true;}
+                for(var i=0;i<children.length;i++){
+                    $.ajax({
+                        type:"GET",
+                        url:"/admin/rest/"+modelName+"/"+children[i],
+                        dataType: "json",
+                        contentType: "application/json",
+                        success: function(json_data){
+                            console.log(json_data);
+                            var entity =json_data[modelName]; 
+                            var lang = entity['lang'];
+                            console.log(lang);
+                            subAddTranslation(lang);
+                            var langTabId = lang+'Tab';
+                            var $form = $('#'+langTabId + ' form');
+                            var params = $form.serializeArray();
+                            for(var j=0;j<params.length;j++){
+                                var paramName = params[j].name;
+                                console.log(paramName);
+                                $form.find("[name="+paramName+"]").val(entity[paramName]);
                             }
-                        });
-                    }
+                            $form.append('<span class="childKey" style="display:none;">'+entity['key']+'</div>');
+                        }
+                    });
                 }
-            });
+            }
+        });
     });
 </script>
 {% endblock %}

@@ -14,7 +14,7 @@ class Article(db.Model):
     article contents,add and update like a blog
     '''
     display_page_flg = db.BooleanProperty(verbose_name=_('Display this page'),default=False)
-    display_time = db.DateTimeProperty(verbose_name=_('Display time'))
+    display_time = db.DateTimeProperty(verbose_name=_('Display time,UTC'))
     title = db.StringProperty(verbose_name=_('Title'),required=True,indexed=False)
     url = db.StringProperty(verbose_name=_('Url,page identifier of this content,only at first time'),indexed=False)
     page_order = db.IntegerProperty(verbose_name=_('Page order'),default=99999)
