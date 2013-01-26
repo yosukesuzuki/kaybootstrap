@@ -56,12 +56,22 @@ def index(request):
     '''
     top page
     '''
-    logging.info('brower lang:'+request.lang)
-    results = memcache.get(CACHE_NAME_FOR_TOP_PAGE_RESULTS)
+    browser_lang = request.lang
+    results = memcache.get(CACHE_NAME_FOR_TOP_PAGE_RESULTS+'-'+browser_lang)
     if results is None:
         query_results = AdminPage.all().filter(u'lang =',DEFAULT_LANG).filter(u'display_page_flg =',True).order('page_order').fetch(limit=TOP_PAGE_CONTENT_NUM)
         results = []
         for r in query_results:
+            if browser_lang != DEFAULT_LANG:
+                translations = AdminPage.all().ancestor(r.key()).fetch(1000)
+                browser_lang_trans = None
+                for trans in translations:
+                    if trans.lang == browser_lang:
+                        browser_lang_trans = trans
+                        break
+                if browser_lang_trans:
+                    r.content = browser_lang_trans.content
+                    r.title = browser_lang_trans.title
             url = r.external_url if r.external_url else '/'+r.key().name()+'/'
             snippet = html.strip_tags(markdown(r.content)).split('\n')[0]
             try:
@@ -71,14 +81,21 @@ def index(request):
             results.append({'title':r.title,'snippet':snippet,'url':url,'first_image':first_image})
         if len(results) == 0:results = DUMMY_DATA_FOR_TOP_PAGE
         logging.info(results)
-        memcache.set(CACHE_NAME_FOR_TOP_PAGE_RESULTS,results)
+        memcache.set(CACHE_NAME_FOR_TOP_PAGE_RESULTS+'-'+browser_lang,results)
     return render_to_response('mainapp/index.html', {'results': results})
 
 def show_each_page(request,key_name):
     '''
     each page
     '''
+    browser_lang = request.lang
     page = AdminPage.get_by_key_name(key_name)
+    if browser_lang != DEFAULT_LANG:
+        logging.info('browser_lang:'+browser_lang)
+        translations = AdminPage.all().ancestor(page.key()).fetch(1000)
+        for trans in translations:
+            if trans.lang == browser_lang:
+                page = trans 
     if page is None:
         return render_to_response('mainapp/404.html', {})
     return render_to_response('mainapp/show_each_page.html', {'page': page})

@@ -19,10 +19,10 @@
 <!-- row of columns -->
 <div class="row">
     {% for r in results[1:] %}
-    <div class="span4 media">
+    <div class="span4 media" style="margin-top:0px;">
         {% if r['first_image'] %}
-        <a class="pull-right" href="{{r['url']}}">
-        <img src="{{r['first_image']}}=s60-c" width="60" height="60" class="img-rounded pull-right">
+        <a class="pull-left" href="{{r['url']}}">
+        <img src="{{r['first_image']}}=s80-c" width="80" height="80" class="img-rounded pull-left">
         </a>
         {% endif %}
         <div class="media-body">
