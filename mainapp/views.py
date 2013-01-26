@@ -63,7 +63,7 @@ def index(request):
         results = []
         for r in query_results:
             url = r.external_url if r.external_url else '/'+r.key().name()+'/'
-            snippet = html.strip_tags(markdown(r.content))[:100]
+            snippet = html.strip_tags(markdown(r.content)).split('\n')[0]
             try:
                 first_image = json.loads(r.images)['images'][0]['image_path']
             except:

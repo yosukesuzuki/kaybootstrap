@@ -35,6 +35,7 @@ MIDDLEWARE_CLASSES = (
 
 INSTALLED_APPS = (
         'kay.auth',
+        'kay.i18n',
         'mainapp',
         'adminapp',
 )

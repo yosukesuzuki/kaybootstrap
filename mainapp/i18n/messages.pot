@@ -1,0 +1,119 @@
+# Translations template for PROJECT.
+# Copyright (C) 2013 Takashi Matsuo
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: tmatsuo@candit.jp\n"
+"POT-Creation-Date: 2013-01-26 09:43+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel None\n"
+
+#: mainapp/models.py:17
+msgid "Display this page"
+msgstr ""
+
+#: mainapp/models.py:18 mainapp/models.py:32
+msgid "Title"
+msgstr ""
+
+#: mainapp/models.py:19
+msgid "Url,page identifier of this content,only at first time"
+msgstr ""
+
+#: mainapp/models.py:20
+msgid "Page order"
+msgstr ""
+
+#: mainapp/models.py:21
+msgid "Content"
+msgstr ""
+
+#: mainapp/models.py:22
+msgid "Images,JSON Format"
+msgstr ""
+
+#: mainapp/models.py:23
+msgid "Content Language"
+msgstr ""
+
+#: mainapp/models.py:24
+msgid "External Url,If link to an outside page,optional"
+msgstr ""
+
+#: mainapp/models.py:25 mainapp/models.py:36
+msgid "Update"
+msgstr ""
+
+#: mainapp/models.py:26 mainapp/models.py:37
+msgid "Created"
+msgstr ""
+
+#: mainapp/models.py:33
+msgid "File Name"
+msgstr ""
+
+#: mainapp/models.py:34
+msgid "Note"
+msgstr ""
+
+#: mainapp/templates/404.html:6
+msgid "404 page not found"
+msgstr ""
+
+#: mainapp/templates/base.html:46
+msgid "News"
+msgstr ""
+
+#: mainapp/templates/base.html:47
+msgid "Popular"
+msgstr ""
+
+#: mainapp/templates/base.html:49
+msgid "Directory"
+msgstr ""
+
+#: mainapp/templates/base.html:62
+msgid "input keyword"
+msgstr ""
+
+#: mainapp/templates/base.html:67
+msgid "Language"
+msgstr ""
+
+#: mainapp/templates/base.html:77
+msgid "Admin"
+msgstr ""
+
+#: mainapp/templates/base.html:99
+msgid "About"
+msgstr ""
+
+#: mainapp/templates/base.html:100
+msgid "Contact"
+msgstr ""
+
+#: mainapp/templates/index.html:15
+msgid "Learn more"
+msgstr ""
+
+#: mainapp/templates/index.html:31
+msgid "View details"
+msgstr ""
+
+#: mainapp/templates/show_each_page.html:40
+msgid "Admin Menu"
+msgstr ""
+
+#: mainapp/templates/show_each_page.html:41
+msgid "Edit This Page"
+msgstr ""
+
