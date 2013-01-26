@@ -128,15 +128,15 @@ def image_list_json(request):
             bsi_entity = BlobStoreImage(key_name=r.md5_hash,file_name=r.filename,blob_key=r.key())
             bsi_entity.put()
     query = BlobStoreImage.all().order('-update')
-    pagenator = Paginator(query,10)
+    paginator = Paginator(query,10)
     try:
         page = int(request.args.get('page','1'))
     except ValueError:
         page = 1
     try:
-        results = pagenator.page(page)
+        results = paginator.page(page)
     except (EmptyPage,InvalidPage):
-        results = pagenator.page(pagenator.num_pages)
+        results = paginator.page(paginator.num_pages)
     return_list = []
     for r in results.object_list:
         return_list.append({'key':str(r.key()),
