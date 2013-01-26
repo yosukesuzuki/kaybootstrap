@@ -55,6 +55,7 @@ ADMIN_MODEL_DICT = {'AdminPage':AdminPage,'BlobStoreImage':BlobStoreImage,'Artic
 
 def index(request):
     admin_page_list = [{'title':_('Page Manager'),'info':AdminPage.__doc__,'url':'/admin/adminpage/list'},
+            {'title':_('Article Manager'),'info':Article.__doc__,'url':'/admin/article/list'},
             {'title':_('Image Manager'),'info':BlobStoreImage.__doc__,'url':'/admin/image/manager/'}]
     return render_to_response('adminapp/index.html', {'admin_page_list': admin_page_list})
 
@@ -87,7 +88,7 @@ def add_translation(request,parent_key):
         title = request.form['title']
     except:
         return Response('Title is required')
-    trans_key_name = parent_entity.url+'_'+request.form['lang']
+    trans_key_name = parent_entity.key().name()+'_'+request.form['lang']
     trans_entity = ADMIN_MODEL_DICT[model_name](parent=parent_entity,key_name=trans_key_name,title=title)
     for k in request.form:
         if (k in ['title','url']) is False:
