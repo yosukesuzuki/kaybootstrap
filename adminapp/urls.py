@@ -115,6 +115,7 @@ view_groups = [
   AdminModelsRESTViewGroup(),
   ViewGroup(
     Rule('/', endpoint='index', view='adminapp.views.index'),
+    Rule('/preview/<string:entity_key>', endpoint='preview', view='adminapp.views.preview'),
     Rule('/update/page/order/', endpoint='update_page_order', view='adminapp.views.update_page_order'),
     Rule('/add/translation/<string:parent_key>', endpoint='add_translation', view='adminapp.views.add_translation'),
     Rule('/get/children/<string:parent_key>', endpoint='get_children', view='adminapp.views.get_children'),

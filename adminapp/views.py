@@ -45,7 +45,7 @@ from kay.i18n import gettext as _
 from kay.auth.decorators import admin_required
 from kay.handlers import blobstore_handlers
 
-from mainapp.views import CACHE_NAME_FOR_TOP_PAGE_RESULTS,MODEL_DICT
+from mainapp.views import CACHE_NAME_FOR_TOP_PAGE_RESULTS,MODEL_DICT,get_page_content
 from mainapp.models import AdminPage,BlobStoreImage,Article
 from adminapp.forms import AdminPageForm
 
@@ -105,6 +105,23 @@ def get_children(request,parent_key):
         if parent_key != str(child.key()):
             return_list.append(str(child.key()))
     return Response(u';'.join(return_list))
+
+def preview(request,entity_key):
+    '''
+    preview page
+    '''
+    browser_lang = request.lang
+    entity = db.get(entity_key)
+    model_name = entity.kind()
+    key_name = entity.key().name()
+    page = get_page_content(browser_lang,model_name,key_name,True)
+    if page is None:
+        return render_to_response('mainapp/404.html', {})
+    page.title = '('+_('Preview')+')'+page.title
+    sidebar = {'sidebar_title':_('Link'),'sidebar_list':[{'title':_('About'),'url':'/about/'},{'title':_('Contact'),'url':'/contact/'}]}
+    return render_to_response('mainapp/show_each_page.html', {'page': page,'model_name':model_name,'sidebar':sidebar})
+
+
 
 def image_manager(request):
     #TODO add image search function by full text search

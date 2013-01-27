@@ -32,9 +32,4 @@ indexes:
   properties:
   - name: lang
   - name: display_time
-
-- kind: Article
-  properties:
-  - name: lang
-  - name: display_time
     direction: desc
