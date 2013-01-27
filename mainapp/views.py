@@ -26,6 +26,7 @@ from kay.auth.decorators import login_required
 """
 import logging
 import json
+import datetime
 from werkzeug import Response
 
 from google.appengine.api import files
@@ -35,12 +36,14 @@ from django.utils import html
 
 from kay.utils import render_to_response
 from kay.utils import get_by_key_name_or_404
+from kay.utils import url_for 
+from kay.utils.paginator import Paginator, InvalidPage, EmptyPage
 from kay.i18n import gettext as _
 from kay.auth.decorators import admin_required
 from settings import DEFAULT_LANG
 
 from mainapp.markdown2 import markdown
-from mainapp.models import AdminPage,BlobStoreImage
+from mainapp.models import AdminPage,BlobStoreImage,Article
 
 '''
 global vars
@@ -92,7 +95,6 @@ def show_each_page(request,key_name):
     page = AdminPage.get_by_key_name(key_name)
     if page is None:
         return render_to_response('mainapp/404.html', {})
-
     if browser_lang != DEFAULT_LANG:
         logging.info('browser_lang:'+browser_lang)
         translations = AdminPage.all().ancestor(page.key()).fetch(1000)
@@ -100,6 +102,63 @@ def show_each_page(request,key_name):
             if trans.lang == browser_lang:
                 page = trans 
     return render_to_response('mainapp/show_each_page.html', {'page': page})
+
+def article_list(request):
+    browser_lang = request.lang
+    article_per_page = 10
+    try:
+        page = int(request.args.get('page','1'))
+    except ValueError:
+        page = 1
+    results_dic = get_article_list(browser_lang,page,article_per_page)
+    return render_to_response('mainapp/article_list.html', {'article_results':results_dic})
+
+def get_article_list(browser_lang,page,article_per_page):
+    memcache_key = 'article-'+str(page)+'-'+str(article_per_page)+'-'+browser_lang
+    logging.info(memcache_key)
+    results_dic = memcache.get(memcache_key)
+    if results_dic is None:
+        now = datetime.datetime.now()
+        logging.info(now)
+        query = Article.all().filter(u'lang =',DEFAULT_LANG).filter(u'display_page_flg =',True).filter(u'display_time <',now).order('-display_time')
+        paginator = Paginator(query,article_per_page)
+        try:
+            results = paginator.page(page)
+        except (EmptyPage,InvalidPage):
+            results = paginator.page(paginator.num_pages)
+        return_list = []
+        for r in results.object_list:
+            if browser_lang != DEFAULT_LANG:
+                translations = Article.all().ancestor(r.key()).fetch(1000)
+                browser_lang_trans = None
+                for trans in translations:
+                    if trans.lang == browser_lang:
+                        browser_lang_trans = trans
+                        break
+                if browser_lang_trans:
+                    r.content = browser_lang_trans.content
+                    r.title = browser_lang_trans.title
+            url = r.external_url if r.external_url else url_for('mainapp/show_each_article',key_name=r.key().name())
+            snippet = html.strip_tags(markdown(r.content)).split('\n')[0]
+            try:
+                first_image = json.loads(r.images)['images'][0]['image_path']
+            except:
+                first_image = None
+            return_list.append({'key':str(r.key()),
+                'id':r.key().name(),
+                'title':r.title,
+                'snippet':snippet,
+                'url':url,
+                'first_image':first_image,
+                'display_time':str(r.display_time)[:16]})
+        results_dic = {'articles':return_list,
+        'current_page':results.number,
+        'total_pages':results.paginator.num_pages}
+        memcache.set(memcache_key,results_dic)
+    return results_dic 
+ 
+def show_each_article(request,key_name):
+    return render_to_response('mainapp/show_each_article.html', {})
 
 def site_map(request):
     #TODO return sitemap xml for search engine crawler

@@ -77,34 +77,6 @@
 {% block scripts %}
 <link href="/media/css/datetimepicker.css" rel="stylesheet">
 <script src="/media/js/bootstrap-datetimepicker.js"></script>
-<script src="/media/js/jquery.dateFormat-1.0.js"></script>
-<script>
-//from http://stackoverflow.com/questions/3830418/is-there-a-jquery-plugin-to-convert-utc-datetimes-to-local-user-timezone
-(function ($) {
-$.fn.localTimeFromUTC = function (format) {
-    return this.each(function () {
-
-        // get provided date 
-        var tagText = $(this).html();
-        var givenDate = new Date(tagText);
-
-        if(givenDate == 'NaN') return;
-
-        // get time offset from browser 
-        var offset = -(givenDate.getTimezoneOffset() / 60);
-
-        // apply offset 
-        var hours = givenDate.getHours();
-        hours += offset;
-        givenDate.setHours(hours);
-
-        // format the date 
-        var localDateString = $.format.date(givenDate, format);
-        $(this).html(localDateString);
-    });
-};
-})(jQuery);
-</script>
 <script type="text/javascript">
     $('textarea').each(function(i,elem){
         elem.insertAdjacentHTML('beforeBegin','<a class="insertimage btn btn-small"><i class="icon-picture"></i>{{_('Insert Image')}}</a>');

@@ -38,6 +38,10 @@ handlers:
 - url: /.*
   script: kay.main.application
 
+builtins:
+- appstats: on
+- remote_api: on
+
 libraries:
 - name: jinja2
   version: latest
