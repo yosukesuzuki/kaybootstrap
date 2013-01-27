@@ -18,9 +18,7 @@
                 {{ form[f.name].label(class_='control-label')|safe }}
                 <div class="controls">
                 {% if f.name == 'display_time' %}
-                {#{ form[f.name].render(class_='form_datetime')|safe }#}
-                <input class="form_datetime" type="text" id="f_display_time" value="{{f.value|enforceMinus9hours}}" name="display_time">
-                <span class="display_time_local">{{f.value}}</span><span>({{_('local time')}})</span>
+                {{ form[f.name].render(class_='form_datetime')|safe }}
                 {% else %}
                 {{ form[f.name].render(class_='input-block-level')|safe }}
                 {% endif %}
@@ -194,15 +192,8 @@
         });
     });
     $(document).ready(function() {
-        //$('.display_time_local').localTimeFromUTC('yyyy-MM-dd HH:mm');
         $('.form_datetime').datetimepicker({
                     format: "yyyy-mm-dd hh:ii"
-        });
-        $('.form_datetime').on('change',function(){
-            var new_datetime = $(this).val();
-            var display_time_local = $(this).next();
-            $(display_time_local).html(new_datetime);
-            $(display_time_local).localTimeFromUTC('yyyy-MM-dd HH:mm');
         });
         var modelName = $('#modelName').text();
         var url = location.href;

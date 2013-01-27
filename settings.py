@@ -9,7 +9,7 @@ A sample of kay settings.
 :license: BSD, see LICENSE for more details.
 """
 
-DEFAULT_TIMEZONE = 'Asia/Tokyo'
+DEFAULT_TIMEZONE = 'UTC'
 DEBUG = True
 PROFILE = False
 SECRET_KEY = 'ReplaceItWithSecretString'

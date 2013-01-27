@@ -17,7 +17,7 @@
         </thead>
         <tbody>
     {% for entity in entities %}
-        <tr id="{{entity.key()}}">
+    <tr id="{{entity.key()}}" {% if entity.display_page_flg == False %}class="warning"{% endif %}>
             <td class="span6" onClick="window.location.href='{{ update_url(entity) }}'">
                 <a href="{{ update_url(entity) }}">{{ entity.title }}</a>
                 {% if entity.display_time %}
