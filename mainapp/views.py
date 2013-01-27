@@ -54,6 +54,7 @@ DUMMY_DATA_FOR_TOP_PAGE = [{'title':'Dummy,first title','snippet':'this is dummy
         {'title':'Dummy,second title','snippet':'this is dummy snippet','url':'/second/'},
         {'title':'Dummy,third title','snippet':'this is dummy snippet','url':'/third/'},
         {'title':'Dummy,fourth title','snippet':'this is dummy snippet','url':'/fourth/'}]
+MODEL_DICT = {'AdminPage':AdminPage,'BlobStoreImage':BlobStoreImage,'Article':Article}
 
 def index(request):
     '''
@@ -92,16 +93,22 @@ def show_each_page(request,key_name):
     each page
     '''
     browser_lang = request.lang
-    page = AdminPage.get_by_key_name(key_name)
+    model_name = 'AdminPage'
+    page = get_page_content(browser_lang,model_name,key_name)
     if page is None:
         return render_to_response('mainapp/404.html', {})
+    sidebar = {'sidebar_title':_('Link'),'sidebar_list':[{'title':_('About'),'url':'/about/'},{'title':_('Contact'),'url':'/contact/'}]}
+    return render_to_response('mainapp/show_each_page.html', {'page': page,'model_name':model_name,'sidebar':sidebar})
+
+def get_page_content(browser_lang,model_name,key_name):
+    page = MODEL_DICT[model_name].get_by_key_name(key_name)
     if browser_lang != DEFAULT_LANG:
         logging.info('browser_lang:'+browser_lang)
-        translations = AdminPage.all().ancestor(page.key()).fetch(1000)
+        translations = MODEL_DICT[model_name].all().ancestor(page.key()).fetch(1000)
         for trans in translations:
             if trans.lang == browser_lang:
                 page = trans 
-    return render_to_response('mainapp/show_each_page.html', {'page': page})
+    return page
 
 def article_list(request):
     browser_lang = request.lang
@@ -112,6 +119,16 @@ def article_list(request):
         page = 1
     results_dic = get_article_list(browser_lang,page,article_per_page)
     return render_to_response('mainapp/article_list.html', {'article_results':results_dic})
+
+def show_each_article(request,key_name):
+    browser_lang = request.lang
+    model_name = 'Article'
+    page = get_page_content(browser_lang,model_name,key_name)
+    if page is None:
+        return render_to_response('mainapp/404.html', {})
+    results_dic = get_article_list(browser_lang,1,10)
+    sidebar = {'sidebar_title':_('Back number'),'sidebar_list':results_dic['articles']}
+    return render_to_response('mainapp/show_each_page.html', {'page': page,'model_name':model_name,'sidebar':sidebar})
 
 def get_article_list(browser_lang,page,article_per_page):
     memcache_key = 'article-'+str(page)+'-'+str(article_per_page)+'-'+browser_lang
@@ -157,9 +174,6 @@ def get_article_list(browser_lang,page,article_per_page):
         memcache.set(memcache_key,results_dic)
     return results_dic 
  
-def show_each_article(request,key_name):
-    return render_to_response('mainapp/show_each_article.html', {})
-
 def site_map(request):
     #TODO return sitemap xml for search engine crawler
     return Response('Under construction')

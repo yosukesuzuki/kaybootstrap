@@ -12,22 +12,10 @@
     <div class="span3">
         <div class="well sidebar-nav">
             <ul class="nav nav-list">
-                <li class="nav-header">Sidebar</li>
-                <li class="active"><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li class="nav-header">Sidebar</li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li class="nav-header">Sidebar</li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
+                <li class="nav-header">{{sidebar['sidebar_title']}}</li>
+                {% for sl in sidebar['sidebar_list'] %}
+                <li><a href="{{sl['url']}}">{{sl['title']}}</a></li>
+                {% endfor %}
             </ul>
         </div>
     </div>
@@ -38,7 +26,7 @@
 <div class="row">
     <div class="span9">
         <h4>{{_('Admin Menu')}}</h4>
-        <a class="btn btn-primary" href="/admin/adminpage/update/{{page.key()}}">{{_('Edit This Page')}}</a>
+        <a class="btn btn-primary" href="/admin/{{model_name|lower}}/update/{{page.key()}}">{{_('Edit This Page')}}</a>
     </div>
     <div class="span3">
         &nbsp;

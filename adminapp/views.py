@@ -45,13 +45,9 @@ from kay.i18n import gettext as _
 from kay.auth.decorators import admin_required
 from kay.handlers import blobstore_handlers
 
-from mainapp.views import CACHE_NAME_FOR_TOP_PAGE_RESULTS
+from mainapp.views import CACHE_NAME_FOR_TOP_PAGE_RESULTS,MODEL_DICT
 from mainapp.models import AdminPage,BlobStoreImage,Article
 from adminapp.forms import AdminPageForm
-
-ADMIN_MODEL_DICT = {'AdminPage':AdminPage,'BlobStoreImage':BlobStoreImage,'Article':Article}
-
-# Create your views here.
 
 def index(request):
     admin_page_list = [{'title':_('Page Manager'),'info':AdminPage.__doc__,'url':'/admin/adminpage/list'},
@@ -89,7 +85,7 @@ def add_translation(request,parent_key):
     except:
         return Response('Title is required')
     trans_key_name = parent_entity.key().name()+'_'+request.form['lang']
-    trans_entity = ADMIN_MODEL_DICT[model_name](parent=parent_entity,key_name=trans_key_name,title=title)
+    trans_entity = MODEL_DICT[model_name](parent=parent_entity,key_name=trans_key_name,title=title)
     for k in request.form:
         if (k in ['title','url']) is False:
             try:
@@ -102,7 +98,7 @@ def add_translation(request,parent_key):
 
 def get_children(request,parent_key):
     parent_entity = db.get(parent_key)
-    children = ADMIN_MODEL_DICT[parent_entity.kind()].all().ancestor(parent_entity.key()).fetch(1000)
+    children = MODEL_DICT[parent_entity.kind()].all().ancestor(parent_entity.key()).fetch(1000)
     return_list = []
     for child in children:
         logging.info(u'title:'+child.title)
