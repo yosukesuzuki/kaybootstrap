@@ -6,6 +6,7 @@ import re
 import logging
 import json
 import datetime
+import random
 
 from google.appengine.api import memcache
 from google.appengine.api.images import get_serving_url
@@ -96,13 +97,14 @@ class ArticleCRUDViewGroup(crud.CRUDViewGroup):
              url = request.form['url']
          except:
              pass
-         if url:
-             key_name = url
-         else:
-             key_name = urllib.quote(request.form['title'])
          image_list = construct_image_json_from_content(request.form['content'])
          tag_list = request.form['tags_string'].split(',')
          display_time = construct_datetime_from_string(request.form['display_time'])
+         if url:
+             key_name = url
+         else:
+             random_string = str(random.getrandbits(32))
+             key_name = display_time.strftime('%Y%m%d')+random_string 
          return {'key_name':key_name,'images':image_list,'lang':DEFAULT_LANG,'tags':tag_list,'display_time':display_time}
      authorize = admin_required
 
