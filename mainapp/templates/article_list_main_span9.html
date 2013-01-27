@@ -13,13 +13,4 @@
     </div>
 </div>
 {% endfor %}
-<div class="span9">
-    <div class="pagination">
-        <ul>
-            {% for i in range(1,article_results['total_pages']+1) %}
-            <li {% if i == article_results['current_page'] %}class="active"{% endif %}><a href="{{url_for('mainapp/article_list')}}{% if i != 1 %}?page={{i}}{% endif %}">{{i}}</a></li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
 

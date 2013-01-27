@@ -86,7 +86,8 @@ def index(request):
         if len(results) == 0:results = DUMMY_DATA_FOR_TOP_PAGE
         logging.info(results)
         memcache.set(CACHE_NAME_FOR_TOP_PAGE_RESULTS+'-'+browser_lang,results)
-    return render_to_response('mainapp/index.html', {'results': results})
+    article_results = get_article_list(browser_lang,1,4)
+    return render_to_response('mainapp/index.html', {'results': results,'article_results':article_results})
 
 def show_each_page(request,key_name):
     '''
@@ -100,8 +101,10 @@ def show_each_page(request,key_name):
     sidebar = {'sidebar_title':_('Link'),'sidebar_list':[{'title':_('About'),'url':'/about/'},{'title':_('Contact'),'url':'/contact/'}]}
     return render_to_response('mainapp/show_each_page.html', {'page': page,'model_name':model_name,'sidebar':sidebar})
 
-def get_page_content(browser_lang,model_name,key_name):
+def get_page_content(browser_lang,model_name,key_name,is_admin=False):
     page = MODEL_DICT[model_name].get_by_key_name(key_name)
+    if is_admin is False and page.display_page_flg is False:
+        return None
     if browser_lang != DEFAULT_LANG:
         logging.info('browser_lang:'+browser_lang)
         translations = MODEL_DICT[model_name].all().ancestor(page.key()).fetch(1000)
@@ -117,8 +120,8 @@ def article_list(request):
         page = int(request.args.get('page','1'))
     except ValueError:
         page = 1
-    results_dic = get_article_list(browser_lang,page,article_per_page)
-    return render_to_response('mainapp/article_list.html', {'article_results':results_dic})
+    article_results = get_article_list(browser_lang,page,article_per_page)
+    return render_to_response('mainapp/article_list.html', {'article_results':article_results})
 
 def show_each_article(request,key_name):
     browser_lang = request.lang

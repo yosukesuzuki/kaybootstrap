@@ -33,4 +33,14 @@
     </div>
     {% endfor %}
 </div>
+<!--row of articles-->
+<div class="row">
+    <div class="span12"><h2>{{_('Article')}}</h2></div>
+    <div class="span9">
+        {% include "mainapp/article_list_main_span9.html" %}
+    </div>
+    <div class="span3">
+        {% include "mainapp/article_list_sidebar_span3.html" %}
+    </div>
+</div>
 {% endblock %}

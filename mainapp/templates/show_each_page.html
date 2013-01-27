@@ -7,6 +7,9 @@
 </div>
 <div class="row">
     <div class="span9">
+    {% if page['display_time'] %}
+    <p>(<span class="display_time_local">{{page['display_time']}}</span>)</p>
+    {% endif %}
     {{page.content|toMarkdown|safe}}
     </div>
     <div class="span3">
