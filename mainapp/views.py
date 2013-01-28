@@ -27,6 +27,7 @@ from kay.auth.decorators import login_required
 import logging
 import json
 import datetime
+import urllib
 from werkzeug import Response
 
 from google.appengine.api import files
@@ -134,7 +135,11 @@ def show_each_article(request,key_name):
     return render_to_response('mainapp/show_each_page.html', {'page': page,'model_name':model_name,'sidebar':sidebar})
 
 def get_article_list(browser_lang,page,article_per_page,tag_name=False):
-    memcache_key = 'article-'+str(page)+'-'+str(article_per_page)+'-'+str(tag_name)+'-'+browser_lang
+    if tag_name:
+        tag_name_encoded = unicode(tag_name)
+    else:
+        tag_name_encoded = str(tag_name)
+    memcache_key = u'article-'+str(page)+u'-'+str(article_per_page)+u'-'+urllib.quote(tag_name_encoded.encode('utf-8'))+u'-'+browser_lang
     logging.info(memcache_key)
     results_dic = memcache.get(memcache_key)
     #if memcache data exist return

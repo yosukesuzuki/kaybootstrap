@@ -6,7 +6,7 @@
     <h1>{{page.title}}</h1>
 </div>
 <div class="row">
-    <div class="span9">
+    <div class="span9 page-body">
     {% if page['display_time'] %}
     <p style="margin-top:-10px;">(<span class="display_time_local">{{page['display_time']}}</span>)</p>
     {% endif %}
@@ -28,5 +28,28 @@
         </div>
     </div>
 </div>
-
+<!-- Modal -->
+<div id="largeImageModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 id="largeImageModelHeader"></h3>
+    </div>
+    <div class="modal-body" id="largeImageModelBody">
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">{{_('Close')}}</button>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+$('div.page-body img').on('click',function(){
+    var imageTitle = $(this).attr('alt');
+    var imageSrc = $(this).attr('src');
+    imageSrc = imageSrc.replace(/=s[0-9]+/,'');
+    $('#largeImageModelHeader').html(imageTitle);
+    $('#largeImageModelBody').html('<img src="'+imageSrc+'">');
+    $('#largeImageModal').modal();
+});
+</script>
 {% endblock %}
