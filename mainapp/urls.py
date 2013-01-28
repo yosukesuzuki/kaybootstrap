@@ -21,6 +21,7 @@ view_groups = [
     Rule('/', endpoint='index', view='mainapp.views.index'),
     Rule('/article/<string:key_name>/', endpoint='show_each_article', view='mainapp.views.show_each_article'),
     Rule('/article/', endpoint='article_list', view='mainapp.views.article_list'),
+    Rule('/tag/<string:tag_name>/', endpoint='search_by_tag', view='mainapp.views.search_by_tag'),
     Rule('/<string:key_name>/', endpoint='show_each_page', view='mainapp.views.show_each_page'),
   )
 ]

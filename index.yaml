@@ -30,6 +30,14 @@ indexes:
 
 - kind: Article
   properties:
+  - name: display_page_flg
+  - name: lang
+  - name: tags
+  - name: display_time
+    direction: desc
+
+- kind: Article
+  properties:
   - name: lang
   - name: display_time
     direction: desc

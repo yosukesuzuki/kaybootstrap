@@ -133,50 +133,67 @@ def show_each_article(request,key_name):
     sidebar = {'sidebar_title':_('Back number'),'sidebar_list':results_dic['articles']}
     return render_to_response('mainapp/show_each_page.html', {'page': page,'model_name':model_name,'sidebar':sidebar})
 
-def get_article_list(browser_lang,page,article_per_page):
-    memcache_key = 'article-'+str(page)+'-'+str(article_per_page)+'-'+browser_lang
+def get_article_list(browser_lang,page,article_per_page,tag_name=False):
+    memcache_key = 'article-'+str(page)+'-'+str(article_per_page)+'-'+str(tag_name)+'-'+browser_lang
     logging.info(memcache_key)
     results_dic = memcache.get(memcache_key)
-    if results_dic is None:
-        now = datetime.datetime.now()
-        logging.info(now)
-        query = Article.all().filter(u'lang =',DEFAULT_LANG).filter(u'display_page_flg =',True).filter(u'display_time <',now).order('-display_time')
-        paginator = Paginator(query,article_per_page)
+    #if memcache data exist return
+    if results_dic:
+        return results_dic
+    #else memcach data is none,query from datastore
+    now = datetime.datetime.now()
+    logging.info(now)
+    query = Article.all().filter(u'lang =',DEFAULT_LANG).filter(u'display_page_flg =',True)
+    if tag_name:
+        query.filter(u'tags =',tag_name)
+    query.filter(u'display_time <',now).order('-display_time')
+    paginator = Paginator(query,article_per_page)
+    try:
+        results = paginator.page(page)
+    except (EmptyPage,InvalidPage):
+        results = paginator.page(paginator.num_pages)
+    return_list = []
+    for r in results.object_list:
+        if browser_lang != DEFAULT_LANG:
+            translations = Article.all().ancestor(r.key()).fetch(1000)
+            browser_lang_trans = None
+            for trans in translations:
+                if trans.lang == browser_lang:
+                    browser_lang_trans = trans
+                    break
+            if browser_lang_trans:
+                r.content = browser_lang_trans.content
+                r.title = browser_lang_trans.title
+        url = r.external_url if r.external_url else url_for('mainapp/show_each_article',key_name=r.key().name())
+        snippet = html.strip_tags(markdown(r.content)).split('\n')[0]
         try:
-            results = paginator.page(page)
-        except (EmptyPage,InvalidPage):
-            results = paginator.page(paginator.num_pages)
-        return_list = []
-        for r in results.object_list:
-            if browser_lang != DEFAULT_LANG:
-                translations = Article.all().ancestor(r.key()).fetch(1000)
-                browser_lang_trans = None
-                for trans in translations:
-                    if trans.lang == browser_lang:
-                        browser_lang_trans = trans
-                        break
-                if browser_lang_trans:
-                    r.content = browser_lang_trans.content
-                    r.title = browser_lang_trans.title
-            url = r.external_url if r.external_url else url_for('mainapp/show_each_article',key_name=r.key().name())
-            snippet = html.strip_tags(markdown(r.content)).split('\n')[0]
-            try:
-                first_image = json.loads(r.images)['images'][0]['image_path']
-            except:
-                first_image = None
-            return_list.append({'key':str(r.key()),
-                'id':r.key().name(),
-                'title':r.title,
-                'snippet':snippet,
-                'url':url,
-                'first_image':first_image,
-                'display_time':str(r.display_time)[:16]})
-        results_dic = {'articles':return_list,
-        'current_page':results.number,
-        'total_pages':results.paginator.num_pages}
-        memcache.set(memcache_key,results_dic)
+            first_image = json.loads(r.images)['images'][0]['image_path']
+        except:
+            first_image = None
+        return_list.append({'key':str(r.key()),
+            'id':r.key().name(),
+            'title':r.title,
+            'snippet':snippet,
+            'url':url,
+            'first_image':first_image,
+            'display_time':str(r.display_time)[:16]})
+    results_dic = {'articles':return_list,
+    'current_page':results.number,
+    'total_pages':results.paginator.num_pages,
+    'tag_name':tag_name}
+    memcache.set(memcache_key,results_dic)
     return results_dic 
- 
+
+def search_by_tag(request,tag_name):
+    browser_lang = request.lang
+    article_per_page = 10
+    try:
+        page = int(request.args.get('page','1'))
+    except ValueError:
+        page = 1
+    article_results = get_article_list(browser_lang,page,article_per_page,tag_name)
+    return render_to_response('mainapp/article_list.html', {'article_results':article_results})
+
 def site_map(request):
     #TODO return sitemap xml for search engine crawler
     return Response('Under construction')

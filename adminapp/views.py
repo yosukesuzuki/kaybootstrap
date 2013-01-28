@@ -93,6 +93,9 @@ def add_translation(request,parent_key):
             except:
                 if request.form[k] == 'on':
                     setattr(trans_entity,k,True)
+            #custom process for tags_string
+            if k == 'tags_string':
+                setattr(trans_entity,'tags',request.form[k].split(','))
     trans_entity.put()
     return Response('Success:add transltion')
 

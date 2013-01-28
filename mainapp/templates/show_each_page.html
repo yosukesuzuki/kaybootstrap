@@ -1,5 +1,5 @@
 {% extends "mainapp/base.html"%}
-{% block title %}{% endblock %}
+{% block title %}{{page.title}}{% endblock %}
 {% block description %}{% endblock %}
 {% block content %}
 <div class="page-header">
@@ -8,7 +8,12 @@
 <div class="row">
     <div class="span9">
     {% if page['display_time'] %}
-    <p>(<span class="display_time_local">{{page['display_time']}}</span>)</p>
+    <p style="margin-top:-10px;">(<span class="display_time_local">{{page['display_time']}}</span>)</p>
+    {% endif %}
+    {% if page['tags'] %}
+        {% for tag in page['tags'] %}
+        <a class="label" href="{{url_for('mainapp/search_by_tag',tag_name=tag)}}">{{tag}}</a>
+        {% endfor %}
     {% endif %}
     {{page.content|toMarkdown|safe}}
     </div>
@@ -24,16 +29,4 @@
     </div>
 </div>
 
-
-{% if request.user.is_admin %}
-<div class="row">
-    <div class="span9">
-        <h4>{{_('Admin Menu')}}</h4>
-        <a class="btn btn-primary" href="/admin/{{model_name|lower}}/update/{{page.key()}}">{{_('Edit This Page')}}</a>
-    </div>
-    <div class="span3">
-        &nbsp;
-    </div>
-</div>
-{% endif %}
 {% endblock %}
