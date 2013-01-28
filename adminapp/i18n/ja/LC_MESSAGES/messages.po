@@ -23,9 +23,8 @@ msgid "Page Manager"
 msgstr "ページ管理"
 
 #: adminapp/views.py:54
-#, fuzzy
 msgid "Article Manager"
-msgstr "画像管理"
+msgstr "記事管理"
 
 #: adminapp/views.py:55
 msgid "Image Manager"

@@ -74,7 +74,7 @@ class AdminPageCRUDViewGroup(crud.CRUDViewGroup):
      authorize = admin_required
 
 class ArticleCRUDViewGroup(crud.CRUDViewGroup):
-     entities_per_page = 20 
+     entities_per_page = 10 
      model = Article 
      form = ArticleForm
      templates = {

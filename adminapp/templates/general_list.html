@@ -4,9 +4,12 @@
 {% block content %}
 <h1>{{ _('List of model: %s' % model) }}</h1>
 <div id="main">
-    <div id="message" style="font-weight: bold; color: #DDAAAA;">
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
         {{ message }}
     </div>
+        
+    <p><a href="{{ create_url() }}" class="btn btn-primary">{{ _('Create new entity') }}</a></p>
     <table id="content-list-table" class="table table-bordered table-hover">
         <thead>
             <tr>
@@ -46,9 +49,9 @@
 </div>
 <p id="sort-change-message">
 </p>
-<a href="{{ create_url() }}" class="btn btn-primary">{{ _('Create new entity') }}</a><br/>
+
 {% if cursor %}
-<a href="{{ list_url(cursor) }}">{{ _('Next Page') }}</a>
+<p><a href="{{ list_url(cursor) }}" class="btn">{{ _('Next Page') }}<i class="icon-chevron-right"></i></a></p>
 {% endif %}
 {% endblock %}
 {% block scripts %}
