@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: tmatsuo@candit.jp\n"
-"POT-Creation-Date: 2013-01-26 14:48+0900\n"
+"POT-Creation-Date: 2013-01-28 10:42+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,15 +17,35 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel None\n"
 
-#: adminapp/views.py:57
+#: adminapp/views.py:53
 msgid "Page Manager"
 msgstr ""
 
-#: adminapp/views.py:58
+#: adminapp/views.py:54
+msgid "Article Manager"
+msgstr ""
+
+#: adminapp/views.py:55
 msgid "Image Manager"
 msgstr ""
 
-#: adminapp/views.py:114
+#: adminapp/views.py:120 adminapp/templates/general_list.html:26
+msgid "Preview"
+msgstr ""
+
+#: adminapp/views.py:121
+msgid "Link"
+msgstr ""
+
+#: adminapp/views.py:121
+msgid "About"
+msgstr ""
+
+#: adminapp/views.py:121
+msgid "Contact"
+msgstr ""
+
+#: adminapp/views.py:128
 msgid "Image manager"
 msgstr ""
 
@@ -33,34 +53,34 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: adminapp/templates/general_list.html:14 adminapp/templates/general_list.html:25
+#: adminapp/templates/general_list.html:15 adminapp/templates/general_list.html:37
 #: adminapp/templates/image_manager.html:105
 msgid "Update"
 msgstr ""
 
-#: adminapp/templates/general_list.html:15 adminapp/templates/general_list.html:28
-#: adminapp/templates/general_update.html:141
+#: adminapp/templates/general_list.html:16 adminapp/templates/general_list.html:40
+#: adminapp/templates/general_update.html:147
 #: adminapp/templates/image_manager.html:107
 msgid "Delete"
 msgstr ""
 
-#: adminapp/templates/general_list.html:28
+#: adminapp/templates/general_list.html:40
 msgid "Delete this entity?"
 msgstr ""
 
-#: adminapp/templates/general_list.html:37
+#: adminapp/templates/general_list.html:49
 msgid "Create new entity"
 msgstr ""
 
-#: adminapp/templates/general_list.html:39
+#: adminapp/templates/general_list.html:51
 msgid "Next Page"
 msgstr ""
 
-#: adminapp/templates/general_list.html:56
+#: adminapp/templates/general_list.html:68
 msgid "Update Order"
 msgstr ""
 
-#: adminapp/templates/general_list.html:57
+#: adminapp/templates/general_list.html:69
 msgid "new order is not saved yet."
 msgstr ""
 
@@ -68,38 +88,38 @@ msgstr ""
 msgid "Go Back"
 msgstr ""
 
-#: adminapp/templates/general_update.html:25
-#: adminapp/templates/general_update.html:140
+#: adminapp/templates/general_update.html:29
+#: adminapp/templates/general_update.html:146
 msgid "Save"
 msgstr ""
 
-#: adminapp/templates/general_update.html:36
+#: adminapp/templates/general_update.html:40
 msgid "Image Insert"
 msgstr ""
 
-#: adminapp/templates/general_update.html:39
+#: adminapp/templates/general_update.html:43
 msgid "Select Images"
 msgstr ""
 
-#: adminapp/templates/general_update.html:46
-#: adminapp/templates/general_update.html:68
+#: adminapp/templates/general_update.html:50
+#: adminapp/templates/general_update.html:72
 msgid "Close"
 msgstr ""
 
-#: adminapp/templates/general_update.html:52
-#: adminapp/templates/general_update.html:64
+#: adminapp/templates/general_update.html:56
+#: adminapp/templates/general_update.html:68
 msgid "Add Translation"
 msgstr ""
 
-#: adminapp/templates/general_update.html:55
+#: adminapp/templates/general_update.html:59
 msgid "Select Language"
 msgstr ""
 
-#: adminapp/templates/general_update.html:75
+#: adminapp/templates/general_update.html:81
 msgid "Insert Image"
 msgstr ""
 
-#: adminapp/templates/general_update.html:169
+#: adminapp/templates/general_update.html:175
 msgid "Add translation success"
 msgstr ""
 

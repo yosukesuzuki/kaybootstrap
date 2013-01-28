@@ -1,74 +1,143 @@
-# Japanese translations for PROJECT.
+# Japanese translations for PROJECT None¥n¥nReport-Msgid-Bugs-To:
+# tmatsuo@candit.jp¥nPOT-Creation-Date: 2013-01-26
+# 09:43+0900¥nPO-Revision-Date: 2013-01-26 09:43+0900¥nLast-Translator: Yosuke
+# SuzukinLanguage-Team: ja <LL@li.org>¥nPlural-Forms: nplurals=1;
+# plural=0¥nMIME-Version: 1.0¥nContent-Type: text/plain;
+# charset=utf-8¥nContent-Transfer-Encoding: 8bit¥nGenerated-By: Babel
+# None¥n¥nReport-Msgid-Bugs-To:
+# tmatsuo@candit.jp¥nPOT-Creation-Date: 2013-01-26
+# 09:43+0900¥nPO-Revision-Date: 2013-01-26 09:43+0900¥nLast-Translator: Yosuke
+# SuzukinLanguage-Team: ja <LL@li.org>¥nPlural-Forms: nplurals=1;
+# plural=0¥nMIME-Version: 1.0¥nContent-Type: text/plain;
+# charset=utf-8¥nContent-Transfer-Encoding: 8bit¥nGenerated-By: Babel
+# None¥n¥nReport-Msgid-Bugs-To:
+# charset=utf-8¥nContent-Transfer-Encoding: 8bit¥nGenerated-By: Babel.
 # Copyright (C) 2013 Takashi Matsuo
-# This file is distributed under the same license as the PROJECT project.
+# This file is distributed under the same license as the PROJECT
+# None¥n¥nReport-Msgid-Bugs-To: tmatsuo@candit.jp¥nPOT-Creation-Date:
+# 2013-01-26 09:43+0900¥nPO-Revision-Date: 2013-01-26
+# 09:43+0900¥nLast-Translator: Yosuke SuzukinLanguage-Team: ja
+# <LL@li.org>¥nPlural-Forms: nplurals=1; plural=0¥nMIME-Version:
+# 1.0¥nContent-Type: text/plain; charset=utf-8¥nContent-Transfer-Encoding:
+# 8bit¥nGenerated-By: Babel
+# None¥n¥nReport-Msgid-Bugs-To: tmatsuo@candit.jp¥nPOT-Creation-Date:
+# 2013-01-26 09:43+0900¥nPO-Revision-Date: 2013-01-26
+# 09:43+0900¥nLast-Translator: Yosuke SuzukinLanguage-Team: ja
+# <LL@li.org>¥nPlural-Forms: nplurals=1; plural=0¥nMIME-Version:
+# 1.0¥nContent-Type: text/plain; charset=utf-8¥nContent-Transfer-Encoding:
+# 8bit¥nGenerated-By: Babel
+# 8bit¥nGenerated-By: Babel project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION¥n"
-"Report-Msgid-Bugs-To: tmatsuo@candit.jp¥n"
-"POT-Creation-Date: 2013-01-26 09:43+0900¥n"
-"PO-Revision-Date: 2013-01-26 09:43+0900¥n"
-"Last-Translator: Yosuke Suzukin"
-"Language-Team: ja <LL@li.org>¥n"
-"Plural-Forms: nplurals=1; plural=0¥n"
-"MIME-Version: 1.0¥n"
-"Content-Type: text/plain; charset=utf-8¥n"
-"Content-Transfer-Encoding: 8bit¥n"
-"Generated-By: Babel None¥n"
+"Project-Id-Version: PROJECT VERSION¥nReport-Msgid-Bugs-To: tmatsuo@candit.jp"
+"¥nPOT-Creation-Date: 2013-01-26 09:43+0900¥nPO-Revision-Date: 2013-01-26 "
+"09:43+0900¥nLast-Translator: Yosuke SuzukinLanguage-Team: ja <LL@li.org"
+">¥nPlural-Forms: nplurals=1; plural=0¥nMIME-Version: 1.0¥nContent-Type: "
+"text/plain; charset=utf-8¥nContent-Transfer-Encoding: 8bit¥nGenerated-By: "
+"Babel None¥n\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2013-01-28 10:42+0900\n"
+"PO-Revision-Date: 2013-01-28 10:36+0900\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: ja <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel None\n"
 
-#: mainapp/models.py:17
+#: mainapp/models.py:16 mainapp/models.py:36
 msgid "Display this page"
 msgstr "このページを表示する"
 
-#: mainapp/models.py:18 mainapp/models.py:32
+#: mainapp/models.py:17
+#, fuzzy
+msgid "Display time,UTC"
+msgstr "このページを表示する"
+
+#: mainapp/models.py:18 mainapp/models.py:37 mainapp/models.py:51
 msgid "Title"
 msgstr "タイトル"
 
-#: mainapp/models.py:19
+#: mainapp/models.py:19 mainapp/models.py:38
 msgid "Url,page identifier of this content,only at first time"
 msgstr "URLとして使う一意の文字列、初回のみ設定か"
 
-#: mainapp/models.py:20
+#: mainapp/models.py:20 mainapp/models.py:39
 msgid "Page order"
 msgstr "ページの並び順"
 
-#: mainapp/models.py:21
+#: mainapp/models.py:21 mainapp/models.py:40
 msgid "Content"
 msgstr "コンテンツ"
 
 #: mainapp/models.py:22
+msgid "Tags,comma separated"
+msgstr "タグ、カンマ区切り"
+
+#: mainapp/models.py:23
+msgid "Tag list,for search"
+msgstr "タグのリスト、検索用"
+
+#: mainapp/models.py:24 mainapp/models.py:41
 msgid "Images,JSON Format"
 msgstr "画像情報、JSON形式"
 
-#: mainapp/models.py:23
+#: mainapp/models.py:25 mainapp/models.py:42
 msgid "Content Language"
 msgstr "コンテンツの言語"
 
-#: mainapp/models.py:24
+#: mainapp/models.py:26 mainapp/models.py:43
 msgid "External Url,If link to an outside page,optional"
 msgstr "外部リンクのURL、外部にリンクさせる場合"
 
-#: mainapp/models.py:25 mainapp/models.py:36
+#: mainapp/models.py:27 mainapp/models.py:44 mainapp/models.py:55
 msgid "Update"
 msgstr "更新"
 
-#: mainapp/models.py:26 mainapp/models.py:37
+#: mainapp/models.py:28 mainapp/models.py:45 mainapp/models.py:56
 msgid "Created"
 msgstr "作成日"
 
-#: mainapp/models.py:33
+#: mainapp/models.py:52
 msgid "File Name"
 msgstr "ファイル名"
 
-#: mainapp/models.py:34
+#: mainapp/models.py:53
 msgid "Note"
 msgstr "ノート"
+
+#: mainapp/views.py:101
+msgid "Link"
+msgstr "リンク"
+
+#: mainapp/views.py:101 mainapp/templates/base.html:99
+msgid "About"
+msgstr "このサイトについて"
+
+#: mainapp/views.py:101 mainapp/templates/base.html:100
+msgid "Contact"
+msgstr "お問い合わせ"
+
+#: mainapp/views.py:133 mainapp/templates/article_list_sidebar_span3.html:3
+msgid "Back number"
+msgstr "バックナンバー"
 
 #: mainapp/templates/404.html:6
 msgid "404 page not found"
 msgstr "404 ページが見つかりません"
+
+#: mainapp/templates/article_list.html:2 mainapp/templates/article_list.html:6
+msgid "Article List"
+msgstr "記事一覧"
+
+#: mainapp/templates/article_list_main_span9.html:12
+#: mainapp/templates/index.html:31
+msgid "View details"
+msgstr "もっと詳しく"
 
 #: mainapp/templates/base.html:46
 msgid "News"
@@ -80,7 +149,7 @@ msgstr "人気"
 
 #: mainapp/templates/base.html:49
 msgid "Directory"
-msgstr "ディレクトリー"
+msgstr "ディレクトリ"
 
 #: mainapp/templates/base.html:62
 msgid "input keyword"
@@ -94,27 +163,19 @@ msgstr "言語"
 msgid "Admin"
 msgstr "管理者"
 
-#: mainapp/templates/base.html:99
-msgid "About"
-msgstr "このサイトについて"
-
-#: mainapp/templates/base.html:100
-msgid "Contact"
-msgstr "お問い合わせ"
-
 #: mainapp/templates/index.html:15
 msgid "Learn more"
 msgstr "もっと見る"
 
-#: mainapp/templates/index.html:31
-msgid "View details"
-msgstr "もっと詳しく"
+#: mainapp/templates/index.html:38
+msgid "Article"
+msgstr "記事"
 
-#: mainapp/templates/show_each_page.html:40
+#: mainapp/templates/show_each_page.html:31
 msgid "Admin Menu"
 msgstr "管理者メニュー"
 
-#: mainapp/templates/show_each_page.html:41
+#: mainapp/templates/show_each_page.html:32
 msgid "Edit This Page"
 msgstr "このページを編集"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: tmatsuo@candit.jp\n"
-"POT-Creation-Date: 2013-01-26 14:48+0900\n"
+"POT-Creation-Date: 2013-01-28 10:42+0900\n"
 "PO-Revision-Date: 2013-01-26 14:48+0900\n"
 "Last-Translator: Yosuke Suzuki\n"
 "Language-Team: ja <LL@li.org>\n"
@@ -18,15 +18,36 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel None\n"
 
-#: adminapp/views.py:57
+#: adminapp/views.py:53
 msgid "Page Manager"
 msgstr "ページ管理"
 
-#: adminapp/views.py:58
+#: adminapp/views.py:54
+#, fuzzy
+msgid "Article Manager"
+msgstr "画像管理"
+
+#: adminapp/views.py:55
 msgid "Image Manager"
 msgstr "画像管理"
 
-#: adminapp/views.py:114
+#: adminapp/views.py:120 adminapp/templates/general_list.html:26
+msgid "Preview"
+msgstr "プレビュー"
+
+#: adminapp/views.py:121
+msgid "Link"
+msgstr "リンク"
+
+#: adminapp/views.py:121
+msgid "About"
+msgstr "このサイトについて"
+
+#: adminapp/views.py:121
+msgid "Contact"
+msgstr "お問い合わせ"
+
+#: adminapp/views.py:128
 msgid "Image manager"
 msgstr "画像管理"
 
@@ -34,34 +55,34 @@ msgstr "画像管理"
 msgid "Title"
 msgstr "タイトル"
 
-#: adminapp/templates/general_list.html:14 adminapp/templates/general_list.html:25
+#: adminapp/templates/general_list.html:15 adminapp/templates/general_list.html:37
 #: adminapp/templates/image_manager.html:105
 msgid "Update"
 msgstr "更新"
 
-#: adminapp/templates/general_list.html:15 adminapp/templates/general_list.html:28
-#: adminapp/templates/general_update.html:141
+#: adminapp/templates/general_list.html:16 adminapp/templates/general_list.html:40
+#: adminapp/templates/general_update.html:147
 #: adminapp/templates/image_manager.html:107
 msgid "Delete"
 msgstr "削除"
 
-#: adminapp/templates/general_list.html:28
+#: adminapp/templates/general_list.html:40
 msgid "Delete this entity?"
 msgstr "このエンティティを削除しますか？"
 
-#: adminapp/templates/general_list.html:37
+#: adminapp/templates/general_list.html:49
 msgid "Create new entity"
 msgstr "新しいエンティティを作成"
 
-#: adminapp/templates/general_list.html:39
+#: adminapp/templates/general_list.html:51
 msgid "Next Page"
 msgstr "次のページ"
 
-#: adminapp/templates/general_list.html:56
+#: adminapp/templates/general_list.html:68
 msgid "Update Order"
 msgstr "並び順を更新"
 
-#: adminapp/templates/general_list.html:57
+#: adminapp/templates/general_list.html:69
 msgid "new order is not saved yet."
 msgstr "新しい並び順はまだ保存されていません"
 
@@ -69,38 +90,38 @@ msgstr "新しい並び順はまだ保存されていません"
 msgid "Go Back"
 msgstr "戻る"
 
-#: adminapp/templates/general_update.html:25
-#: adminapp/templates/general_update.html:140
+#: adminapp/templates/general_update.html:29
+#: adminapp/templates/general_update.html:146
 msgid "Save"
 msgstr "保存"
 
-#: adminapp/templates/general_update.html:36
+#: adminapp/templates/general_update.html:40
 msgid "Image Insert"
 msgstr "画像の挿入"
 
-#: adminapp/templates/general_update.html:39
+#: adminapp/templates/general_update.html:43
 msgid "Select Images"
 msgstr "画像を選択"
 
-#: adminapp/templates/general_update.html:46
-#: adminapp/templates/general_update.html:68
+#: adminapp/templates/general_update.html:50
+#: adminapp/templates/general_update.html:72
 msgid "Close"
 msgstr "閉じる"
 
-#: adminapp/templates/general_update.html:52
-#: adminapp/templates/general_update.html:64
+#: adminapp/templates/general_update.html:56
+#: adminapp/templates/general_update.html:68
 msgid "Add Translation"
 msgstr "翻訳を追加"
 
-#: adminapp/templates/general_update.html:55
+#: adminapp/templates/general_update.html:59
 msgid "Select Language"
 msgstr "言語を選択"
 
-#: adminapp/templates/general_update.html:75
+#: adminapp/templates/general_update.html:81
 msgid "Insert Image"
 msgstr "画像を挿入"
 
-#: adminapp/templates/general_update.html:169
+#: adminapp/templates/general_update.html:175
 msgid "Add translation success"
 msgstr "翻訳を追加しました"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: tmatsuo@candit.jp\n"
-"POT-Creation-Date: 2013-01-26 09:43+0900\n"
+"POT-Creation-Date: 2013-01-28 10:42+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,56 +17,93 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel None\n"
 
-#: mainapp/models.py:17
+#: mainapp/models.py:16 mainapp/models.py:36
 msgid "Display this page"
 msgstr ""
 
-#: mainapp/models.py:18 mainapp/models.py:32
+#: mainapp/models.py:17
+msgid "Display time,UTC"
+msgstr ""
+
+#: mainapp/models.py:18 mainapp/models.py:37 mainapp/models.py:51
 msgid "Title"
 msgstr ""
 
-#: mainapp/models.py:19
+#: mainapp/models.py:19 mainapp/models.py:38
 msgid "Url,page identifier of this content,only at first time"
 msgstr ""
 
-#: mainapp/models.py:20
+#: mainapp/models.py:20 mainapp/models.py:39
 msgid "Page order"
 msgstr ""
 
-#: mainapp/models.py:21
+#: mainapp/models.py:21 mainapp/models.py:40
 msgid "Content"
 msgstr ""
 
 #: mainapp/models.py:22
-msgid "Images,JSON Format"
+msgid "Tags,comma separated"
 msgstr ""
 
 #: mainapp/models.py:23
+msgid "Tag list,for search"
+msgstr ""
+
+#: mainapp/models.py:24 mainapp/models.py:41
+msgid "Images,JSON Format"
+msgstr ""
+
+#: mainapp/models.py:25 mainapp/models.py:42
 msgid "Content Language"
 msgstr ""
 
-#: mainapp/models.py:24
+#: mainapp/models.py:26 mainapp/models.py:43
 msgid "External Url,If link to an outside page,optional"
 msgstr ""
 
-#: mainapp/models.py:25 mainapp/models.py:36
+#: mainapp/models.py:27 mainapp/models.py:44 mainapp/models.py:55
 msgid "Update"
 msgstr ""
 
-#: mainapp/models.py:26 mainapp/models.py:37
+#: mainapp/models.py:28 mainapp/models.py:45 mainapp/models.py:56
 msgid "Created"
 msgstr ""
 
-#: mainapp/models.py:33
+#: mainapp/models.py:52
 msgid "File Name"
 msgstr ""
 
-#: mainapp/models.py:34
+#: mainapp/models.py:53
 msgid "Note"
+msgstr ""
+
+#: mainapp/views.py:101
+msgid "Link"
+msgstr ""
+
+#: mainapp/views.py:101 mainapp/templates/base.html:99
+msgid "About"
+msgstr ""
+
+#: mainapp/views.py:101 mainapp/templates/base.html:100
+msgid "Contact"
+msgstr ""
+
+#: mainapp/views.py:133 mainapp/templates/article_list_sidebar_span3.html:3
+msgid "Back number"
 msgstr ""
 
 #: mainapp/templates/404.html:6
 msgid "404 page not found"
+msgstr ""
+
+#: mainapp/templates/article_list.html:2 mainapp/templates/article_list.html:6
+msgid "Article List"
+msgstr ""
+
+#: mainapp/templates/article_list_main_span9.html:12
+#: mainapp/templates/index.html:31
+msgid "View details"
 msgstr ""
 
 #: mainapp/templates/base.html:46
@@ -93,27 +130,19 @@ msgstr ""
 msgid "Admin"
 msgstr ""
 
-#: mainapp/templates/base.html:99
-msgid "About"
-msgstr ""
-
-#: mainapp/templates/base.html:100
-msgid "Contact"
-msgstr ""
-
 #: mainapp/templates/index.html:15
 msgid "Learn more"
 msgstr ""
 
-#: mainapp/templates/index.html:31
-msgid "View details"
+#: mainapp/templates/index.html:38
+msgid "Article"
 msgstr ""
 
-#: mainapp/templates/show_each_page.html:40
+#: mainapp/templates/show_each_page.html:31
 msgid "Admin Menu"
 msgstr ""
 
-#: mainapp/templates/show_each_page.html:41
+#: mainapp/templates/show_each_page.html:32
 msgid "Edit This Page"
 msgstr ""
 
