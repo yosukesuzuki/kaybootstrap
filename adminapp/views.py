@@ -55,6 +55,10 @@ def index(request):
             {'title':_('Image Manager'),'info':BlobStoreImage.__doc__,'url':'/admin/image/manager/'}]
     return render_to_response('adminapp/index.html', {'admin_page_list': admin_page_list})
 
+def flush_memcache(request):
+    memcache.flush_all()
+    return Response('success')
+
 def update_page_order(request):
     try:
         new_orders = request.form['orders']

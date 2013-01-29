@@ -85,12 +85,14 @@ class ArticleCRUDViewGroup(crud.CRUDViewGroup):
      def get_query(self, request):
          return self.model.all().filter(u'lang =',DEFAULT_LANG).order('-display_time')
      def get_additional_context_on_update(self, request, form):
+         memcache.flush_all()
          logging.info(request.form['content'])
          image_list = construct_image_json_from_content(request.form['content'])
          tag_list = request.form['tags_string'].split(',')
          display_time = construct_datetime_from_string(request.form['display_time'])
          return {'images':image_list,'lang':DEFAULT_LANG,'tags':tag_list,'display_time':display_time}
      def get_additional_context_on_create(self, request, form):
+         memcache.flush_all()
          key_name = None
          url = None
          try:
@@ -115,6 +117,7 @@ view_groups = [
   AdminModelsRESTViewGroup(),
   ViewGroup(
     Rule('/', endpoint='index', view='adminapp.views.index'),
+    Rule('/flush/memcache/', endpoint='flush_memcache', view='adminapp.views.flush_memcache'),
     Rule('/preview/<string:entity_key>', endpoint='preview', view='adminapp.views.preview'),
     Rule('/update/page/order/', endpoint='update_page_order', view='adminapp.views.update_page_order'),
     Rule('/add/translation/<string:parent_key>', endpoint='add_translation', view='adminapp.views.add_translation'),

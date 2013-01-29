@@ -10,6 +10,10 @@
 
 <!-- row of columns -->
 <div class="row">
+    <div class="span9" id="flushMemcacheAllMessage"></div>
+    <div class="span9"><button class="btn btn-large btn-danger btn-block" type="button" id="flushMemcacheAll">{{_('Flush All Memcache')}}</button></div>
+</div>
+<div class="row">
     {% for a in admin_page_list %}
     <div class="span4">
         <h2>{{a['title']}}</h2>
@@ -18,4 +22,22 @@
     </div>
     {% endfor %}
 </div>
+{% endblock %}
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        $('#flushMemcacheAll').on('click',function(){
+            $.ajax({
+                type:"GET",
+                url:"{{url_for('adminapp/flush_memcache')}}",
+                success: function(data){
+                    var callBackContent = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>';
+                    callBackContent += data + '</div>';
+                    $('#flushMemcacheAllMessage').html(callBackContent);
+                }
+            });
+        });
+    });
+
+</script>
 {% endblock %}
