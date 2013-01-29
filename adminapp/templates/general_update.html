@@ -228,8 +228,13 @@
                             var params = $form.serializeArray();
                             for(var j=0;j<params.length;j++){
                                 var paramName = params[j].name;
-                                console.log(paramName);
-                                $form.find("[name="+paramName+"]").val(entity[paramName]);
+                                var formType = $form.find("[name="+paramName+"]").attr('type');
+                                console.log(formType);
+                                if(formType == 'checkbox'){
+                                    $form.find("[name="+paramName+"]").attr('checked',entity[paramName]);
+                                }else{
+                                    $form.find("[name="+paramName+"]").val(entity[paramName]);
+                                }
                             }
                             $form.append('<span class="childKey" style="display:none;">'+entity['key']+'</div>');
                         }

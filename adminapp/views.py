@@ -87,15 +87,21 @@ def add_translation(request,parent_key):
     trans_key_name = parent_entity.key().name()+'_'+request.form['lang']
     trans_entity = MODEL_DICT[model_name](parent=parent_entity,key_name=trans_key_name,title=title)
     for k in request.form:
-        if (k in ['title','url']) is False:
-            try:
-                setattr(trans_entity,k,request.form[k])
-            except:
-                if request.form[k] == 'on':
-                    setattr(trans_entity,k,True)
-            #custom process for tags_string
-            if k == 'tags_string':
-                setattr(trans_entity,'tags',request.form[k].split(','))
+        if k in ['title','url']:
+            continue
+        logging.info(k)
+        logging.info(request.form[k])
+        try:
+            setattr(trans_entity,k,request.form[k])
+        except:
+            if request.form[k] == 'on' or request.form[k] == 'true':
+                setattr(trans_entity,k,True)
+            else:
+                setattr(trans_entity,k,False)
+        #custom process for tags_string
+        if k == 'tags_string':
+            #logging.info(request.form[k].split(','))
+            setattr(trans_entity,'tags',request.form[k].split(','))
     trans_entity.put()
     return Response('Success:add transltion')
 
