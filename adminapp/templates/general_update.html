@@ -104,7 +104,7 @@
         var image_title = $(this).find('h5').text();
         console.log(image_source);
         console.log(image_title);
-        var insert_text = '\n\n!['+image_title+']('+image_source+' "image_id:'+image_id+'")';
+        var insert_text = '\n\n!['+image_title+']('+image_source+')<!-- do not remove "image_id:'+image_id+'"-->';
         $('#'+imageinserttarget).val($('#'+imageinserttarget).val()+insert_text);
     });
     function showImageList(page){
