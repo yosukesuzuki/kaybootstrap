@@ -16,6 +16,11 @@
         {% endfor %}
     {% endif %}
     {{page.content|toMarkdown|safe}}
+    <p>
+        <i class="icon-twitter-sign icon-4x"></i>&nbsp;
+        <i class="icon-facebook-sign icon-4x"></i>&nbsp;
+        <i class="icon-google-plus-sign icon-4x"></i>&nbsp;
+    </p>
     </div>
     <div class="span3">
         <div class="well sidebar-nav">
@@ -51,5 +56,29 @@ $('div.page-body img').on('click',function(){
     $('#largeImageModelBody').html('<img src="'+imageSrc+'">');
     $('#largeImageModal').modal();
 });
+$('i.icon-facebook-sign').hover(
+    function () {
+    $(this).attr('style','color:#4060a0;');
+    },
+    function () {
+    $(this).removeAttr('style');
+    }
+);
+$('i.icon-twitter-sign').hover(
+    function () {
+    $(this).attr('style','color:#9AE4E8;');
+    },
+    function () {
+    $(this).removeAttr('style');
+    }
+);
+$('i.icon-google-plus-sign').hover(
+    function () {
+    $(this).attr('style','color:crimson;');
+    },
+    function () {
+    $(this).removeAttr('style');
+    }
+);
 </script>
 {% endblock %}
