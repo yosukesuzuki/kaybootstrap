@@ -103,7 +103,7 @@
         <footer class="footer">
             <div class="container">
                 <p>
-                    &copy; Company 2012
+                    &copy; Company 2013
                     &middot;<a href="/about/">{{_('About')}}</a>
                     &middot;<a href="/contact/">{{_('Contact')}}</a>
                 </p>
@@ -118,6 +118,32 @@
         <script src="/media/js/jquery.dateFormat-1.0.js"></script>
         <script src="/media/js/common.js"></script>
         #}
+        <script>
+            $('i.icon-facebook-sign').hover(
+                function () {
+                $(this).attr('style','color:#4060a0;');
+            },
+                function () {
+                $(this).removeAttr('style');
+            }
+            );
+            $('i.icon-twitter-sign').hover(
+                function () {
+                $(this).attr('style','color:#9AE4E8;');
+            },
+                function () {
+                $(this).removeAttr('style');
+            }
+            );
+            $('i.icon-google-plus-sign').hover(
+                function () {
+                $(this).attr('style','color:crimson;');
+            },
+                function () {
+                $(this).removeAttr('style');
+            }
+            );
+        </script>
         {%block scripts%}{% endblock %}
     </body>
 </html>
