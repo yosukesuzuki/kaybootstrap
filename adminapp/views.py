@@ -28,13 +28,16 @@ import logging
 import json
 import werkzeug
 import re
+import time
 RE_REMOVE_HTTP = re.compile(ur'^http:')
 from werkzeug import Response
 
 from google.appengine.api import files
 from google.appengine.api import memcache
+from google.appengine.api import search
 from google.appengine.ext import db 
 from google.appengine.ext import blobstore
+from google.appengine.ext import deferred
 from google.appengine.api.images import get_serving_url
 
 from kay import utils
@@ -107,6 +110,10 @@ def add_translation(request,parent_key):
         #    #logging.info(request.form[k].split(','))
         #    setattr(trans_entity,'tags',request.form[k].split(','))
     trans_entity.put()
+    children = MODEL_DICT[model_name].all().ancestor(parent_entity).fetch(1000)
+    for child in children:
+        if child.lang == request.form['lang']:
+            deferred.defer(index_full_text_search,child.key())
     return Response('Success:add transltion')
 
 def get_children(request,parent_key):
@@ -134,7 +141,53 @@ def preview(request,entity_key):
     sidebar = {'sidebar_title':_('Link'),'sidebar_list':[{'title':_('About'),'url':'/about/'},{'title':_('Contact'),'url':'/contact/'}]}
     return render_to_response('mainapp/show_each_page.html', {'page': page,'model_name':model_name,'sidebar':sidebar})
 
+def create_search_document(key):
+    entity = db.get(key)
+    timestamp = int(time.mktime((entity.update).timetuple()))
+    title = entity.title
+    content = entity.content
+    lang = entity.lang
+    display_page_flg = str(entity.display_page_flg)
+    model_name = entity.kind()
+    try:
+        parent = str(entity.parent().key())
+    except:
+        parent = ''
+    url = entity.external_url
+    if url is None or url == '':
+        try:
+            key_name = entity.parent().key().name()
+        except:
+            key_name = entity.key().name()
+        if model_name == 'AdminPage':
+            url = url_for('mainapp/show_each_page',key_name=key_name)
+        else:
+            url = url_for('mainapp/show_each_article',key_name=key_name)
+    return search.Document(doc_id=entity.kind()+'_'+entity.key().name(),
+            fields=[search.TextField(name='title', value=title, language=lang),
+                search.TextField(name='content', value=content, language=lang),
+                search.TextField(name='key', value=str(key), language='en'),
+                search.TextField(name='model_name', value=model_name, language=lang),
+                search.TextField(name='display_page_flg', value=display_page_flg, language='en'),
+                search.TextField(name='lang', value=lang, language=lang),
+                search.TextField(name='images', value=entity.images, language=lang),
+                search.TextField(name='url', value=url, language='en'),
+                search.TextField(name='parent', value=parent, language='en'),
+                search.NumberField(name='timestamp', value=timestamp)])
 
+def index_full_text_search(key):
+    entity = db.get(key) 
+    document = create_search_document(entity.key())
+    try:
+        search.Index(name='Pages').put(document)
+        return True
+    except search.Error:
+        return False
+
+def index_full_text_search_by_key_name(model_name,key_name):
+    entity = MODEL_DICT[model_name].get_by_key_name(key_name)
+    index_full_text_search(entity.key())
+    return True
 
 def image_manager(request):
     #TODO add image search function by full text search

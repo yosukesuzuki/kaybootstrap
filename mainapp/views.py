@@ -32,6 +32,7 @@ from werkzeug import Response
 
 from google.appengine.api import files
 from google.appengine.api import memcache
+from google.appengine.api import search
 
 from django.utils import html
 
@@ -198,6 +199,82 @@ def search_by_tag(request,tag_name):
         page = 1
     article_results = get_article_list(browser_lang,page,article_per_page,tag_name)
     return render_to_response('mainapp/article_list.html', {'article_results':article_results})
+
+def search_by_keyword(request):
+    browser_lang = request.lang
+    keyword = request.args['keyword']
+    try:
+        page = int(request.args['page'])
+    except:
+        page = 1
+    try:
+        cursor = request.args['cursor']
+    except:
+        cursor = None
+    article_per_page = 10
+    article_results = get_search_list(keyword,browser_lang,page,article_per_page,cursor)
+    #return Response(json.dumps(article_results, ensure_ascii=False))
+    return render_to_response('mainapp/article_list.html', {'article_results':article_results})
+
+def get_search_list(keyword,browser_lang,page,article_per_page,cursor=None):
+    limit = article_per_page 
+    timestamp_desc = search.SortExpression(
+            expression='timestamp',
+            direction=search.SortExpression.DESCENDING,
+            default_value=0)
+    sort = search.SortOptions(expressions=[timestamp_desc], limit=1000)
+    options = search.QueryOptions(
+            limit=limit,  # the number of results to return
+            cursor=cursor,
+            sort_options=sort)
+    if browser_lang == 'all':
+        query_string = keyword +' display_page_flg:True'
+    else:
+        query_string = keyword +' lang:'+browser_lang+' display_page_flg:True'
+    query = search.Query(query_string=query_string,options=options)
+    index = search.Index(name='Pages')
+    si_results = index.search(query)
+    next_cursor_obj = si_results.cursor
+    if next_cursor_obj:
+        next_cursor = next_cursor_obj.web_safe_string
+    else:
+        next_cursor = None
+    return_list = []
+    for sr in si_results:
+        title = None
+        snippet = None
+        url = None
+        first_image = None
+        display_time = None
+        key = None
+        for f in sr.fields:
+            if f.name == 'content': 
+                snippet = html.strip_tags(markdown(f.value)).split('\n')[0]
+            elif f.name == 'images':
+                try:
+                    first_image = json.loads(f.value)['images'][0]['image_path']
+                except:
+                    pass
+            elif f.name == 'title':
+                title = f.value
+            elif f.name == 'key':
+                key = f.value
+            elif f.name == 'url':
+                url = f.value
+        return_list.append({'key':key,
+            'id':sr.doc_id,
+            'title':title,
+            'snippet':snippet,
+            'url':url,
+            'first_image':first_image,
+            'display_time':display_time})
+    results_dic = {'articles':return_list,
+    'current_page':page,
+    'total_pages':si_results.number_found/article_per_page+1,
+    'tag_name':None,
+    'cursor':next_cursor,
+    'keyword':keyword}
+    return results_dic
 
 def site_map(request):
     #TODO return sitemap xml for search engine crawler
