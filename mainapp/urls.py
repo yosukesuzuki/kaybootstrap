@@ -19,6 +19,7 @@ from mainapp.views import CACHE_NAME_FOR_TOP_PAGE_RESULTS
 view_groups = [
   ViewGroup(
     Rule('/', endpoint='index', view='mainapp.views.index'),
+    Rule('/bad/request/', endpoint='bad_request', view='mainapp.views.bad_request'),
     Rule('/article/<string:key_name>/', endpoint='show_each_article', view='mainapp.views.show_each_article'),
     Rule('/article/', endpoint='article_list', view='mainapp.views.article_list'),
     Rule('/tag/<string:tag_name>/', endpoint='search_by_tag', view='mainapp.views.search_by_tag'),

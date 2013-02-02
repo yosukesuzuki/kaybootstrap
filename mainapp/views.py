@@ -28,7 +28,7 @@ import logging
 import json
 import datetime
 import urllib
-from werkzeug import Response
+from werkzeug import Response,redirect
 
 from google.appengine.api import files
 from google.appengine.api import memcache
@@ -205,7 +205,12 @@ def search_by_tag(request,tag_name):
 
 def search_by_keyword(request):
     browser_lang = request.lang
-    keyword = request.args['keyword']
+    try:
+        keyword = request.args['keyword']
+        if keyword == '':
+            return redirect(url_for('mainapp/bad_request',message=_('Keyword required')))
+    except:
+        return redirect(url_for('mainapp/bad_request',message=_('Keyword required')))
     try:
         page = int(request.args['page'])
     except:
@@ -218,6 +223,13 @@ def search_by_keyword(request):
     article_results = get_search_list(keyword,browser_lang,page,article_per_page,cursor_string)
     #return Response(json.dumps(article_results, ensure_ascii=False))
     return render_to_response('mainapp/article_list.html', {'article_results':article_results})
+
+def bad_request(request):
+    try:
+        message = request.args['message']
+    except:
+        message = _('Invalid request')
+    return render_to_response('mainapp/bad_request.html', {'message':message})
 
 def get_search_list(keyword,browser_lang,page,article_per_page,cursor_string=None):
     limit = article_per_page 
