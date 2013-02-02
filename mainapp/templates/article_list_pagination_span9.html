@@ -1,9 +1,17 @@
 <div class="span9">
     <div class="pagination">
+        {% if article_results['keyword'] %}
+            {% if article_results['cursor'] and article_results['current_page'] < article_results['total_pages'] %}
+            <ul class="paper">
+                <li><a href="{{ url_for('mainapp/search_by_keyword',keyword=article_results['keyword'],cursor=article_results['cursor'],page=article_results['current_page']+1) }}">{{ _('Next Page') }}&nbsp;<i class="icon-chevron-right"></i></a></li>
+            </ul>
+            {% endif %}
+        {% else %}
         <ul>
             {% for i in range(1,article_results['total_pages']+1) %}
             <li {% if i == article_results['current_page'] %}class="active"{% endif %}><a href="{{url_for('mainapp/article_list')}}{% if i != 1 %}?page={{i}}{% endif %}">{{i}}</a></li>
             {% endfor %}
         </ul>
+        {% endif %}
     </div>
 </div>

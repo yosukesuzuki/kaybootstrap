@@ -104,16 +104,19 @@ def show_each_page(request,key_name):
     return render_to_response('mainapp/show_each_page.html', {'page': page,'model_name':model_name,'sidebar':sidebar})
 
 def get_page_content(browser_lang,model_name,key_name,is_admin=False):
-    page = MODEL_DICT[model_name].get_by_key_name(key_name)
-    if is_admin is False and page.display_page_flg is False:
+    default_page = MODEL_DICT[model_name].get_by_key_name(key_name)
+    return_page = default_page
+    if is_admin is False and default_page.display_page_flg is False:
         return None
     if browser_lang != DEFAULT_LANG:
         logging.info('browser_lang:'+browser_lang)
-        translations = MODEL_DICT[model_name].all().ancestor(page.key()).fetch(1000)
+        translations = MODEL_DICT[model_name].all().ancestor(default_page.key()).fetch(1000)
         for trans in translations:
             if trans.lang == browser_lang:
-                page = trans 
-    return page
+                return_page = trans
+                if hasattr(default_page,'display_time'):
+                    return_page.display_time = default_page.display_time
+    return return_page
 
 def article_list(request):
     browser_lang = request.lang
@@ -208,21 +211,25 @@ def search_by_keyword(request):
     except:
         page = 1
     try:
-        cursor = request.args['cursor']
+        cursor_string = request.args['cursor']
     except:
-        cursor = None
+        cursor_string = None
     article_per_page = 10
-    article_results = get_search_list(keyword,browser_lang,page,article_per_page,cursor)
+    article_results = get_search_list(keyword,browser_lang,page,article_per_page,cursor_string)
     #return Response(json.dumps(article_results, ensure_ascii=False))
     return render_to_response('mainapp/article_list.html', {'article_results':article_results})
 
-def get_search_list(keyword,browser_lang,page,article_per_page,cursor=None):
+def get_search_list(keyword,browser_lang,page,article_per_page,cursor_string=None):
     limit = article_per_page 
     timestamp_desc = search.SortExpression(
             expression='timestamp',
             direction=search.SortExpression.DESCENDING,
             default_value=0)
     sort = search.SortOptions(expressions=[timestamp_desc], limit=1000)
+    if cursor_string is None:
+        cursor = search.Cursor()
+    else:
+        cursor = search.Cursor(web_safe_string=cursor_string)
     options = search.QueryOptions(
             limit=limit,  # the number of results to return
             cursor=cursor,
@@ -235,6 +242,8 @@ def get_search_list(keyword,browser_lang,page,article_per_page,cursor=None):
     index = search.Index(name='Pages')
     si_results = index.search(query)
     next_cursor_obj = si_results.cursor
+    logging.info(next_cursor_obj)
+    logging.info(si_results.number_found)
     if next_cursor_obj:
         next_cursor = next_cursor_obj.web_safe_string
     else:

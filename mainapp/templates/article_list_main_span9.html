@@ -8,7 +8,9 @@
     <div class="media-body" onClick="location.href='{{article['url']}}';">
         <h2>{{article['title']}}</h2>
         <p>{{article['snippet']}}</p>
+        {% if article['display_time'] %}
         <p class="display_time_local">{{article['display_time']}}</p>
+        {% endif %}
         <p><a class="btn" href="{{article['url']}}">{{_('View details')}} &raquo;</a></p>
     </div>
 </div>
