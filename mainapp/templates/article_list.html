@@ -1,9 +1,21 @@
 {% extends "mainapp/base.html"%}
-{% block title %}{{_('Article List')}} {{article_results['current_page']}} / {{article_results['total_pages']}}{% endblock %}
+{% block title %}
+    {% if article_results['keyword'] %}
+    {{article_results['keyword']}}:{{_('Search result')}}
+    {% endif %}
+    {{_('Article List')}} {{article_results['current_page']}} / {{article_results['total_pages']}}
+{% endblock %}
 {% block description %}{% endblock %}
 {% block content %}
 <div class="page-header">
+    {% if article_results['keyword'] %}
+    <form class="form-search" action="{{url_for('mainapp/search_by_keyword')}}">
+        <input type="text" name="keyword" class="span8 search-query" value="{{article_results['keyword']}}">
+        <button type="submit" class="btn">{{_('Search')}}</button>
+    </form>
+    {% else %}
     <h1>{% if article_results['tag_name'] %}{{article_results['tag_name']}}:{% endif %}{{_('Article List')}} {{article_results['current_page']}} / {{article_results['total_pages']}}</h1>
+    {% endif %}
 </div>
 <div class="row">
     <div class="span9">
