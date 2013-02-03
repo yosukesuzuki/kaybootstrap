@@ -79,6 +79,8 @@ def index(request):
                     r.content = browser_lang_trans.content
                     r.title = browser_lang_trans.title
             url = r.external_url if r.external_url else '/'+r.key().name()+'/'
+            if browser_lang != DEFAULT_LANG:
+                url += '?hl='+browser_lang
             snippet = html.strip_tags(markdown(r.content)).split('\n')[0]
             try:
                 first_image = json.loads(r.images)['images'][0]['image_path']
@@ -174,6 +176,8 @@ def get_article_list(browser_lang,page,article_per_page,tag_name=False):
                 r.content = browser_lang_trans.content
                 r.title = browser_lang_trans.title
         url = r.external_url if r.external_url else url_for('mainapp/show_each_article',key_name=r.key().name())
+        if browser_lang_trans and browser_lang != DEFAULT_LANG:
+            url += '?hl='+browser_lang
         snippet = html.strip_tags(markdown(r.content)).split('\n')[0]
         try:
             first_image = json.loads(r.images)['images'][0]['image_path']
@@ -282,6 +286,9 @@ def get_search_list(keyword,browser_lang,page,article_per_page,cursor_string=Non
                 key = f.value
             elif f.name == 'url':
                 url = f.value
+        if browser_lang != DEFAULT_LANG:
+            if url:
+                url += '?hl='+browser_lang
         return_list.append({'key':key,
             'id':sr.doc_id,
             'title':title,
