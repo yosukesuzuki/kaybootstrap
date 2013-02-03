@@ -98,6 +98,12 @@ def show_each_page(request,key_name):
     each page
     '''
     browser_lang = request.lang
+    try:
+        prior_lang = request.args['hl']
+    except:
+        prior_lang = None
+    if prior_lang and browser_lang != prior_lang:
+        browser_lang = prior_lang
     model_name = 'AdminPage'
     page = get_page_content(browser_lang,model_name,key_name)
     if page is None:
@@ -132,6 +138,12 @@ def article_list(request):
 
 def show_each_article(request,key_name):
     browser_lang = request.lang
+    try:
+        prior_lang = request.args['hl']
+    except:
+        prior_lang = None
+    if prior_lang and browser_lang != prior_lang:
+        browser_lang = prior_lang
     model_name = 'Article'
     page = get_page_content(browser_lang,model_name,key_name)
     if page is None:
@@ -165,9 +177,10 @@ def get_article_list(browser_lang,page,article_per_page,tag_name=False):
         results = paginator.page(paginator.num_pages)
     return_list = []
     for r in results.object_list:
+        browser_lang_trans = None
         if browser_lang != DEFAULT_LANG:
             translations = Article.all().ancestor(r.key()).fetch(1000)
-            browser_lang_trans = None
+            #browser_lang_trans = None
             for trans in translations:
                 if trans.lang == browser_lang:
                     browser_lang_trans = trans

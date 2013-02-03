@@ -16,11 +16,6 @@
         {% endfor %}
     {% endif %}
     {{page.content|toMarkdown|safe}}
-    <p class="socialButtons">
-        <a href="http://twitter.com/home/?status={{page.title}}+{{request.url}}"><i class="icon-twitter-sign icon-4x"></i></a>&nbsp;
-        <a href="http://www.facebook.com/sharer.php?u={{request.url}}&t={{page.title}}"><i class="icon-facebook-sign icon-4x"></i></a>&nbsp;
-        {#<a href="https://plusone.google.com/_/+1/confirm?hl={{request.lang}}&url={{request.url}}"><i class="icon-google-plus-sign icon-4x"></i>&nbsp;#}
-    </p>
     </div>
     <div class="span3">
         <div class="well sidebar-nav">
