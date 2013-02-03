@@ -11,5 +11,3 @@ http://code.google.com/p/kay-framework/
 Bootstrap
 http://twitter.github.com/bootstrap/
 
-Font Awesome
-http://fortawesome.github.com/Font-Awesome/
