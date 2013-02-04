@@ -94,15 +94,17 @@
         </div> <!-- /container -->
         <footer class="footer">
             <div class="container">
-                <p>
-                <div class="fb-like" data-href="{{request.url}}" data-send="false" data-width="300" data-show-faces="false"></div>
-                </p>
-                <p>
-                <a href="https://twitter.com/share" class="twitter-share-button" data-lang="ja">ツイート</a>
-                </p>
-                <p>
-                <div class="g-plusone" data-size="tall" data-annotation="inline" data-width="300"></div>
-                </p>
+                <div class="row" style="min-height:125px;">
+                    <p>
+                    <div class="fb-like" data-href="{{request.url}}" data-send="false" data-width="300" data-show-faces="false"></div>
+                    </p>
+                    <p>
+                    <a href="https://twitter.com/share" class="twitter-share-button" data-lang="ja">ツイート</a>
+                    </p>
+                    <p>
+                    <div class="g-plusone" data-size="tall" data-annotation="inline" data-width="300"></div>
+                    </p>
+                </div>
                 <p>
                     &copy; Company 2013
                     &middot;<a href="/about/">{{_('About')}}</a>
@@ -115,10 +117,6 @@
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="/media/js/jquery.min.js"></script>
         <script src="/media/js/bootstrap.min.js"></script>
-        {#
-        <script src="/media/js/jquery.dateFormat-1.0.js"></script>
-        <script src="/media/js/common.js"></script>
-        #}
         <script>
             $(document).ready(function(){
                 $('#navBarSearch').on('submit',function(){
