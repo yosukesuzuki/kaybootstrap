@@ -1,6 +1,6 @@
 {% extends "mainapp/base.html"%}
 {% block title %}{{page.title}}{% endblock %}
-{% block description %}{% endblock %}
+{% block description %}{{page.snippet}}{% endblock %}
 {% block content %}
 <div class="page-header">
     <h1>{{page.title}}</h1>
@@ -15,7 +15,7 @@
         <a class="label" href="{{url_for('mainapp/search_by_tag',tag_name=tag)}}">{{tag}}</a>
         {% endfor %}
     {% endif %}
-    {{page.content|toMarkdown|safe}}
+    {{page.content|safe}}
     </div>
     <div class="span3">
         <div class="well sidebar-nav">

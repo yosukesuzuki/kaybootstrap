@@ -124,6 +124,10 @@ def get_page_content(browser_lang,model_name,key_name,is_admin=False):
                 return_page = trans
                 if hasattr(default_page,'display_time'):
                     return_page.display_time = default_page.display_time
+    markdown_converted_content = markdown(return_page.content)
+    snippet = html.strip_tags(markdown_converted_content).split('\n')[0]
+    return_page.content = markdown_converted_content
+    setattr(return_page,'snippet',snippet)
     return return_page
 
 def article_list(request):
