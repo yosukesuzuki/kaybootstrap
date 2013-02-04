@@ -82,21 +82,21 @@
         elem.insertAdjacentHTML('afterEnd','<div class="row" id="imagelist"></div>');
     });
     //$('div.tab-content div:first').show();
-    $('a.insertimage').live('click',function() {
+    $(document).on('click','a.insertimage',function() {
         var imageinserttarget = $(this).next();
         $('#imageinserttarget').html(imageinserttarget.attr('id'));
         $('#imageInsertModal').modal();
         console.log($(this).next());
         showImageList(1);
     });
-    $('#addTranslation').live('click',function(){
+    $(document).on('click','#addTranslation',function(){
         $('#addTranslationModal').modal();
     });
-    $('a.imagepagination').live('click',function(){
+    $(document).on('click','a.imagepagination',function(){
         var page = $(this).text();
         showImageList(page);
     });
-    $('div.thumbnail').live('click',function(){
+    $(document).on('click','div.thumbnail',function(){
         var imageinserttarget = $('#imageinserttarget').text();
         var image_source = $(this).find('img').attr('src');
         var image_id = $(this).find('img').attr('id');
@@ -130,7 +130,7 @@
             }
         });
     }
-    $('#addTranslationTab').live('click',function(){
+    $(document).on('click','#addTranslationTab',function(){
         var lang = $('#langList option:selected').val();
         subAddTranslation(lang);
         $('#addTranslationModal').modal('hide');
@@ -149,11 +149,11 @@
         $('#'+lang+'Tab div.form-actions').html(update_source);
         document.querySelector('#addTranslationNode').insertAdjacentHTML('beforeBegin',tab_source);
     }
-    $('a[data-toggle="tab"]').live('shown', function (e) {
+    $(document).on('shown','a[data-toggle="tab"]',function (e) {
         e.target // activated tab
         e.relatedTarget // previous tab
     });
-    $('a.createTranslation').live('click',function(){
+    $(document).on('click','a.createTranslation',function(){
         var $form = $(this).closest('form');
         var params = $form.serializeArray();
         var postParams = {};
@@ -176,7 +176,7 @@
             }
         });
     });
-    $('a.deleteTranslation').live('click',function(){
+    $(document).on('click','a.deleteTranslation',function(){
         var modelName = $('#modelName').text();
         var thisTab = $(this).closest('div.tab-pane');
         var childKey = $(thisTab).find('span.childKey').text();

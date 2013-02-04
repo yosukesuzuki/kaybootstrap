@@ -110,13 +110,13 @@
             }
         });
     }
-    $('[contenteditable]').live('focus', function() {
+    $(document).on('focus','[contenteditable]',function() {
         console.log('focused');
         var this_text = $(this).text();
         if((this_text == '[{{_('Edit Title')}}]')||(this_text == '[{{_('Edit Note')}}]')){
             $(this).empty();
         }
-    }).live('blur', function() {
+    }).on('blur','[contenteditable]', function() {
         console.log('unfocused');
         var content_name = $(this).attr('class');
         //console.log($(this).closest('tr').attr('id'));
@@ -134,7 +134,7 @@
             }
         });
     });
-    $('button.deleteimage').live('click',function () {
+    $(document).on('click','button.deleteimage',function () {
         if(!(window.confirm('{{_('Delete this image?')}}'))){return false;}
         console.log('delete clicked');
         var content_key = $(this).closest('tr').attr('id');
@@ -147,11 +147,11 @@
             }
         });
     });
-    $('a.imagepagination').live('click',function(){
+    $(document).on('click','a.imagepagination',function(){
         var page = $(this).text();
         showImageList(page);
     });
-    $('img.middlethumbnail').live('click',function(){
+    $(document).on('click','img.middlethumbnail',function(){
         var image_source = $(this).attr('src');
         image_source = image_source.replace(/=s320/,'');
         $('#largeImageModalBody').html('<img src='+image_source+'>');

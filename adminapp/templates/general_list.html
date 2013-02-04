@@ -73,7 +73,7 @@
                 update_order_html += '<div id="newOrders" style="display:none;">'+new_orders+'</div><button id="updateOrder" class="btn btn-info">{{_('Update Order')}}</button>';
                 update_order_html += '&nbsp;{{_('new order is not saved yet.')}}';
                 $('#sort-change-message').html(update_order_html);
-                $('#updateOrder').live('click',function(){
+                $(document).on('click','#updateOrder',function(){
                     //$('#sort-change-message').html('<img src="/media/img/ajax-loader.gif">');
                     var newOrdersText = $('#newOrders').text();
                     console.log(newOrdersText);
