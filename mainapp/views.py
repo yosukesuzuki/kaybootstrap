@@ -128,6 +128,11 @@ def get_page_content(browser_lang,model_name,key_name,is_admin=False):
     snippet = html.strip_tags(markdown_converted_content).split('\n')[0]
     return_page.content = markdown_converted_content
     setattr(return_page,'snippet',snippet)
+    try:
+        first_image = json.loads(return_page.images)['images'][0]['image_path']
+    except:
+        first_image = None
+    setattr(return_page,'first_image',first_image)
     return return_page
 
 def article_list(request):
