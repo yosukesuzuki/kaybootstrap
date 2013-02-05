@@ -21,27 +21,9 @@ from settings import DEFAULT_LANG
 
 from adminapp.forms import AdminPageForm,ArticleForm
 from adminapp.views import index_full_text_search,index_full_text_search_by_key_name
+from adminapp.utils import construct_datetime_from_string,construct_image_json_from_content
 from mainapp.models import AdminPage,BlobStoreImage,Article
 from mainapp.views import CACHE_NAME_FOR_TOP_PAGE_RESULTS
-
-def construct_image_json_from_content(body):
-    re_result = re.compile(ur'image_id:[a-z0-9]+').findall(body)
-    image_list = []
-    for r in re_result:
-        image_id = re.sub(ur'image_id:','',r)
-        tmp_image_entity = BlobStoreImage.get_by_key_name(image_id)
-        image_list.append({'id':tmp_image_entity.key().name(),
-            'title':tmp_image_entity.title,
-            'image_path':re.sub('^http:','',get_serving_url(tmp_image_entity.blob_key.key()))})
-    json_dic ={'images':image_list}
-    return json.dumps(json_dic, ensure_ascii=False)
-
-def construct_datetime_from_string(display_time_string):
-    if display_time_string is None or display_time_string == '':
-        display_time = datetime.datetime.now()
-    else:
-        display_time = datetime.datetime.strptime(display_time_string,'%Y-%m-%d %H:%M')
-    return display_time
 
 class AdminPageCRUDViewGroup(crud.CRUDViewGroup):
      entities_per_page = 1000 

@@ -52,6 +52,7 @@ from kay.handlers import blobstore_handlers
 from mainapp.views import CACHE_NAME_FOR_TOP_PAGE_RESULTS,MODEL_DICT,get_page_content
 from mainapp.models import AdminPage,BlobStoreImage,Article
 from adminapp.forms import AdminPageForm
+from adminapp.utils import construct_datetime_from_string,construct_image_json_from_content
 
 def index(request):
     admin_page_list = [{'title':_('Page Manager'),'info':AdminPage.__doc__,'url':'/admin/adminpage/list'},
@@ -110,6 +111,10 @@ def add_translation(request,parent_key):
         #if k == 'tags_string':
         #    #logging.info(request.form[k].split(','))
         #    setattr(trans_entity,'tags',request.form[k].split(','))
+        if k == 'content':
+            #logging.info(request.form[k].split(','))
+            images = construct_image_json_from_content(request.form[k])
+            setattr(trans_entity,'images',images)
     trans_entity.put()
     children = MODEL_DICT[model_name].all().ancestor(parent_entity).fetch(1000)
     for child in children:
