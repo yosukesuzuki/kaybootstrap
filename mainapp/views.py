@@ -137,7 +137,7 @@ def get_page_content(browser_lang,model_name,key_name,is_admin=False):
 
 def article_list(request):
     browser_lang = request.lang
-    article_per_page = 10
+    article_per_page = 10 
     try:
         page = int(request.args.get('page','1'))
     except ValueError:
@@ -214,6 +214,9 @@ def get_article_list(browser_lang,page,article_per_page,tag_name=False):
             'display_time':str(r.display_time)[:16]})
     results_dic = {'articles':return_list,
     'current_page':results.number,
+    'previous_page':results.previous_page_number,
+    'next_page':results.next_page_number,
+    'has_next':results.has_next,
     'total_pages':results.paginator.num_pages,
     'tag_name':tag_name}
     memcache.set(memcache_key,results_dic)

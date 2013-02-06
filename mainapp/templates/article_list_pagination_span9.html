@@ -8,9 +8,19 @@
             {% endif %}
         {% else %}
         <ul>
+            {% if article_results['previous_page'] %}
+            <li><a href="{{url_for('mainapp/article_list')}}{% if article_results['previous_page'] != 1 %}?page={{article_results['previous_page']}}{% endif %}">{{_('Prev')}}</a></li>
+            {% else %}
+                <li class="disabled"><a>{{_('Prev')}}</a></li>
+            {% endif %}
             {% for i in range(1,article_results['total_pages']+1) %}
             <li {% if i == article_results['current_page'] %}class="active"{% endif %}><a href="{{url_for('mainapp/article_list')}}{% if i != 1 %}?page={{i}}{% endif %}">{{i}}</a></li>
             {% endfor %}
+            {% if article_results['has_next'] %}
+                <li><a href="{{url_for('mainapp/article_list')}}{% if article_results['next_page'] != 1 %}?page={{article_results['next_page']}}{% endif %}">{{_('Next')}}</a></li>
+            {% else %}
+                <li class="disabled"><a>{{_('Next')}}</a></li>
+            {% endif %}
         </ul>
         {% endif %}
     </div>
