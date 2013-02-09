@@ -251,7 +251,11 @@ def search_by_keyword(request):
     except:
         cursor_string = None
     article_per_page = 10
-    article_results = get_search_list(keyword,browser_lang,page,article_per_page,cursor_string)
+    try:
+        article_results = get_search_list(keyword,browser_lang,page,article_per_page,cursor_string)
+    except:
+        return redirect(url_for('mainapp/bad_request',message=_('Error')))
+
     #return Response(json.dumps(article_results, ensure_ascii=False))
     return render_to_response('mainapp/article_list.html', {'article_results':article_results})
 
