@@ -113,9 +113,11 @@ def show_each_page(request,key_name):
 
 def get_page_content(browser_lang,model_name,key_name,is_admin=False):
     default_page = MODEL_DICT[model_name].get_by_key_name(key_name)
+    if default_page is None:
+        return None 
     return_page = default_page
     if is_admin is False and default_page.display_page_flg is False:
-        return None
+        return None 
     if browser_lang != DEFAULT_LANG:
         logging.info('browser_lang:'+browser_lang)
         translations = MODEL_DICT[model_name].all().ancestor(default_page.key()).fetch(1000)
