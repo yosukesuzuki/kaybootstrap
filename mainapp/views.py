@@ -35,6 +35,7 @@ from google.appengine.api import memcache
 from google.appengine.api import search
 
 from django.utils import html
+from django.utils import feedgenerator
 
 from kay.utils import render_to_response
 from kay.utils import get_by_key_name_or_404
@@ -334,6 +335,22 @@ def get_search_list(keyword,browser_lang,page,article_per_page,cursor_string=Non
     'cursor':next_cursor,
     'keyword':keyword}
     return results_dic
+
+def rss_feed(request):
+    browser_lang = request.lang
+    feed = feedgenerator.Rss201rev2Feed(
+            title = _('RSS feed for Kaybootstrap'),
+            link = request.url,
+            description = _('feed for kaybootstrap'),
+            language = browser_lang)
+    article_results = get_article_list(browser_lang,1,10)
+    for a in article_results['articles']:
+        feed.add_item(
+                title = a['title'],
+                link = 'http://'+request.host+a['url'],
+                description=a['snippet'])
+    rss = feed.writeString("utf-8")
+    return Response(rss, mimetype='text/xml')
 
 def site_map(request):
     #TODO return sitemap xml for search engine crawler
