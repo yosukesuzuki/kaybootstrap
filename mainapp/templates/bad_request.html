@@ -2,7 +2,9 @@
 {% block title %}{{message}}{% endblock %}
 {% block description %}{% endblock %}
 {% block content %}
+{% if request.args['message_code'] %}
 <div class="page-header">
-    <h1>{{message}}</h1>
+    <h1>{{request.args['message_code']|returnMessage}}</h1>
 </div>
+{% endif %}
 {% endblock %}
