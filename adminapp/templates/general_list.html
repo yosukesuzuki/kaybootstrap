@@ -52,9 +52,24 @@
 <p id="sort-change-message">
 </p>
 
-{% if cursor %}
-<p><a href="{{ list_url(cursor) }}" class="btn">{{ _('Next Page') }}&nbsp;<i class="icon-chevron-right"></i></a></p>
-{% endif %}
+<div class="pagination">
+    <ul>
+        {% if previous_page %}
+        <li><a href="{{request.path}}{% if previous_page != 1 %}?page={{previous_page}}{% endif %}">{{_('Prev')}}</a></li>
+        {% else %}
+            <li class="disabled"><a>{{_('Prev')}}</a></li>
+        {% endif %}
+        {% for i in range(1,total_pages+1) %}
+        <li {% if i == current_page %}class="active"{% endif %}><a href="{{request.path}}{% if i != 1 %}?page={{i}}{% endif %}">{{i}}</a></li>
+        {% endfor %}
+        {% if has_next %}
+            <li><a href="{{request.path}}{% if next_page != 1 %}?page={{next_page}}{% endif %}">{{_('Next')}}</a></li>
+        {% else %}
+            <li class="disabled"><a>{{_('Next')}}</a></li>
+        {% endif %}
+    </ul>
+</div>
+
 {% endblock %}
 {% block scripts %}
 <script src="/media/js/jquery.tablednd.js"></script>
