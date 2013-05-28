@@ -1,5 +1,5 @@
 {% extends "mainapp/base.html"%}
-{% block title %}{{message}}{% endblock %}
+{% block title %}{% if request.args['message_code'] %}{{request.args['message_code']|returnMessage}}{% endif %}{{message}}:{% endblock %}
 {% block description %}{% endblock %}
 {% block content %}
 {% if request.args['message_code'] %}
