@@ -3,7 +3,7 @@
 {% block description %}{{results[0]['snippet']}}{% endblock %}
 {% block content %}
 <!-- Main hero unit for a primary marketing message or call to action -->
-<div class="jumbotron" style="margin-top:12px;">
+<div class="jumbotron">
     <div class="container">
         {% if results[0]['first_image'] %}
         <a class="pull-right" href="{{results[0]['url']}}">

@@ -24,25 +24,25 @@
         <tbody>
     {% for entity in entities %}
     <tr id="{{entity.key()}}" {% if entity.display_page_flg == False %}class="warning"{% endif %}>
-            <td class="span5" onClick="window.location.href='{{ update_url(entity) }}'">
+            <td class="col-md-5" onClick="window.location.href='{{ update_url(entity) }}'">
                 <a href="{{ update_url(entity) }}">{{ entity.title }}</a>
 
                 {% if entity.display_page_flg == False %}
                     <a href="{{url_for('adminapp/preview',entity_key=entity.key())}}" class="btn pull-right" target="_top">{{_('Preview')}}</a>
                 {% endif %}
             </td>
-            <td class="span3">
+            <td class="col-md-3">
                 {% if entity.display_time %}
                     {{entity.display_time}}
                 {% elif entity.update %}
                     {{entity.update}}
                 {% endif %}
             </td>
-            <td class="span2">
+            <td class="col-md-2">
                 <a href="{{ update_url(entity) }}">{{ _('Update') }}</a>
             </td>
-            <td class="span2">
-                <a href="{{ delete_url(entity) }}" onClick="if(window.confirm('{{_('Delete this entity?')}}')){return true;}else{return false;}"><i class="icon-trash"></i>{{ _('Delete') }}</a>
+            <td class="col-md-2">
+                <a href="{{ delete_url(entity) }}" onClick="if(window.confirm('{{_('Delete this entity?')}}')){return true;}else{return false;}"><span class="glyphicon glyphicon-trash"></span>{{ _('Delete') }}</a>
             </td>
         </tr>
     {% endfor %}
@@ -52,8 +52,8 @@
 <p id="sort-change-message">
 </p>
 
-<div class="pagination">
-    <ul>
+<div>
+    <ul class="pagination">
         {% if previous_page %}
         <li><a href="{{request.path}}{% if previous_page != 1 %}?page={{previous_page}}{% endif %}">{{_('Prev')}}</a></li>
         {% else %}
