@@ -7,7 +7,7 @@
     <div class="container">
         {% if results[0]['first_image'] %}
         <a class="pull-right" href="{{results[0]['url']}}">
-        <img src="{{results[0]['first_image']}}=s240-c" width="240" height="240" class="img-rounded pull-right">
+        <img src="{{results[0]['first_image']}}=s240-c" width="240" height="240" class="media-object pull-right">
         </a>
         {% endif %}
         <div class="media-body" onClick="location.href='{{results[0]['url']}}'">
@@ -24,7 +24,7 @@
     <div class="col-md-4 media" style="margin-top:0px;">
         {% if r['first_image'] %}
         <a class="pull-left" href="{{r['url']}}">
-            <img src="{{r['first_image']}}=s80-c" width="80" height="80" class="img-rounded pull-left">
+            <img src="{{r['first_image']}}=s80-c" width="80" height="80" class="media-object pull-left">
         </a>
         {% endif %}
         <div class="media-body" onClick="location.href='{{r['url']}}'">
