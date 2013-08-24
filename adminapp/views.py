@@ -200,7 +200,7 @@ def image_manager(request):
     return render_to_response('adminapp/image_manager.html', {'title':_('Image manager')})
 
 def image_upload_url(request):
-    upload_url = blobstore.create_upload_url('/admin/image/upload/handler/')
+    upload_url = blobstore.create_upload_url(url_for('adminapp/upload_handler'))
     return Response('"'+upload_url+'"',mimetype='application/json')
 
 def image_list_json(request):

@@ -12,19 +12,20 @@
         <!-- Le styles -->
         <link href="/media/css/bootstrap.min.css" rel="stylesheet">
         <style type="text/css">
+            /* Move down content because we have a fixed navbar that is 50px tall */
             body {
-                padding-top: 60px;
-                padding-bottom: 40px;
+                padding-top: 50px;
+                padding-bottom: 20px;
             }
         </style>
-        <link href="/media/css/bootstrap-responsive.min.css" rel="stylesheet">
-        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
-          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <script src="../../assets/js/html5shiv.js"></script>
+        <script src="../../assets/js/respond.min.js"></script>
         <![endif]-->
 
-        <!-- Fav and touch icons -->
         {#
+        <!-- Fav and touch icons -->
         <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
         <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
         <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
@@ -33,7 +34,58 @@
         #}
     </head>
     <body>
-        <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">KayBootstrap</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/article/">{{_('News')}}</a></li>
+                        <li><a href="#">{{_('Popular')}}</a></li>
+                        <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{_('Directory')}}<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li class="dropdown-header">Nav header</li>
+                            <li><a href="#">Separated link</a></li>
+                            <li><a href="#">One more separated link</a></li>
+                        </ul>
+                        </li>
+                    </ul>
+                    <form class="navbar-form navbar-left" id="navBarSearch" action="{{url_for('mainapp/search_by_keyword')}}">
+                        <div class="form-group">
+                            <input type="search" name="keyword" placeholder="{{_('input keyword')}}" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                    </form>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-wrench"></span></a>
+                        <ul class="dropdown-menu">
+                            {% for lang in lang_list %}
+                            <li><a href="{{create_lang_url(lang=lang['code'])}}">{{lang['name']}}</a></li>
+                            {% endfor %}
+                        </ul>
+                        </li>
+                    </ul>
+                    {% if request.user.is_admin %}
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="active"><a href="/admin/"><i class="icon-wrench icon-white"></i>{{_('Admin')}}</a></li>
+                    </ul>
+                    {% endif %}
+                </div><!--/.navbar-collapse -->
+            </div>
+        </div>
+        {#<div class="navbar navbar-inverse navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">
                     <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -44,7 +96,6 @@
                     <a class="brand" href="/">Kay Bootstrap</a>
                     <div class="nav-collapse collapse">
                         <ul class="nav">
-                            {#<li class="active"><a href="#">{{_('Popular')}}</a></li>#}
                             <li><a href="/article/">{{_('News')}}</a></li>
                             <li><a href="#">{{_('Popular')}}</a></li>
                             <li class="dropdown">
@@ -79,29 +130,23 @@
                             <li class="active"><a href="/admin/"><i class="icon-wrench icon-white"></i>{{_('Admin')}}</a></li>
                         </ul>
                         {% endif %}
-                        {#
-                        <form class="navbar-form pull-right">
-                            <input class="span2" type="text" placeholder="Email">
-                            <input class="span2" type="password" placeholder="Password">
-                            <button type="submit" class="btn">Sign in</button>
-                        </form>
-                        #}
                     </div><!--/.nav-collapse -->
                 </div>
             </div>
         </div>
+        #}
         <div class="container">
             {%block content%}{% endblock %}
             <hr>
         </div> <!-- /container -->
-        <footer class="footer">
+        <footer>
             <div class="container">
                 <div class="row" style="min-height:125px;">
                     <p>
                     <div class="fb-like" data-href="{{request.url}}" data-send="false" data-width="300" data-show-faces="false"></div>
                     </p>
                     <p>
-                    <a href="https://twitter.com/share" class="twitter-share-button" data-lang="ja">$B%D%$!<%H(B</a>
+                    <a href="https://twitter.com/share" class="twitter-share-button" data-lang="ja">ツイート</a>
                     </p>
                     <p>
                     <div class="g-plusone" data-size="tall" data-annotation="inline" data-width="300"></div>
