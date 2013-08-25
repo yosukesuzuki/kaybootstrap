@@ -3,20 +3,19 @@
 {% block description %}{{results[0]['snippet']}}{% endblock %}
 {% block content %}
 <!-- Main hero unit for a primary marketing message or call to action -->
-<div class="jumbotron">
-    <div class="container">
+<div class="row featurette">
+    <div class="col-md-12">
         {% if results[0]['first_image'] %}
         <a class="pull-right" href="{{results[0]['url']}}">
-        <img src="{{results[0]['first_image']}}=s240-c" width="240" height="240" class="media-object pull-right">
+        <img src="{{results[0]['first_image']}}=s300-c" width="300" height="300" class="media-object pull-right img-responsive">
         </a>
         {% endif %}
-        <div class="media-body" onClick="location.href='{{results[0]['url']}}'">
-        <h1>{{results[0]['title']}}</h1>
-        <p>{{results[0]['snippet']}}</p>
-        <p><a class="btn btn-primary btn-large" href="{{results[0]['url']}}">{{_('Learn more')}} &raquo;</a></p>
-        </div>
+        <h1 class="featurette-heading">{{results[0]['title']}}</h1>
+        <p class="lead">{{results[0]['snippet']}}</p>
+        <p><a class="btn btn-primary btn-lg" href="{{results[0]['url']}}">{{_('Learn more')}} &raquo;</a></p>
     </div>
 </div>
+<hr class="featurette-divider">
 
 <!-- row of columns -->
 <div class="row">
