@@ -206,7 +206,7 @@ def image_upload_url(request):
 def image_list_json(request):
     #TODO duplication,I have to DRY below code
     blob_info_query = blobstore.BlobInfo.all().order('-creation')
-    blob_info_results = blob_info_query.fetch(1000)
+    blob_info_results = blob_info_query.fetch(10)
     for r in blob_info_results:
         bsi_entity = BlobStoreImage.get_by_key_name(r.md5_hash)
         if bsi_entity is None:
