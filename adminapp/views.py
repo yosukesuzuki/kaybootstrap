@@ -224,12 +224,15 @@ def image_list_json(request):
         results = paginator.page(paginator.num_pages)
     return_list = []
     for r in results.object_list:
+        if r.image_path is None or r.image_path == '':
+            r.image_path = get_serving_url(r.blob_key.key())
+            r.put()
         return_list.append({'key':str(r.key()),
             'id':r.key().name(),
             'title':r.title,
             'file_name':r.file_name,
             'note':r.note,
-            'image_path':RE_REMOVE_HTTP.sub('',get_serving_url(r.blob_key.key())),
+            'image_path':RE_REMOVE_HTTP.sub('',r.image_path),
             'update':str(r.update)[:16]})
     return Response(json.dumps({'images':return_list,
         'current_page':results.number,
