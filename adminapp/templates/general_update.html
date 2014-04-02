@@ -8,7 +8,7 @@
     <div id="entityKey" style="display:none;"></div>
     <ul class="nav nav-tabs" id="langTab">
         <li class="active"><a href="#{{default_lang['code']}}Tab" data-toggle="tab">{{default_lang['name']}}</a></li>
-        <li id="addTranslationNode"><a id="addTranslation">+</a></li>
+        <li id="addTranslationNode"><a id="addTranslation"><span class="glyphicon glyphicon-plus"></span></a></li>
     </ul>
     <div class="tab-content">
         <div class="tab-pane active" id="{{default_lang['code']}}Tab">
@@ -80,34 +80,6 @@
         </div>
     </div>
 </div>
-{#
-<div id="addTranslationModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addTranslationModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-                <h3 id="addTranslationModalLabel">{{_('Add Translation')}}</h3>
-            </div>
-            <div class="modal-body">
-                <p>{{_('Select Language')}}</p>
-                <select id="langList">
-                    {% for lang in lang_list %}
-                    {% if lang['code'] != default_lang['code'] %}
-                    <option value="{{lang['code']}}">{{lang['name']}}</option>
-                    {% endif %}
-                    {% endfor %}
-                </select>
-                <p>
-                <a id="addTranslationTab" class="btn btn-primary">{{_('Add Translation')}}</a>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">{{_('Close')}}</button>
-            </div>
-        </div>
-    </div>
-</div>
-#}
 {% endblock %}
 {% block scripts %}
 <link href="/media/css/datetimepicker.css" rel="stylesheet">
@@ -239,6 +211,10 @@
             key = key.toString().replace(/#.+$/,'');
             console.log(key);
             $('#entityKey').html(key);
+        }
+        if(key === null){
+            $('#addTranslationNode').css('display','none');
+            return;
         }
         $.ajax({
             type:"GET",
