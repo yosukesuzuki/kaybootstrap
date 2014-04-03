@@ -2,6 +2,7 @@
 {% block title %}{{ title }}{% endblock %}
 {% block description %}{% endblock %}
 {% block content %}
+<link rel="stylesheet" type="text/css" media="screen" href="/media/css/bootstrap-markdown.min.css">
 <h1>{{ title }}</h1>
 <div id="main">
     <div id="modelName" style="display:none;">{{model}}</div>
@@ -84,6 +85,9 @@
 {% block scripts %}
 <link href="/media/css/datetimepicker.css" rel="stylesheet">
 <script src="/media/js/bootstrap-datetimepicker.js"></script>
+<script src="/media/js/markdown.js"></script>
+<script src="/media/js/to-markdown.js"></script>
+<script src="/media/js/bootstrap-markdown.js"></script>
 <script type="text/javascript">
     $('textarea').each(function(i,elem){
         elem.insertAdjacentHTML('beforeBegin','<a class="insertimage btn btn-default btn-sm"><span class="glyphicon glyphicon-picture"></span>{{_('Insert Image')}}</a>');
@@ -200,6 +204,10 @@
         });
     });
     $(document).ready(function() {
+        $('textarea').attr('data-provide','markdown-editable');
+        $('textarea').markdown({onShow: function(e){
+            e.$textarea.css('resize','vertical')
+        }});
         $('.form_datetime').datetimepicker({
                     format: "yyyy-mm-dd hh:ii"
         });
