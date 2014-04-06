@@ -6,7 +6,8 @@ import json
 from kay.ext.testutils.gae_test_base import GAETestBase
 
 from mainapp.models import Article,AdminPage
-from mainapp.views import get_page_content
+from mainapp.views import get_page_content,get_search_list
+from adminapp.views import index_full_text_search,index_full_text_search_by_key_name
 
 class GetArticleTest(GAETestBase):
 
@@ -25,4 +26,3 @@ class GetArticleTest(GAETestBase):
         entity1.put()
         result = get_page_content('en','Article','hoge')
         self.assertEquals(result.title,'hoge_title')
-
