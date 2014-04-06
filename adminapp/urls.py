@@ -35,7 +35,7 @@ class AdminPageCRUDViewGroup(crud.CRUDViewGroup):
              'update':'adminapp/general_update.html',
              }
      def get_query(self, request):
-         return self.model.all().filter(u'lang =',DEFAULT_LANG).order('page_order')
+         return self.model.all().filter(u'lang =',DEFAULT_LANG).order('-page_order')
      def get_additional_context_on_update(self, request, form):
          memcache.delete(CACHE_NAME_FOR_TOP_PAGE_RESULTS)
          image_list = construct_image_json_from_content(request.form['content'])

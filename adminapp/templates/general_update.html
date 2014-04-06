@@ -54,6 +54,21 @@
         </div>
     </div>
 </div>
+<div id="previewModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h3 id="previewModalLabel" class="modal-title">{{_('Preview')}}</h3>
+            </div>
+            <div class="modal-body" id="previewModalBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">{{_('Close')}}</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="addTranslationModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addTranslationModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -84,8 +99,7 @@
 {% block scripts %}
 <link href="/media/css/datetimepicker.css" rel="stylesheet">
 <script src="/media/js/bootstrap-datetimepicker.js"></script>
-<script src="/media/js/markdown.js"></script>
-<script src="/media/js/to-markdown.js"></script>
+<script src="/media/js/marked.js"></script>
 <script src="/media/js/expanding.js"></script>
 <script type="text/javascript">
     $.fn.extend({
@@ -116,16 +130,23 @@
         }
     });
     $('textarea').each(function(i,elem){
-        elem.insertAdjacentHTML('beforeBegin','<a class="insertimage btn btn-default btn-sm"><span class="glyphicon glyphicon-picture"></span>{{_('Insert Image')}}</a>');
+        var insertHTML = '<a class="insertimage btn btn-default btn-sm"><span class="glyphicon glyphicon-picture"></span>{{_('Insert Image')}}</a>';
+        insertHTML += '<a class="preview btn btn-info btn-sm"><span class="glyphicon glyphicon-play"></span>{{_('Preview')}}</a>';
+        elem.insertAdjacentHTML('beforeBegin',insertHTML);
         elem.insertAdjacentHTML('afterEnd','<div class="row" id="imagelist"></div>');
     });
     //$('div.tab-content div:first').show();
     $(document).on('click','a.insertimage',function() {
-        var imageinserttarget = $(this).next().find('textarea');
+        var imageinserttarget = $(this).parent().find('textarea');
         $('#imageinserttarget').html(imageinserttarget.attr('id'));
         $('#imageInsertModal').modal();
         console.log($(this).next());
         showImageList(1);
+    });
+    $(document).on('click','a.preview',function() {
+        var previewtarget = $(this).parent().find('textarea');
+        $('#previewModalBody').html(marked(previewtarget.val()));
+        $('#previewModal').modal();
     });
     $(document).on('click','#addTranslation',function(){
         $('#addTranslationModal').modal();
@@ -138,7 +159,7 @@
         var imageinserttarget = $('#imageinserttarget').text();
         var image_source = $(this).find('img').attr('src');
         var image_id = $(this).find('img').attr('id');
-        image_source = image_source.replace(/=s160/,'=s320');
+        image_source = image_source.replace(/=s[0-9]+/,'=s320');
         var image_title = $(this).find('h5').text();
         console.log(image_source);
         console.log(image_title);
@@ -290,3 +311,4 @@
     });
 </script>
 {% endblock %}
+        image_source = image_source.replace(/=s¥d+60/,'=s320');
