@@ -84,14 +84,44 @@
 {% block scripts %}
 <link href="/media/css/datetimepicker.css" rel="stylesheet">
 <script src="/media/js/bootstrap-datetimepicker.js"></script>
+<script src="/media/js/markdown.js"></script>
+<script src="/media/js/to-markdown.js"></script>
+<script src="/media/js/expanding.js"></script>
 <script type="text/javascript">
+    $.fn.extend({
+        insertAtCaret: function(myValue){
+            return this.each(function(i) {
+                if (document.selection) {
+                    //For browsers like Internet Explorer
+                    this.focus();
+                    sel = document.selection.createRange();
+                    sel.text = myValue;
+                    this.focus();
+                }
+                else if (this.selectionStart || this.selectionStart == '0') {
+                    //For browsers like Firefox and Webkit based
+                    var startPos = this.selectionStart;
+                    var endPos = this.selectionEnd;
+                    var scrollTop = this.scrollTop;
+                    this.value = this.value.substring(0, startPos)+myValue+this.value.substring(endPos,this.value.length);
+                    this.focus();
+                    this.selectionStart = startPos + myValue.length;
+                    this.selectionEnd = startPos + myValue.length;
+                    this.scrollTop = scrollTop;
+                } else {
+                    this.value += myValue;
+                    this.focus();
+                }
+            })
+        }
+    });
     $('textarea').each(function(i,elem){
         elem.insertAdjacentHTML('beforeBegin','<a class="insertimage btn btn-default btn-sm"><span class="glyphicon glyphicon-picture"></span>{{_('Insert Image')}}</a>');
         elem.insertAdjacentHTML('afterEnd','<div class="row" id="imagelist"></div>');
     });
     //$('div.tab-content div:first').show();
     $(document).on('click','a.insertimage',function() {
-        var imageinserttarget = $(this).next();
+        var imageinserttarget = $(this).next().find('textarea');
         $('#imageinserttarget').html(imageinserttarget.attr('id'));
         $('#imageInsertModal').modal();
         console.log($(this).next());
@@ -113,7 +143,8 @@
         console.log(image_source);
         console.log(image_title);
         var insert_text = '\n\n!['+image_title+']('+image_source+')<!-- do not remove "image_id:'+image_id+'"-->';
-        $('#'+imageinserttarget).val($('#'+imageinserttarget).val()+insert_text);
+        //$('#'+imageinserttarget).val($('#'+imageinserttarget).val()+insert_text);
+        $('#'+imageinserttarget).insertAtCaret(insert_text);
     });
     function showImageList(page){
         $('#images').html('');
@@ -200,6 +231,8 @@
         });
     });
     $(document).ready(function() {
+        $('textarea').css('max-height',($(window).height()-200)+'px');
+        $('textarea').expanding();
         $('.form_datetime').datetimepicker({
                     format: "yyyy-mm-dd hh:ii"
         });
