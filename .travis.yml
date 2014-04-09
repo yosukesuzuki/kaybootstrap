@@ -1,0 +1,14 @@
+language: python
+ 
+python:
+  - '2.7'
+ 
+install: 
+  - 'pip install -r requirements.txt'
+ 
+before_script:
+  - wget https://commondatastorage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.2.zip -nv
+  - unzip -q google_appengine_1.9.2.zip
+  - export PATH=$PATH:./google_appengine/
+ 
+script: 'python manage.py test -v2'
