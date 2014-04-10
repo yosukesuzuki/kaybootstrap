@@ -26,4 +26,3 @@ class GetArticleTest(GAETestBase):
         entity1.put()
         result = get_page_content('en','Article','hoge')
         self.assertEquals(result.title,'hoge_title')
-        self.assertEquals('hoge','hage')
